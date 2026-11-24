@@ -1,0 +1,39 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "git": {
+    "deploymentEnabled": {
+      "main": false,
+      "dev": false,
+      "*": true
+    }
+  },
+  "redirects": [
+    { "source": "/index.php", "destination": "/", "permanent": true },
+    { "source": "/empresa.php", "destination": "/sobre", "permanent": true },
+    { "source": "/servicos-de-aph.php", "destination": "/atendimento-domiciliar", "permanent": true },
+    { "source": "/cobertura-de-festas-e-eventos.php", "destination": "/eventos", "permanent": true },
+    { "source": "/transportes-e-remocoes.php", "destination": "/remocao", "permanent": true },
+    { "source": "/locacoes-de-ambulancias.php", "destination": "/locacao-de-ambulancias", "permanent": true },
+    { "source": "/area-protegida.php", "destination": "/area-protegida", "permanent": true },
+    { "source": "/ambulatorios.php", "destination": "/ambulatorios", "permanent": true },
+    { "source": "/portfolio.php", "destination": "/eventos", "permanent": true },
+    { "source": "/clientes.php", "destination": "/sobre", "permanent": true },
+    { "source": "/contato.php", "destination": "/contato", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/_next/static/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
+      ]
+    }
+  ]
+}
