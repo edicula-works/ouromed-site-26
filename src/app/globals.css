@@ -826,11 +826,8 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   gap: calc(var(--u) * 2);
 }
 .about__label {
-  font-family: var(--f-mono);
-  font-size: var(--t-xs);
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: var(--t-s);
+  font-weight: 700;
   color: var(--c-navy);
 }
 .about__text {
@@ -1499,17 +1496,20 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   text-underline-offset: 0.2em;
 }
 
-/* VLibras (widget do governo): no canto de baixo, acima da barra do celular, e fora do caminho
-   com o menu aberto. O widget fixa a própria posição inline, por isso o !important. */
-[vw].enabled {
-  /* biome-ignore lint/complexity/noImportantStyles: sobrepõe a posição inline do widget de terceiros */
-  top: auto !important;
-  /* biome-ignore lint/complexity/noImportantStyles: idem */
-  bottom: calc(var(--ctabar-h) + 1rem) !important;
+/* VLibras (widget do governo). O botão vive num shadow DOM fixo no meio da tela à direita; o
+   transform no host cria um bloco de contenção, e o botão passa a se posicionar dentro desta
+   caixa no canto de baixo, acima da barra do celular. Some com o menu aberto. */
+#vlibras-access-wrapper {
+  position: fixed;
+  right: 0;
+  bottom: calc(var(--ctabar-h) + 1rem);
+  z-index: calc(var(--z-ctabar) - 1);
+  width: 56px;
+  height: 56px;
+  transform: translateZ(0);
 }
-.menu-open [vw] {
-  /* biome-ignore lint/complexity/noImportantStyles: idem */
-  display: none !important;
+.menu-open #vlibras-access-wrapper {
+  display: none;
 }
 
 /* ────────────────────────────── Tablet ────────────────────────────── */
