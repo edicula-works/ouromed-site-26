@@ -11,6 +11,7 @@ export function Footer() {
   const y = new Date().getFullYear();
   return (
     <footer className="footer">
+      <Texture className="tex--footer" />
       <div className="wrap footer__inner">
         <div className="footer__top">
           <p className="footer__lede">Central 24 horas com triagem médica.</p>
@@ -72,9 +73,6 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="footer__ridge" aria-hidden="true">
-          <Texture className="tex--horizon tex--footer" />
-        </div>
         <div className="footer__bottom">
           <p>
             {site.legalName}

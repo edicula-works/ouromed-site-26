@@ -77,7 +77,7 @@ export function Hero() {
         />
       </div>
       <div className="hero__veil" aria-hidden="true" />
-      <Texture className="tex--horizon tex--hero" />
+      <Texture className="tex--hero" />
       <div className="wrap hero__content">
         <h1 id="hero-h" className="hero__title">
           <span className="hl">
