@@ -10,10 +10,12 @@ import {
   coverage,
   events,
   homeFaq,
+  honesty,
   howItWorks,
   services,
   site,
   testimonials,
+  waHref,
 } from '@/data/site';
 import { Arrow, Cross, Headset, House, Phone, Plus, Roll, Whats } from './Icons';
 import { Illustration, StageVan } from './Illustrations';
@@ -26,33 +28,54 @@ export function Ctas({
   items,
   large = false,
   tel = true,
-  wa = true,
+  wa,
 }: {
   items?: Cta[];
   large?: boolean;
   tel?: boolean;
-  wa?: boolean;
+  /** Assunto da mensagem pré-preenchida do WhatsApp (undefined = sem WhatsApp). */
+  wa?: string;
 }) {
-  const cls = `btn btn--gold${large ? ' btn--lg' : ''}`;
-  const ghost = `btn btn--ghost${large ? ' btn--lg' : ''}`;
-  const seen = new Set(items?.map((i) => i.href) ?? []);
+  const size = large ? ' btn--lg' : '';
+  const gold = `btn btn--gold${size}`;
+  const ghost = `btn btn--ghost${size}`;
+  const telHref = `tel:${site.phones.tel}`;
+  const phoneBtn = (
+    <a href={telHref} className={gold}>
+      <Phone className="ico" />
+      <Roll>Ligar {site.phones.display}</Roll>
+    </a>
+  );
+  // O primeiro CTA próprio da página é o principal (pílula ouro); telefone e WhatsApp vêm depois.
+  const own = items?.[0];
+  const rest = items?.slice(1) ?? [];
   return (
     <>
-      {tel && !seen.has(`tel:${site.phones.tel}`) && (
-        <a href={`tel:${site.phones.tel}`} className={cls}>
-          <Phone className="ico" />
-          <Roll>Ligar {site.phones.display}</Roll>
-        </a>
-      )}
+      {own &&
+        (own.href.startsWith('tel:') ? (
+          <a href={own.href} className={gold}>
+            <Phone className="ico" />
+            <Roll>{own.label}</Roll>
+          </a>
+        ) : own.href.startsWith('mailto:') ? (
+          <a href={own.href} className={gold}>
+            <Roll>{own.label}</Roll>
+          </a>
+        ) : (
+          <Link href={own.href} className="link-arrow">
+            {own.label} <Arrow className="ico" />
+          </Link>
+        ))}
+      {tel && own?.href !== telHref && phoneBtn}
       {wa && (
-        <a href={site.whatsapp.href} className={ghost} target="_blank" rel="noopener noreferrer">
+        <a href={waHref(wa)} className={ghost} target="_blank" rel="noopener noreferrer">
           <Whats className="ico" />
           <Roll>WhatsApp</Roll>
         </a>
       )}
-      {items?.map((c) =>
+      {rest.map((c) =>
         c.href.startsWith('tel:') ? (
-          <a key={c.href} href={c.href} className={cls}>
+          <a key={c.href} href={c.href} className={ghost}>
             <Phone className="ico" />
             <Roll>{c.label}</Roll>
           </a>
@@ -82,7 +105,13 @@ export function JsonLd({ data }: { data: object }) {
 }
 
 /** CTA compacto: a última ação antes do rodapé, sem seção só para ele. */
-export function CtaBlock({ heading = 'Precisa falar com a Ouromed?' }: { heading?: string }) {
+export function CtaBlock({
+  heading = 'Precisa falar com a Ouromed?',
+  wa = 'um orçamento',
+}: {
+  heading?: string;
+  wa?: string;
+}) {
   return (
     <div className="cta-block" data-reveal="fade">
       <h2 className="cta-block__h">{heading}</h2>
@@ -98,7 +127,7 @@ export function CtaBlock({ heading = 'Precisa falar com a Ouromed?' }: { heading
         .
       </p>
       <div className="cta-block__btns">
-        <Ctas large items={[{ label: 'Pedir orçamento', href: '/contato' }]} />
+        <Ctas large wa={wa} items={[]} />
       </div>
     </div>
   );
@@ -138,7 +167,7 @@ export function Hero() {
             <Roll>Ligar {site.phones.display}</Roll>
           </a>
           <a
-            href={site.whatsapp.href}
+            href={waHref('uma ambulância')}
             className="btn btn--ghost btn--lg"
             target="_blank"
             rel="noopener noreferrer"
@@ -166,10 +195,10 @@ export function ServiceIndex() {
       <div className="wrap">
         <header className="sec__head">
           <h2 id="svc-h" className="sec__title" data-split="lines">
-            O que a Ouromed faz
+            Qual ambulância você precisa?
           </h2>
           <p className="sec__lede" data-reveal="fade">
-            Sete frentes, uma equipe. Da emergência em casa à UTI móvel entre estados.
+            Ou outro dos sete serviços da Ouromed: da emergência em casa à UTI móvel entre estados.
           </p>
           <p className="sec__read read to-spine">7 frentes · 24 h</p>
         </header>
@@ -188,14 +217,6 @@ export function ServiceIndex() {
             </li>
           ))}
         </ol>
-        <dl className="svc__when" data-reveal="fade">
-          {coverage.when.items.map((w) => (
-            <div key={w.title}>
-              <dt>{w.title}</dt>
-              <dd>{w.text}</dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </section>
   );
@@ -204,6 +225,50 @@ export function ServiceIndex() {
 const glyphs = { phone: Phone, headset: Headset, cross: Cross, house: House };
 
 /** "Como funciona": palco pinado com a linha; a ambulância anda de estação em estação conforme os passos. */
+/** Honestidade: Ouromed, SAMU 192 ou convênio, quando usar cada um. Sem preço, sem convênio nomeado. */
+export function Honesty() {
+  return (
+    <section className="sec sec--tight honesty" aria-labelledby="hon-h">
+      <div className="wrap">
+        <header className="sec__head">
+          <h2 id="hon-h" className="sec__title" data-split="lines">
+            {honesty.heading}
+          </h2>
+          <p className="sec__lede" data-reveal="fade">
+            {honesty.lede}
+          </p>
+        </header>
+        <ul className="honesty__grid">
+          {honesty.items.map((it) => {
+            const is192 = it.href === 'tel:192';
+            return (
+              <li
+                key={it.title}
+                className={`honesty__item${is192 ? ' honesty__item--192' : ''}`}
+                data-reveal="clip"
+              >
+                <span className="honesty__tag read">{it.tag}</span>
+                <h3 className="honesty__title">{it.title}</h3>
+                <p className="honesty__text">{it.text}</p>
+                {it.href.startsWith('tel:') ? (
+                  <a href={it.href} className={is192 ? 'btn btn--192' : 'btn btn--gold'}>
+                    <Phone className="ico" />
+                    <Roll>{it.cta}</Roll>
+                  </a>
+                ) : (
+                  <Link href={it.href} className="link-arrow">
+                    {it.cta} <Arrow className="ico" />
+                  </Link>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 export function HowItWorks() {
   const steps = howItWorks.steps;
   return (
@@ -395,6 +460,14 @@ export function Testimonials() {
                   <strong>{t.name}</strong>
                   <span>{t.role}</span>
                 </figcaption>
+                <dl className="quote__case">
+                  <dt>Pedido</dt>
+                  <dd>{t.case.need}</dd>
+                  <dt>Estrutura</dt>
+                  <dd>{t.case.setup}</dd>
+                  <dt>Resultado</dt>
+                  <dd>{t.case.result}</dd>
+                </dl>
               </figure>
             </div>
           ))}
@@ -478,6 +551,7 @@ export function PageHero({
   illustration,
   artTitle,
   ctas,
+  wa,
 }: {
   read: string;
   title: string;
@@ -485,6 +559,7 @@ export function PageHero({
   illustration?: IllustrationKey;
   artTitle?: string;
   ctas?: Cta[];
+  wa?: string;
 }) {
   return (
     <section className="phero">
@@ -496,7 +571,7 @@ export function PageHero({
           </div>
           <p className="phero__intro">{intro}</p>
           <div className="phero__cta">
-            <Ctas items={ctas} />
+            <Ctas items={ctas} wa={wa} tel={false} />
           </div>
         </div>
         {illustration && (
@@ -529,6 +604,13 @@ export function BlockView({ block }: { block: Block }) {
               {block.heading}
             </h2>
             <div className="prose" data-reveal="fade">
+              {block.chips && (
+                <ul className="chips" aria-label="Opcionais">
+                  {block.chips.map((c) => (
+                    <li key={c}>{c}</li>
+                  ))}
+                </ul>
+              )}
               {block.paragraphs?.map((p) => (
                 <p key={p.slice(0, 40)}>{p}</p>
               ))}
@@ -605,7 +687,10 @@ export function BlockView({ block }: { block: Block }) {
             {block.intro && <p className="block__intro">{block.intro}</p>}
             <ul className="list" data-reveal="fade">
               {block.items.map((it) => (
-                <li key={it.title}>
+                <li
+                  key={it.title}
+                  className={/192|emerg/i.test(it.title + it.text) ? 'list__item--192' : undefined}
+                >
                   <h3>{it.title}</h3>
                   <p>{it.text}</p>
                 </li>

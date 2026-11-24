@@ -34,6 +34,10 @@ export function Engine({ setup }: { setup?: () => void }) {
       const url = new URL(a.href, location.href);
       if (url.origin !== location.origin || url.pathname === location.pathname) return; // externo, hash ou mesma página
       e.preventDefault(); // next/link vê defaultPrevented e não navega
+      // Continuidade: a cortina diz para onde vai, com o nome do link clicado.
+      const label = (a.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 60);
+      const target = document.querySelector<HTMLElement>('[data-curtain-label]');
+      if (target) target.textContent = label;
       if (mode.current !== 'idle') return;
       mode.current = 'push';
       const href = url.pathname + url.search + url.hash;

@@ -7,6 +7,7 @@ import { services, site } from '@/data/site';
 import { Phone, Roll, Whats } from './Icons';
 import { Wordmark } from './Illustrations';
 import { stagger } from './stagger';
+import { useWaHref } from './WaLink';
 
 export function Header() {
   const path = usePathname();
@@ -113,6 +114,7 @@ function Menu({
   onClose: () => void;
   current: (h: string) => 'page' | undefined;
 }) {
+  const waHref = useWaHref();
   const ref = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
@@ -196,7 +198,7 @@ function Menu({
           <Roll>Ligar {site.phones.display}</Roll>
         </a>
         <a
-          href={site.whatsapp.href}
+          href={waHref}
           className="btn btn--ghost btn--onink"
           rel="noopener noreferrer"
           target="_blank"

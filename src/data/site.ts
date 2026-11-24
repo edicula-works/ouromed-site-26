@@ -40,6 +40,8 @@ export type Block =
       paragraphs?: string[];
       list?: string[];
       note?: string;
+      /** Opcionais em fichas (locação), em vez de uma frase separada por pontos. */
+      chips?: string[];
     }
   | {
       type: 'compare';
@@ -84,6 +86,8 @@ export type Service = {
   h1: string;
   intro: string;
   read: string;
+  /** Assunto da mensagem pré-preenchida do WhatsApp desta página ("preciso de …"). */
+  wa: string;
   blocks: Block[];
   faq: Faq[];
   cta: { label: string; href: string }[];
@@ -170,6 +174,7 @@ export const services: Service[] = [
     intro:
       'Duas categorias de viatura, uma só equipe. A triagem médica da Central decide qual é a certa para o seu caso.',
     read: 'Central 24 h · triagem médica',
+    wa: 'uma ambulância UTI móvel ou de suporte básico',
     blocks: [
       {
         type: 'compare',
@@ -265,6 +270,7 @@ export const services: Service[] = [
     intro:
       'A Ouromed nasceu do atendimento de urgência e emergência. É essa experiência que chega à sua porta: médico em casa, com a resolutividade de quem vive urgência. Em casa, quando dá para ficar em casa.',
     read: 'APH · particulares e home care',
+    wa: 'atendimento médico em casa',
     blocks: [
       {
         type: 'prose',
@@ -337,6 +343,7 @@ export const services: Service[] = [
     intro:
       'Cada remoção começa com uma pergunta: o que esse paciente precisa durante o caminho? A resposta define a viatura, a equipe e o equipamento.',
     read: '24 h · todo o Brasil',
+    wa: 'uma remoção de pacientes',
     blocks: [
       {
         type: 'list',
@@ -421,6 +428,7 @@ export const services: Service[] = [
     intro:
       'A Ouromed leva o suporte adequado ao porte do evento: uma ambulância, um ambulatório montado no local, ou uma equipe completa. Em Minas ou em qualquer estado do Brasil.',
     read: 'Desde 2010 · todo o Brasil',
+    wa: 'cobertura médica para um evento',
     blocks: [
       {
         type: 'list',
@@ -488,12 +496,24 @@ export const services: Service[] = [
     intro:
       'Mineração, siderurgia, construção civil, shoppings: operações em que a ambulância faz parte do planejamento de segurança. A Ouromed fornece a viatura certa, com os opcionais que a sua operação exige.',
     read: '4×2 e 4×4 · normas ABNT e Star of Life',
+    wa: 'locar uma ambulância',
     blocks: [
       {
         type: 'prose',
         heading: 'Viaturas e opcionais',
+        chips: [
+          'Tração 4×2',
+          'Tração 4×4',
+          'Furgão pequeno',
+          'Furgão grande',
+          'Ar-condicionado',
+          'Freios ABS',
+          'Airbag',
+          'Tacógrafo digital',
+          'Telemetria',
+          'Equipamentos médicos',
+        ],
         paragraphs: [
-          'Tração 4×2 e 4×4 · furgão pequeno e grande · ar-condicionado · freios ABS · airbag · tacógrafo digital · sistema de telemetria · equipamentos médicos conforme a necessidade.',
           'Viaturas dentro das especificações da ABNT e da norma federal norte-americana para veículos de emergência (Star of Life), com dispositivos de segurança exigidos por empresas dos setores hospitalar, de mineração, siderúrgico, industrial, petroquímico e desportivo.',
         ],
       },
@@ -544,6 +564,7 @@ export const services: Service[] = [
     intro:
       'Clubes, shoppings, colégios, faculdades, condomínios, empresas, clínicas de exames e laboratórios já aderiram. Em uma intercorrência com cliente ou funcionário, você aciona a Central e a equipe vai até você.',
     read: 'Para empresas e condomínios',
+    wa: 'informações sobre área protegida',
     blocks: [
       {
         type: 'steps',
@@ -612,6 +633,7 @@ export const services: Service[] = [
     intro:
       'Obras, empresas, hotéis e shoppings: a Ouromed monta o posto médico e coloca a equipe, com a infraestrutura que o local exige.',
     read: 'Obras, empresas, hotéis e shoppings',
+    wa: 'informações sobre ambulatórios',
     blocks: [
       {
         type: 'prose',
@@ -660,26 +682,26 @@ export const howItWorks = {
   // `station` é o rótulo curto da estação no palco; `glyph` o pictograma (Icons.tsx).
   steps: [
     {
-      title: 'Você liga para a Central 24 h',
+      title: 'Você liga',
       text: 'Atendente identifica o caso e passa para a triagem médica.',
       station: 'Ligação',
       glyph: 'phone',
     },
     {
-      title: 'A triagem define a viatura e a equipe',
+      title: 'A triagem decide',
       text: 'Suporte básico ou UTI móvel, com a equipe que o caso pede.',
       station: 'Triagem',
       glyph: 'headset',
     },
     {
-      title: 'A equipe chega, estabiliza e transporta',
-      text: 'Equipamentos calibrados, motorista com COVE.',
+      title: 'A equipe sai',
+      text: 'Equipamentos calibrados, motorista com COVE. Chega, estabiliza e transporta.',
       station: 'Equipe',
       glyph: 'cross',
     },
     {
-      title: 'Você acompanha até o destino',
-      text: 'Alta em casa, transferência entre hospitais ou entre estados.',
+      title: 'Você acompanha',
+      text: 'Até o destino: alta em casa, transferência entre hospitais ou entre estados.',
       station: 'Destino',
       glyph: 'house',
     },
@@ -714,14 +736,36 @@ export const coverage = {
       'Pranchas para ressonância',
     ],
   },
-  when: {
-    heading: 'Quando chamar',
-    items: [
-      { title: 'Suporte básico', text: 'alta, exame, consulta, volta para casa' },
-      { title: 'UTI móvel', text: 'respirador, medicação contínua, neonatal, viagem longa' },
-      { title: 'Emergência', text: 'ligue 192 (SAMU); a Central 24 h orienta' },
-    ],
-  },
+};
+
+/** Honestidade: quando cada um é o caminho. Sem preço e sem convênio nomeado (nada disso é
+ *  publicado pela Ouromed; a regra de cada plano é com o plano). */
+export const honesty = {
+  heading: 'Ouromed, SAMU 192 ou convênio?',
+  lede: 'Três caminhos diferentes. Escolher o certo economiza o tempo que mais importa.',
+  items: [
+    {
+      title: 'SAMU 192',
+      tag: 'emergência',
+      text: 'Risco de vida imediato: infarto, acidente grave, falta de ar. É o serviço público e gratuito. Ligue 192.',
+      href: 'tel:192',
+      cta: 'Ligar 192',
+    },
+    {
+      title: 'Ouromed',
+      tag: 'transporte médico',
+      text: 'Remoção, alta, transferência, UTI móvel, evento ou viagem: particular, 24 h, com triagem médica pela Central. Em todo o Brasil mediante agendamento.',
+      href: `tel:${site.phones.tel}`,
+      cta: `Ligar ${site.phones.display}`,
+    },
+    {
+      title: 'Convênio',
+      tag: 'cobertura',
+      text: 'Cada plano tem regra própria para transporte médico. Confirme a cobertura com o seu plano; a Central da Ouromed orienta a viatura certa para o caso.',
+      href: '/contato',
+      cta: 'Tirar dúvida',
+    },
+  ],
 };
 
 // Cada item é uma regra publicada pela própria Ouromed em 2011 (checável no texto do site atual).
@@ -760,18 +804,36 @@ export const testimonials = [
   {
     quote:
       'Nossa parceria com a Ouromed fortalece a cada ano. A equipe de profissionais são excepcionais e nos passa muita tranquilidade, pois prestam serviço de alta qualidade, responsabilidade e total respeito com o público do nosso evento.',
+    case: {
+      need: 'Cobertura médica do Pedro Leopoldo Rodeio Show, evento de grande público.',
+      setup: 'Ambulância em posição e equipe de suporte, quatro anos seguidos (2010 a 2013).',
+      result: 'Parceira que voltou a chamar a Ouromed a cada ano, segundo a Rope Eventos.',
+    },
     name: 'Tiago de Brito',
     role: 'Rope Eventos, Pedro Leopoldo Rodeio Show',
   },
   {
     quote:
       'A Ouromed é parceira do Shopping Del Rey desde agosto de 2011. Pelo que temos de experiência, acreditamos ter acertado na escolha pela Ouromed, pois, em todos os momentos emergenciais vividos em nosso shopping desde a sua chegada, o atendimento tem sido ágil e perfeito, trazendo também comodidade e conforto aos nossos clientes.',
+    case: {
+      need: 'Urgência com clientes e funcionários dentro do shopping, sem equipe própria para decidir.',
+      setup:
+        'Área protegida: a Central 24 h recebe o acionamento, faz a triagem e desloca uma equipe.',
+      result:
+        'Parceria desde agosto de 2011; "atendimento ágil e perfeito", nas palavras da segurança do shopping.',
+    },
     name: 'Henrique Freitas',
     role: 'Coordenador de Segurança do Shopping Del Rey',
   },
   {
     quote:
       'A Ouromed oferece uma super estrutura de atendimento de urgência e emergência em eventos e nos atenderam muito bem em Diamantina, MG, durante as gravações da minissérie Rei Davi. Ficamos tranquilos quando sabemos que as UTIs e equipes Ouromed estão presentes em nossas gravações.',
+    case: {
+      need: 'Suporte de urgência e emergência nas gravações da minissérie Rei Davi, em Diamantina.',
+      setup: 'UTIs móveis e equipes da Ouromed presentes nas gravações.',
+      result:
+        '"Ficamos tranquilos quando sabemos que as UTIs e equipes Ouromed estão presentes", segundo a produção.',
+    },
     name: 'Tatiana Duarte',
     role: 'Coordenadora de Produção, Rede Record de Televisão',
   },
@@ -999,6 +1061,22 @@ export const contact = {
 };
 
 /** Serviço por slug; lança se o slug não existe (as rotas são fixas, então isso é erro de build). */
+/** Mensagem pré-preenchida do WhatsApp: todo CTA diz de onde a pessoa vem e do que precisa. */
+export const waMessage = (topic?: string) =>
+  topic
+    ? `Olá, vim pelo site da Ouromed e preciso de ${topic}. Podem me ajudar?`
+    : 'Olá, vim pelo site da Ouromed e preciso de falar com a Central.';
+export const waHref = (topic?: string) =>
+  `${site.whatsapp.href}?text=${encodeURIComponent(waMessage(topic))}`;
+
+/** Tópicos por rota (para header, barra fixa e rodapé, que não sabem a página). */
+export const waTopicByPath = (path: string): string | undefined => {
+  const s = services.find((x) => path === `/${x.slug}` || path.startsWith(`/${x.slug}/`));
+  if (s) return s.wa;
+  if (path.startsWith('/contato')) return 'um orçamento';
+  return undefined;
+};
+
 export const serviceBySlug = (slug: string): Service => {
   const s = services.find((x) => x.slug === slug);
   if (!s) throw new Error(`Serviço '${slug}' não existe em src/data/site.ts`);

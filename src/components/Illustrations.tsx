@@ -72,7 +72,7 @@ function Road({ y = 224 }: { y?: number }) {
 }
 
 function Cross({ cx, cy, r, fill = GOLD }: { cx: number; cy: number; r: number; fill?: string }) {
-  const w = r * 0.36;
+  const w = r * 0.42;
   return (
     <g>
       <circle cx={cx} cy={cy} r={r} fill={fill} {...stroke} />
@@ -255,39 +255,31 @@ function Remocao({ className, title }: ArtProps) {
       <ellipse cx={230} cy={228} rx={195} ry={5} fill={INK} opacity={0.08} />
       <Road />
       <LightBar x={346} y={50} />
-      {/* caixa com a traseira aberta: vão escuro com moldura */}
+      {/* caixa com a traseira aberta: vão escuro largo com moldura */}
       <path d="M100 190V62q0-8 8-8h222q8 0 8 8v128z" fill={WHITE} {...stroke} />
-      <rect x={104} y={96} width={56} height={94} fill={INK} />
-      <rect x={104} y={96} width={56} height={94} fill="none" {...thin} />
-      <rect x={176} y={92} width={62} height={40} rx={4} fill={STEEL} {...thin} />
-      <Cross cx={266} cy={114} r={22} />
+      <rect x={100} y={92} width={72} height={98} fill={INK} />
+      <rect x={100} y={92} width={72} height={98} fill="none" {...thin} />
+      <rect x={188} y={92} width={56} height={40} rx={4} fill={STEEL} {...thin} />
+      <Cross cx={272} cy={114} r={22} />
       <Cab x={338} />
-      <rect x={164} y={150} width={256} height={12} fill={GOLD} />
-      {/* maca entrando: encosto levantado à esquerda, travesseiro, colchão com grades, chassi e
-          dois pés com rodízios (o pé de dentro em osso, para aparecer no vão escuro) */}
-      <path d="M20 118l18 10v12H20z" fill={WHITE} {...thin} />
-      <rect x={38} y={128} width={34} height={10} rx={4} fill={WHITE} {...thin} />
+      <rect x={176} y={150} width={244} height={12} fill={GOLD} />
+      {/* maca entrando: colchão com travesseiro, chassi, tesoura e quatro rodízios */}
       <rect
-        x={38}
-        y={138}
-        width={138}
-        height={16}
-        rx={3}
+        x={30}
+        y={136}
+        width={148}
+        height={18}
+        rx={5}
         fill={WHITE}
         {...stroke}
         strokeWidth={2.5}
       />
-      <path
-        d="M56 138v-10M150 138v-10M56 128h94"
-        stroke={INK}
-        strokeWidth={2.5}
-        strokeLinecap="round"
-      />
-      <rect x={34} y={154} width={146} height={5} fill={STEEL} {...thin} />
-      <path d="M50 159v58M128 159v58" stroke={INK} strokeWidth={5} strokeLinecap="round" />
-      <path d="M50 213v5M128 213v5" stroke={BONE} strokeWidth={4} strokeLinecap="round" />
-      <circle cx={50} cy={219} r={5} fill={INK} />
-      <circle cx={128} cy={219} r={5} fill={BONE} />
+      <rect x={34} y={140} width={30} height={10} rx={4} fill={BONE} />
+      <rect x={26} y={154} width={156} height={5} fill={STEEL} {...thin} />
+      <path d="M48 159l84 50M132 159l-84 50" stroke={INK} strokeWidth={4} strokeLinecap="round" />
+      <path d="M48 209v8M132 209v8" stroke={INK} strokeWidth={4} strokeLinecap="round" />
+      <circle cx={48} cy={220} r={5} fill={INK} />
+      <circle cx={132} cy={220} r={5} fill={BONE} />
       <Wheel cx={200} cy={190} r={30} />
       <Wheel cx={372} cy={190} r={30} />
     </Svg>
@@ -308,7 +300,6 @@ function Tent({ className, title }: ArtProps) {
         strokeLinecap="round"
       />
       <path d="M150 58l52 10-52 12z" fill={GOLD} {...stroke} />
-      <path d="M30 200q40-12 80 0t80 0 80 0" fill="none" stroke={GOLD} strokeWidth={6} />
       {/* varal de bandeirolas dentro da face da tenda, seguindo a corda */}
       <path d="M62 150q88 28 176 0" fill="none" stroke={INK} strokeWidth={2} />
       {[...Array(8)].map((_, i) => {
@@ -331,30 +322,19 @@ function Tent({ className, title }: ArtProps) {
   );
 }
 
-/** Área protegida: prédio dentro do perímetro tracejado, escudo com cruz sobre ele. */
+/** Área protegida: prédio atrás de uma cerca, escudo com cruz sobre ele. */
 function Protected({ className, title }: ArtProps) {
   return (
     <Svg className={art('art--protected', className)} title={title}>
       <Road y={226} />
-      <rect
-        x={36}
-        y={14}
-        width={372}
-        height={196}
-        rx={8}
-        fill="none"
-        stroke={GOLD}
-        strokeWidth={3}
-        strokeDasharray="10 8"
-      />
-      <rect x={60} y={36} width={150} height={174} fill={WHITE} {...stroke} />
-      <path d="M60 52h150" stroke={INK} strokeWidth={3} />
+      <rect x={60} y={30} width={150} height={170} fill={WHITE} {...stroke} />
+      <path d="M60 46h150" stroke={INK} strokeWidth={3} />
       {[0, 1, 2, 3].map((r) =>
         [0, 1, 2].map((c) => (
           <rect
             key={`${r}-${c}`}
             x={78 + c * 42}
-            y={66 + r * 34}
+            y={60 + r * 34}
             width={26}
             height={22}
             rx={2}
@@ -363,33 +343,37 @@ function Protected({ className, title }: ArtProps) {
           />
         )),
       )}
-      <rect x={120} y={178} width={26} height={32} fill={INK} />
-      <path d="M258 56h96v54q0 46-48 72q-48-26-48-72z" fill={GOLD} {...stroke} />
-      <path d="M306 76v46M283 99h46" stroke={WHITE} strokeWidth={10} strokeLinecap="round" />
+      <rect x={120} y={168} width={26} height={32} fill={INK} />
+      <path d="M250 44h100v58q0 48-50 76q-50-28-50-76z" fill={GOLD} {...stroke} />
+      <path d="M300 66v48M276 90h48" stroke={WHITE} strokeWidth={10} strokeLinecap="round" />
+      {/* cerca à frente do prédio: a área é protegida */}
+      <path d="M28 186h384M28 206h384" stroke={INK} strokeWidth={2.5} strokeLinecap="round" />
+      {[...Array(11)].map((_, i) => {
+        const x = 40 + i * 36;
+        return (
+          <path key={x} d={`M${x} 178v48`} stroke={INK} strokeWidth={3} strokeLinecap="round" />
+        );
+      })}
     </Svg>
   );
 }
 
-/** Ambulatório: contêiner clínico com porta, janela, letreiro e escada. */
+/** Ambulatório: contêiner clínico com porta, janela e letreiro, assentado no chão. */
 function Clinic({ className, title }: ArtProps) {
   return (
     <Svg className={art('art--clinic', className)} title={title}>
       <Road y={226} />
-      <rect x={50} y={98} width={330} height={108} fill={WHITE} {...stroke} />
+      <rect x={50} y={108} width={330} height={112} fill={WHITE} {...stroke} />
       {[...Array(12)].map((_, i) => {
         const x = 66 + i * 26;
-        return <path key={x} d={`M${x} 110v94`} stroke={INK} strokeWidth={1.5} opacity={0.22} />;
+        return <path key={x} d={`M${x} 120v98`} stroke={INK} strokeWidth={1.5} opacity={0.22} />;
       })}
-      <rect x={46} y={94} width={338} height={6} fill={INK} />
-      <rect x={46} y={204} width={338} height={6} fill={INK} />
-      <rect x={80} y={120} width={72} height={40} rx={3} fill={STEEL} {...thin} />
-      <rect x={300} y={118} width={44} height={86} fill={INK} />
-      {/* escada até o chão */}
-      <rect x={346} y={200} width={44} height={8} fill={STEEL} {...thin} />
-      <rect x={352} y={210} width={38} height={8} fill={STEEL} {...thin} />
-      <rect x={358} y={220} width={32} height={6} fill={STEEL} {...thin} />
-      <rect x={294} y={70} width={56} height={22} rx={3} fill={GOLD} {...thin} />
-      <path d="M322 75v12M316 81h12" stroke={WHITE} strokeWidth={4} strokeLinecap="round" />
+      <rect x={46} y={102} width={338} height={6} fill={INK} />
+      <rect x={46} y={220} width={338} height={6} fill={INK} />
+      <rect x={80} y={130} width={72} height={40} rx={3} fill={STEEL} {...thin} />
+      <rect x={300} y={126} width={44} height={94} fill={INK} />
+      <rect x={294} y={74} width={56} height={22} rx={3} fill={GOLD} {...thin} />
+      <path d="M322 79v12M316 85h12" stroke={WHITE} strokeWidth={4} strokeLinecap="round" />
     </Svg>
   );
 }
@@ -478,7 +462,7 @@ function Hospital({ className, title }: ArtProps) {
         )),
       )}
       <rect x={216} y={190} width={40} height={36} fill={INK} />
-      <path d="M300 124v28M286 138h28" stroke={RED} strokeWidth={8} strokeLinecap="round" />
+      <path d="M300 172v24M288 184h24" stroke={RED} strokeWidth={8} strokeLinecap="round" />
       <path
         d="M40 226h80"
         stroke={GOLD}

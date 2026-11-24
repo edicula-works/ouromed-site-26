@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { services, site } from '@/data/site';
 import { Phone, Pin, Roll, Whats } from './Icons';
+import { WaLink } from './WaLink';
 
 // Rodapé como finale (DESIGN.md): a espinha termina no número grande em ouro.
 export function Footer() {
@@ -84,10 +85,10 @@ export function Footer() {
                 </li>
               ))}
               <li>
-                <a href={site.whatsapp.href} target="_blank" rel="noopener noreferrer">
+                <WaLink>
                   <Whats className="ico" />
                   WhatsApp {site.whatsapp.display}
-                </a>
+                </WaLink>
               </li>
             </ul>
           </div>
@@ -119,15 +120,10 @@ export function CtaBar() {
         <Phone className="ico" />
         <Roll>Ligar {site.phones.display}</Roll>
       </a>
-      <a
-        href={site.whatsapp.href}
-        className="btn btn--ghost ctabar__btn"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <WaLink className="btn btn--ghost ctabar__btn">
         <Whats className="ico" />
         <Roll>WhatsApp</Roll>
-      </a>
+      </WaLink>
     </nav>
   );
 }

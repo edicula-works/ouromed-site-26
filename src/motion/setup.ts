@@ -2,12 +2,21 @@
 // dentro (módulos 'use client' também rodam no servidor).
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ease, isMobile, isTouch, onPage, onScroll, prefersReducedMotion } from '@/engine';
+import {
+  ease,
+  isMobile,
+  isTouch,
+  onPage,
+  onScroll,
+  prefersReducedMotion,
+  setTransition,
+} from '@/engine';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function setupMotion() {
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
+  curtain();
   spine();
   header();
   howItWorks();
@@ -56,6 +65,55 @@ function serviceRows() {
       offs.forEach((f) => {
         f();
       });
+  });
+}
+
+/** Continuidade na troca de rota: a linha termina de se desenhar (chega ao número do rodapé)
+ *  enquanto a cortina de tinta sobe com o fio ouro na borda. A linha entrega a página à linha. */
+function curtain() {
+  setTransition({
+    leave: (c) => {
+      const draw = document.querySelector<HTMLElement>('[data-spine-draw]');
+      const tip = document.querySelector<HTMLElement>('[data-spine-tip]');
+      const spine = document.querySelector<HTMLElement>('[data-spine]');
+      if (draw && tip && spine && !prefersReducedMotion()) {
+        const m = /1 ([\d.]+)/.exec(draw.style.scale);
+        const from = m ? Number(m[1]) : 1;
+        const total = spine.offsetHeight;
+        const st = { k: from };
+        gsap.to(st, {
+          k: 1,
+          duration: 0.6,
+          ease: ease.inOut,
+          onUpdate: () => {
+            draw.style.scale = `1 ${st.k}`;
+            tip.style.translate = `0 ${st.k * total}px`;
+          },
+        });
+      }
+      return gsap
+        .timeline()
+        .set(c, { autoAlpha: 1 })
+        .set(c.querySelector('.curtain__label'), { autoAlpha: 1 })
+        .fromTo(
+          c.querySelector('.curtain__panel'),
+          { yPercent: 100 },
+          { yPercent: 0, duration: 0.55, ease: ease.inOut },
+        );
+    },
+    enter: (c) => {
+      const label = c.querySelector<HTMLElement>('[data-curtain-label]');
+      return gsap
+        .timeline()
+        .to(c.querySelector('.curtain__label'), { autoAlpha: 0, duration: 0.3 })
+        .to(
+          c.querySelector('.curtain__panel'),
+          { yPercent: -100, duration: 0.8, ease: ease.inOut },
+          '<0.1',
+        )
+        .set(c, { autoAlpha: 0 })
+        .set(label, { autoAlpha: 1, textContent: '' });
+    },
   });
 }
 

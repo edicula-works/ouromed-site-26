@@ -77,7 +77,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Pular para o conteúdo
         </a>
         <div id="curtain" aria-hidden="true">
-          <div className="curtain__panel" />
+          <div className="curtain__panel">
+            <span className="curtain__label" data-curtain-label />
+          </div>
         </div>
 
         <Header />

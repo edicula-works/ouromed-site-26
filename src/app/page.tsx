@@ -5,6 +5,7 @@ import {
   Faq,
   faqJsonLd,
   Hero,
+  Honesty,
   HowItWorks,
   JsonLd,
   Proof,
@@ -26,6 +27,7 @@ export default function Home() {
     <>
       <Hero />
       <ServiceIndex />
+      <Honesty />
       <HowItWorks />
       <Facts />
       <Conduct />

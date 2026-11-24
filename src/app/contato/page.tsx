@@ -23,10 +23,8 @@ export default function Contato() {
         intro={contact.intro}
         illustration="telefone"
         artTitle={illustrationAlt.telefone}
-        ctas={[
-          { label: 'Ligar para a Central 24 h', href: `tel:${site.phones.tel}` },
-          { label: 'WhatsApp', href: site.whatsapp.href },
-        ]}
+        ctas={[]}
+        wa="um orçamento"
       />
       <section className="sec sec--tight block contact" aria-labelledby="onde-h">
         <div className="wrap contact__grid">
