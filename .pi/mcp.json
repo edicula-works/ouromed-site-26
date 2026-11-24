@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "awwwards": {
+      "command": "awwwards-mcp",
+      "args": [],
+      "timeout": 300,
+      "env": {
+        "AEGON_BROWSER": "/home/hawk/.cache/ms-playwright/chromium-1255/chrome-linux64/chrome"
+      },
+      "description": "Awwwards: buscar sites premiados com screenshot, Design DNA, capturar página, censo de animação (scroll/hover), forense de bundle, design tokens, verify_build e esqueletos GSAP/3D."
+    }
+  }
+}

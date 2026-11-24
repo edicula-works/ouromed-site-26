@@ -1,0 +1,407 @@
+
+
+===== index =====
+OuroMed 
+ Home 
+ Empresa 
+ Serviços
+ APH 
+ Cobertura de Festas e Eventos 
+ Transportes e Remoções 
+ Locações de Ambulâncias 
+ Área Protegida 
+ Ambulátorios 
+ Portfólio 
+ Clientes 
+ Contato 
+ OuroMed. Padrão ouro em serviços de ambulância.
+ Eventos
+ A OuroMed oferece o suporte adequado para o seu evento. Atendemos em congressos, festas e formatura, casamentos, funerais, feiras empresariais, rodeios e shows musicais.
+ Atendemos todo território nacional mediante agendamento.
+ Saiba Mais 
+ Clientes
+ A melhor forma de conhecer a qualidades de nossos serviços é através daqueles com quem trabalhamos. Confira alguns dos nossos clientes e o que dizem a respeito de nossos serviços.
+ Conheça 
+ Ambulâncias
+ Disponibilizamos o tipo de ambulância necessário a sua empresa, atendemos empresas mineradoras, siderúrgicas e de construção civil. Temos veículos 4x4, furgão pequeno e furgão grande de diversas marcas, inclusive com vários opcionais de acordo com a sua necessidade.
+ Saiba Mais 
+ Alguns eventos cobertos pela OUROMED
+ Equipo Mining
+ A maior feira do ramo de mineiração da América Latina
+ AgroZ
+ Leilão de Nelore AgroZ em Uberaba.
+ Pedalando no Topo
+ Evento de ciclismo indoor nas montanhas de minas.
+ OUROMED - Serviço Móvel de Saúde LTDA.
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG
+ Central 24 horas: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112
+ Xerxes Marques - 
+ Tráfego Pago - 
+ Gestão de Tráfego
+
+
+===== index_php =====
+OuroMed 
+ Home 
+ Empresa 
+ Serviços
+ APH 
+ Cobertura de Festas e Eventos 
+ Transportes e Remoções 
+ Locações de Ambulâncias 
+ Área Protegida 
+ Ambulátorios 
+ Portfólio 
+ Clientes 
+ Contato 
+ OuroMed. Padrão ouro em serviços de ambulância.
+ Eventos
+ A OuroMed oferece o suporte adequado para o seu evento. Atendemos em congressos, festas e formatura, casamentos, funerais, feiras empresariais, rodeios e shows musicais.
+ Atendemos todo território nacional mediante agendamento.
+ Saiba Mais 
+ Clientes
+ A melhor forma de conhecer a qualidades de nossos serviços é através daqueles com quem trabalhamos. Confira alguns dos nossos clientes e o que dizem a respeito de nossos serviços.
+ Conheça 
+ Ambulâncias
+ Disponibilizamos o tipo de ambulância necessário a sua empresa, atendemos empresas mineradoras, siderúrgicas e de construção civil. Temos veículos 4x4, furgão pequeno e furgão grande de diversas marcas, inclusive com vários opcionais de acordo com a sua necessidade.
+ Saiba Mais 
+ Alguns eventos cobertos pela OUROMED
+ Equipo Mining
+ A maior feira do ramo de mineiração da América Latina
+ AgroZ
+ Leilão de Nelore AgroZ em Uberaba.
+ Pedalando no Topo
+ Evento de ciclismo indoor nas montanhas de minas.
+ OUROMED - Serviço Móvel de Saúde LTDA.
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG
+ Central 24 horas: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112
+ Xerxes Marques - 
+ Tráfego Pago - 
+ Gestão de Tráfego
+
+
+===== empresa_php =====
+OuroMed 
+ Home 
+ Empresa 
+ Serviços
+ APH 
+ Cobertura de Festas e Eventos 
+ Transportes e Remoções 
+ Locações de Ambulâncias 
+ Área Protegida 
+ Ambulátorios 
+ Portfólio 
+ Clientes 
+ Contato 
+ OuroMed. Padrão ouro em serviços de ambulância!
+ A OuroMed
+ A OuroMed é uma empresa fundada e administrada por médicos experientes no atendimento de urgência e emergência que oferece diversos produtos para o cliente.
+ A analogia da palavra traduz a nossa missão de oferecer o mais alto nível de qualidade no atendimento aos clientes, fazendo alusão entre o ouro das Minas Gerais e o padrão-ouro de nossos serviços.
+ Trabalhamos no ramo de remoção de pacientes em condições especiais, cobertura de eventos (casamentos, festas empresariais, shows, congressos, formaturas), gerenciamento de ambulatórios, atendimento domiciliar, locação de ambulância para construção civil, mineradoras, shoppings e empresas.
+ Temos as mais modernas ambulâncias do mercado. Luxuosas, novas, confortáveis e espaçosas, trabalhamos com os modelos Mercedes-Benz Sprinter 313 CDI, Ford Transit, Renault Master, Fiat Ducato, Land Rover Defender 4x4, tipo UTI móvel, com aparelhagens modernas, incluindo bombas de infusão, cardioversor com eletrocardiografia digital, sistema de oxigenação fixo e portátil, oxímetro digital, maca retrátil, cadeira de resgate e transporte tamanho especial, suporte de soroterapia adequado, pranchas de imobilização em polietileno, adequadas para levar pacientes para exames de ressonância nuclear magnética.
+ Colchão das macas e revestimento macio dos bancos para que nossos clientes não se cansem em viagens e remoções.
+ Não poupamos em material médico-hospitalar nos atendimentos em eventos garantindo todo atendimento a qualquer pessoa que necessite. 
+ Equipe: Profissionais socorristas treinados. Nossa equipe de motoristas possui, além de treinamento de socorrista, a capacitação COVE (Condutor de veículo de emergência), exigida pelo CONTRAN.
+ Equipe de médicos e de enfermagem de primeira linha, com vários cursos e anos de experiência na Área.
+ Temos também a equipe de Geriatria e Gerontologia, Pediatria e Neonatologia, com profissionais especializados no atendimento ao idoso, crianças e recém nascidos.
+ Primamos pelo bom atendimento pessoal e profissional.
+ PQO - Padrão de Qualidade OuroMed – Segurança, Modernidade e Conforto 
+ A empresa se orgulha de respeitar todas as especificações da legislação, elaboradas pela ABNT e pela Federal Specifications for the Star-of-life-Ambulance, Aircraft Rescue and Firefighting, and Emergency Vehicles, normatizada pelo governo norte-americano, utilizando veículos robustos e funcionais, assegurando conforto e segurança aos nossos clientes e colaboradores.
+ Nossa frota está composta por veículos equipados com dispositivos de segurança exigidos por empresas do setores hospitalar, de mineração, siderúrgico, industrial, petroquímico e desportivo. 
+ São utilizados materiais com tratamento antibacteriano e resistência contra fungos e umidade. 
+ Os equipamentos passam por aferições periódicas para que tudo esteja sempre em perfeitas condições de uso, viabilizando ganho de tempo e pontualidade.
+ Nossa preocupação com este elevado padrão de qualidade e o planejamento de sempre trazer o que há de mais moderno para bem servir e atender nossos clientes, fazem da OuroMed a empresa pioneira em qualidade em Belo Horizonte.
+ OUROMED - Serviço Móvel de Saúde LTDA.
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG
+ Central 24 horas: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112
+ Criação e Desenvolvimento NAMP!
+
+
+===== servicos_de_aph_php =====
+OuroMed 
+ Home 
+ Empresa 
+ Serviços
+ APH 
+ Cobertura de Festas e Eventos 
+ Transportes e Remoções 
+ Locações de Ambulâncias 
+ Área Protegida 
+ Ambulátorios 
+ Portfólio 
+ Clientes 
+ Contato 
+ OuroMed. Padrão ouro em serviços de ambulância!
+ Serviços de APH (Atendimento Pré Hospitalar)
+ A OuroMed presta assistência pré-hospitalar a clientes particulares e a empresas de Home Care.
+ Em casos de emergência acione nossa central 24 horas através dos telefones (31) 3786 1506 - (31) 7818 7838 e (31) 4103 5452 para triagem médica.
+ Prestamos atendimento médico domiciliar obtendo alta resolutividade em casa e com baixo de remoção hospitalar.
+ OUROMED - Serviço Móvel de Saúde LTDA.
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG
+ Central 24 horas: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112
+ Criação e Desenvolvimento NAMP!
+
+
+===== cobertura_de_festas_e_eventos_php =====
+OuroMed 
+ Home 
+ Empresa 
+ Serviços
+ APH 
+ Cobertura de Festas e Eventos 
+ Transportes e Remoções 
+ Locações de Ambulâncias 
+ Área Protegida 
+ Ambulátorios 
+ Portfólio 
+ Clientes 
+ Contato 
+ OuroMed. Padrão ouro em serviços de ambulância!
+ Cobertura de Festas e Eventos
+ A OuroMed oferece o suporte adequado para o seu evento. Atendemos em congressos, festas e formaturas, casamentos, funerais, feiras empresariais, rodeios, comboios VIP e shows musicais.
+ Oferecemos suporte básico e avançado com montagem de ambulatório medico, com macas desfibriladores, cadeiras de rodas e os medicamentos necessários para o atendimento de pronto socorro.
+ Atendemos todo território nacional mediante agendamento.
+ OUROMED - Serviço Móvel de Saúde LTDA.
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG
+ Central 24 horas: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112
+ Criação e Desenvolvimento NAMP!
+
+
+===== transportes_e_remocoes_php =====
+OuroMed 
+ Home 
+ Empresa 
+ Serviços
+ APH 
+ Cobertura de Festas e Eventos 
+ Transportes e Remoções 
+ Locações de Ambulâncias 
+ Área Protegida 
+ Ambulátorios 
+ Portfólio 
+ Clientes 
+ Contato 
+ OuroMed. Padrão ouro em serviços de ambulância!
+ Transportes e Remoções de Pacientes
+ Trabalhamos com a melhor estrutura do mercado para remoção de pacientes.
+ Temos as mais modernas ambulâncias. Luxuosas, novas, confortáveis e espaçosas, oferecemos os modelos Mercedes-Benz Sprinter 313 CDI, Ford Transit, Renault Master e Fiat Ducato, montadas para UTI móvel, com aparelhagens modernas, incluindo bombas de infusão, cardioversor com eletrocardiografia digital, sistema de oxigenação fixo e portátil, oxímetro digital portátil, ventilador pulmonar, incubadora de transporte de recém-nascidos, maca retrátil, cadeira de resgate e transporte tamanho especial, suporte de soroterapia adequado, pranchas de imobilização em polietileno, adequadas para levar pacientes para exames de ressonância nuclear magnética.
+ Nossos equipamentos são submetidos a rigorosos padrões de calibração periodicamente.
+ Disponibilizamos remoções de pacientes adulto, pediátrico, neonatal e psiquiátrico durante 24 horas por dia com equipes devidamente treinadas para o bom atendimento ao cliente.
+ OUROMED - Serviço Móvel de Saúde LTDA.
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG
+ Central 24 horas: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112
+ Criação e Desenvolvimento NAMP!
+
+
+===== locacoes_de_ambulancias_php =====
+OuroMed 
+ Home 
+ Empresa 
+ Serviços
+ APH 
+ Cobertura de Festas e Eventos 
+ Transportes e Remoções 
+ Locações de Ambulâncias 
+ Área Protegida 
+ Ambulátorios 
+ Portfólio 
+ Clientes 
+ Contato 
+ OuroMed. Padrão ouro em serviços de ambulância!
+ Locações de Ambulância
+ Disponibilizamos do tipo de ambulância que precisar, atendendo a normas internacionais de saúde e segurança.
+ Temos veículos com tração 4x2 e 4x4, furgão pequeno e furgão grande de diversas marcas, inclusive com os opcionais de ar condicionado, sistema de freios ABS, airbag, tacógrafo digital, sistema de telemetria e equipamentos médicos.
+ OUROMED - Serviço Móvel de Saúde LTDA.
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG
+ Central 24 horas: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112
+ Criação e Desenvolvimento NAMP!
+
+
+===== area_protegida_php =====
+OuroMed 
+ Home 
+ Empresa 
+ Serviços
+ APH 
+ Cobertura de Festas e Eventos 
+ Transportes e Remoções 
+ Locações de Ambulâncias 
+ Área Protegida 
+ Ambulátorios 
+ Portfólio 
+ Clientes 
+ Contato 
+ OuroMed. Padrão ouro em serviços de ambulância!
+ Área Protegida
+ Área protegida é um serviço oferecido para assegurar a tranquilidade de empresas e clientes. Em caso de urgência ou emergência, a empresa aciona nossa central e após triagem médica telefônica, deslocamos uma de nossas equipes para atendimento in-loco imediatamente.
+ Já aderiram a esta ideia: Clubes, Shoppings, Colégios, Faculdades, Condomínios, empresas, clínicas de exames e laboratórios.
+ Em caso de intercorrência com seu cliente ou funcionário nos estamos prontos para lhe atender.
+ OUROMED - Serviço Móvel de Saúde LTDA.
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG
+ Central 24 horas: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112
+ Criação e Desenvolvimento NAMP!
+
+
+===== ambulatorios_php =====
+OuroMed 
+ Home 
+ Empresa 
+ Serviços
+ APH 
+ Cobertura de Festas e Eventos 
+ Transportes e Remoções 
+ Locações de Ambulâncias 
+ Área Protegida 
+ Ambulátorios 
+ Portfólio 
+ Clientes 
+ Contato 
+ OuroMed. Padrão ouro em serviços de ambulância!
+ Ambulatórios
+ Montamos posto médico itinerante em obras e também ambulatórios em empresas, hotéis e shoppings, com toda infraestrutura necessária e pessoal capacitado. Os ambulatórios podem ser equipados com cardioversor com desfibrilador e monitor cardíaco digital, oximetros, glicosimetro, macas, cadeiras de rodas, armários de medicamentos, sofás, televisores e computadores.
+ OUROMED - Serviço Móvel de Saúde LTDA.
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG
+ Central 24 horas: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112
+ Criação e Desenvolvimento NAMP!
+
+
+===== portfolio_php =====
+OuroMed 
+ Home 
+ Empresa 
+ Serviços
+ APH 
+ Cobertura de Festas e Eventos 
+ Transportes e Remoções 
+ Locações de Ambulâncias 
+ Área Protegida 
+ Ambulátorios 
+ Portfólio 
+ Clientes 
+ Contato 
+ OuroMed. Padrão ouro em serviços de ambulância!
+ Nosso Portfólio
+ Alguns eventos cobertos pela OUROMED
+ Equipo Mining
+ A maior feira do ramo de mineiração da América Latina
+ AgroZ
+ Leilão de Nelore AgroZ em Uberaba.
+ Padalando no Topo
+ Evento de Ciclismo Indoor nas montanhas de minas.
+ Jogos em Sete Lagoas.
+ Cobertura de Jogos em Sete Lagoas.
+ Pedro Leopoldo Rodeio Show 
+ Cobertura de serviços médicos do Pedro Leopoldo Rodeio Show nos anos de 2010, 2011, 2012 e 2013.
+ Mostra das Profissões - UFMG
+ Cobertura médica para Mostra das Profissões realizada pela UFMG.
+ Balanço Geral - Rede Record
+ Cobertura Médica Balanço Geral - Rede Record.
+ Minas Trend
+ Cobertura Médica do Minas Trend Preview 2014.
+ OUROMED - Serviço Móvel de Saúde LTDA.
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG
+ Central 24 horas: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112
+ Criação e Desenvolvimento NAMP!
+
+
+===== clientes_php =====
+OuroMed 
+ Home 
+ Empresa 
+ Serviços
+ APH 
+ Cobertura de Festas e Eventos 
+ Transportes e Remoções 
+ Locações de Ambulâncias 
+ Área Protegida 
+ Ambulátorios 
+ Portfólio 
+ Clientes 
+ Contato 
+ OuroMed. Padrão ouro em serviços de ambulância!
+ Clientes
+ A melhor forma de conhecer a qualidades de nossos serviços é através daqueles com quem trabalhamos. Confira alguns dos nossos clientes e o que dizem a respeito de nossos serviços.
+ Depoimentos
+ Tiago de Brito.
+ Rope Eventos – Pedro Leopoldo Rodeio Show. 
+ Nossa parceria com a Ouromed fortalece a cada ano. A equipe de profissionais são excepcionais e nos passa muita tranquilidade, pois prestam serviço de alta qualidade, responsabilidade e total respeito com o publico do nosso evento.
+ Henrique Freitas.
+ Coordenador de Segurança do Shopping Del Rey. 
+ A Ouro Med é parceira do Shopping Del Rey desde agosto de 2011. Pelo que temos de experiência, acreditamos ter acertado na escolha pela Ouromed, pois, em todos os momentos emergenciais vividos em nosso shopping desde a sua chegada, o atendimento tem sido ágil e perfeito, trazendo também comodidade e conforto aos nossos clientes.
+ Tatiana Duarte.
+ Coordenadora de Produção da
+ Rede Record de Televisão. 
+ A Ouromed oferece uma super estrutura de atendimento de urgência e emergência em eventos e nos atenderam muito bem em Diamantina - MG durante as gravações da minissérie Rei Davi. Ficamos tranquilos quando sabemos que as UTI´s e equipes Ouromed estão presentes em nossas gravações.
+ Medial Saúde
+ Amil
+ Aterpa
+ BAND
+ Cassi
+ Clinemge
+ Fiat
+ Hospital Belo Horizonte
+ Hospital da Baleia
+ Nestlé
+ Record
+ Shopping Delrey
+ Socor
+ Pirelli
+ UFMG
+ BRMALLS
+ Diante do Trono
+ Magazine Luiza
+ SESI
+ Shopping Center Sete Lagoas
+ Unimed BH
+ Volkswagen
+ Mitsubishi
+ Mercedes Benz
+ Mater Dei
+ Felício Rocho
+ Ricardo Eletro
+ Unimed Rio
+ Azul Linhas Aéreas
+ OUROMED - Serviço Móvel de Saúde LTDA.
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG
+ Central 24 horas: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112
+ Criação e Desenvolvimento NAMP!
+
+
+===== contato_php =====
+OuroMed 
+ Home 
+ Empresa 
+ Serviços
+ APH 
+ Cobertura de Festas e Eventos 
+ Transportes e Remoções 
+ Locações de Ambulâncias 
+ Área Protegida 
+ Ambulátorios 
+ Portfólio 
+ Clientes 
+ Contato 
+ OuroMed. Padrão ouro em serviços de ambulância!
+ Contato e Localização
+ Entre em contato conosco por e-mail, telefone ou venha até nosso escritório, teremos prazer em recebê-lo.
+ Formulário de Contato
+ Nome: 
+ E-mail: 
+ Telefone: 
+ Assunto: 
+ Mensagem: 
+ Fale Conosco Através de Nossos E-mails
+ Para agilizar o seu atendimento entre em contato conosco diretamente com o setor responsável.
+ Para Agendar Remoção: agendamento@ouromedbh.com.br 
+ Para Falar com a Diretoria: diretoria@ouromedbh.com.br 
+ Para Locação de Veículos ou Eventos: luciano@ouromedbh.com.br 
+ Ou Através de Nossa Central de Atendimento 24h
+ Telefones: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112. 
+ Nossa Localização
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG 
+ Exibir mapa ampliado 
+ OUROMED - Serviço Móvel de Saúde LTDA.
+ Rua Senador Lúcio Bittencourt nº 53 - Carlos Prates - Cep 30710-070 - Belo Horizonte/MG
+ Central 24 horas: (31) 3786-1506 / (31) 4103 - 5452 / (31) 3786-7112
+ Criação e Desenvolvimento NAMP!
