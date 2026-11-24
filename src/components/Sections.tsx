@@ -88,12 +88,14 @@ export function Hero() {
     <section className="hero" aria-labelledby="hero-h">
       <div className="wrap hero__grid">
         <h1 id="hero-h" className="hero__title">
+          {/* Espaço entre as linhas: com display:block não cria vão visual, mas o textContent
+              (SEO, leitor de tela) lê "Padrão ouro em saúde móvel." em vez de uma palavra só. */}
           <span className="hl" style={stagger(0)}>
             <span>Padrão ouro</span>
-          </span>
+          </span>{' '}
           <span className="hl" style={stagger(1)}>
             <span>em saúde</span>
-          </span>
+          </span>{' '}
           <span className="hl" style={stagger(2)}>
             <span>móvel.</span>
           </span>

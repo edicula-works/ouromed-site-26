@@ -63,8 +63,7 @@ export function Plus({ className }: IconProps) {
 export function Roll({ children }: { children: ReactNode }) {
   return (
     <span className="roll">
-      <span>{children}</span>
-      <span aria-hidden="true">{children}</span>
+      <span>{children}</span> <span aria-hidden="true">{children}</span>
     </span>
   );
 }

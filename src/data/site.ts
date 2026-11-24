@@ -1,5 +1,5 @@
-// Conteúdo do site inteiro, em um lugar só. Fonte: docs/conteudo/copy-v1.md (branch
-// feat/edc-372-copy-v1, PR #1), reescrita a partir de docs/conteudo-atual/textos-site-2011.txt.
+// Conteúdo do site inteiro, em um lugar só. Fonte: docs/conteudo/copy-v1.md (mesclada na dev),
+// reescrita a partir de docs/conteudo-atual/textos-site-2011.txt.
 //
 // Regras de voz (AGENTS.md §3): fato concreto no lugar de adjetivo; "você"; frases curtas;
 // emergência é uma seção, não o tom. Nunca inventar número, credencial, depoimento ou cliente.

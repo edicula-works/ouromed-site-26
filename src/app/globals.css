@@ -93,7 +93,7 @@ html {
   color: var(--c-fg);
   font-family: var(--f-body);
   line-height: 1.5;
-  scroll-behavior: smooth;
+  /* Sem scroll-behavior: smooth: o foco por teclado e os alvos de hover precisam chegar logo. */
 }
 body {
   min-height: 100dvh;
@@ -307,7 +307,7 @@ p {
 }
 @media (hover: hover) {
   .draw:hover {
-    background-size: 100% 1.5px;
+    background-size: 100% 3px;
   }
 }
 .draw:focus-visible,
@@ -429,20 +429,17 @@ p {
   position: absolute;
   top: var(--spine-top);
   bottom: 0;
-  left: 0;
-  right: 0;
-  max-width: var(--max-w);
-  margin-inline: auto;
+  /* A caixa tem a largura da linha (2 px), na mesma x que a borda direita do .wrap menos
+     metade do gutter: em telas mais largas que --max-w, o wrap é centrado. */
+  right: calc((100% - min(100%, var(--max-w))) / 2 + var(--spine-x) - 1px);
+  width: 2px;
   pointer-events: none;
   z-index: var(--z-spine);
 }
 .spine__track,
 .spine__draw {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  right: calc(var(--spine-x) - 1px);
-  width: 2px;
+  inset: 0;
 }
 .spine__track {
   background: var(--c-line);
@@ -458,7 +455,7 @@ p {
 .spine__tip {
   position: absolute;
   top: 0;
-  right: calc(var(--spine-x) - 6px);
+  left: -5px;
   width: 12px;
   height: 12px;
   background: var(--c-gold);
@@ -517,6 +514,16 @@ p {
   line-height: 1;
   padding-bottom: 0.14em;
   background: linear-gradient(var(--c-gold), var(--c-gold)) 0 100% / 2.05em 0.11em no-repeat;
+  transition: background-size 0.5s var(--ease-out);
+}
+/* A linha ouro da marca se estende do "Ouro" para o nome inteiro. */
+@media (hover: hover) {
+  .hdr__brand:hover .wordmark__text {
+    background-size: 100% 0.11em;
+  }
+}
+.hdr__brand:focus-visible .wordmark__text {
+  background-size: 100% 0.11em;
 }
 .hdr__nav {
   display: none;
@@ -542,10 +549,6 @@ p {
   background: var(--c-paper);
   border: 1px solid var(--c-line);
   box-shadow: 0 18px 40px rgb(30 27 23 / 0.12);
-}
-.hdr__panel[hidden],
-.menu[hidden] {
-  display: none;
 }
 .hdr__panel a {
   display: grid;
@@ -677,7 +680,7 @@ p {
 .menu__list--alt a {
   font-size: var(--t-l);
 }
-.menu:not([hidden]) .menu__list li {
+.menu .menu__list li {
   animation: rise 0.9s var(--ease-out) both;
   animation-delay: calc(60ms * var(--i, 0) + 80ms);
 }
@@ -1592,6 +1595,20 @@ p {
   font-weight: 500;
   overflow-wrap: anywhere;
 }
+.channels dd a {
+  display: inline-block;
+  padding-block: 0.3em;
+  margin-block: -0.3em;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: text-decoration-thickness 0.3s;
+}
+@media (hover: hover) {
+  .channels dd a:hover {
+    text-decoration-thickness: 3px;
+  }
+}
 
 .address {
   font-style: normal;
@@ -1779,12 +1796,21 @@ p {
   line-height: 1;
   color: var(--c-gold);
   font-variant-numeric: tabular-nums;
-  transition: color 0.3s;
+  padding-bottom: 0.06em;
+  background: linear-gradient(currentColor, currentColor) left bottom / 0% 0.06em no-repeat;
+  transition:
+    color 0.3s,
+    background-size 0.5s var(--ease-out);
 }
 @media (hover: hover) {
   .footer__number:hover {
     color: var(--c-paper);
+    background-size: 100% 0.06em;
   }
+}
+.footer__number:focus-visible {
+  color: var(--c-paper);
+  background-size: 100% 0.06em;
 }
 .footer__grid {
   position: relative;
@@ -1812,6 +1838,8 @@ p {
   padding-block: 0.25em;
 }
 .footer__list a {
+  display: block;
+  padding-block: 0.3em;
   font-size: var(--t-body);
   transition: color 0.25s;
 }
@@ -1861,12 +1889,18 @@ p {
   font-weight: 500;
 }
 .footer__emergency a {
+  display: inline-block;
+  padding-block: 0.3em;
+  margin-block: -0.3em;
   color: var(--c-paper);
   text-decoration: underline;
   text-decoration-color: var(--c-gold);
   text-underline-offset: 0.2em;
 }
 .footer__small a {
+  display: inline-block;
+  padding-block: 0.3em;
+  margin-block: -0.3em;
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }
@@ -2070,6 +2104,9 @@ p {
   .hero__cta > .btn {
     display: none;
   }
+  .menu__list a {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
   .hero__trust {
     font-size: var(--t-s);
   }
@@ -2140,7 +2177,7 @@ p {
   .motion .phero__title,
   .motion .nf__title,
   .motion .hero__art,
-  .menu:not([hidden]) .menu__list li {
+  .menu .menu__list li {
     animation: none;
   }
   .roll > span {
@@ -2158,6 +2195,8 @@ p {
   }
   .draw,
   .link,
+  .wordmark__text,
+  .footer__number,
   .link-arrow .ico,
   .svc__arrow,
   .svc__art,

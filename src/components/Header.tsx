@@ -53,25 +53,27 @@ export function Header() {
               type="button"
               className="hdr__link draw"
               aria-expanded={drop}
-              aria-controls="menu-servicos"
+              aria-controls={drop ? 'menu-servicos' : undefined}
               onClick={() => setDrop((v) => !v)}
             >
               Serviços
             </button>
-            <ul id="menu-servicos" className="hdr__panel" hidden={!drop}>
-              {services.map((s) => (
-                <li key={s.slug}>
-                  <Link
-                    href={`/${s.slug}`}
-                    onClick={() => setDrop(false)}
-                    aria-current={current(`/${s.slug}`)}
-                  >
-                    <span className="hdr__panel-lede">{s.nav}</span>
-                    <span className="hdr__panel-sub">{s.lede}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {drop && (
+              <ul id="menu-servicos" className="hdr__panel">
+                {services.map((s) => (
+                  <li key={s.slug}>
+                    <Link
+                      href={`/${s.slug}`}
+                      onClick={() => setDrop(false)}
+                      aria-current={current(`/${s.slug}`)}
+                    >
+                      <span className="hdr__panel-lede">{s.nav}</span>
+                      <span className="hdr__panel-sub">{s.lede}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <Link href="/sobre" className="hdr__link draw" aria-current={current('/sobre')}>
             Sobre
@@ -90,7 +92,7 @@ export function Header() {
           type="button"
           className="hdr__burger"
           aria-expanded={menu}
-          aria-controls="menu"
+          aria-controls={menu ? 'menu' : undefined}
           onClick={() => setMenu(true)}
         >
           <span className="hdr__burger-line" aria-hidden="true" />
@@ -99,17 +101,15 @@ export function Header() {
         </button>
       </div>
 
-      <Menu open={menu} onClose={() => setMenu(false)} current={current} />
+      {menu && <Menu onClose={() => setMenu(false)} current={current} />}
     </header>
   );
 }
 
 function Menu({
-  open,
   onClose,
   current,
 }: {
-  open: boolean;
   onClose: () => void;
   current: (h: string) => 'page' | undefined;
 }) {
@@ -117,9 +117,8 @@ function Menu({
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
 
-  // Foco preso no painel, Escape fecha, o foco volta ao botão.
+  // Foco preso no painel, Escape fecha, o foco volta ao botão. Só existe no DOM enquanto aberto.
   useEffect(() => {
-    if (!open) return;
     const panel = ref.current;
     const opener = document.activeElement as HTMLElement | null;
     const focusables = () => [
@@ -149,18 +148,10 @@ function Menu({
       document.removeEventListener('keydown', onKey);
       opener?.focus();
     };
-  }, [open]);
+  }, []);
 
   return (
-    <div
-      id="menu"
-      className="menu"
-      hidden={!open}
-      ref={ref}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Menu"
-    >
+    <div id="menu" className="menu" ref={ref} role="dialog" aria-modal="true" aria-label="Menu">
       <div className="menu__top">
         <Link
           href="/"

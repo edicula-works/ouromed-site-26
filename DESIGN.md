@@ -164,3 +164,20 @@ hero segue em movimento: rodas lentas e tracejado da via passando (pausado em `p
 - Tipo: sem serifa editorial; grotesca quente + mono de leitura.
 - Serviços: sem três cartões iguais; índice de linhas com ilustração.
 - Sem *eyebrow* em caixa alta antes de cada título; o que era rótulo virou leitura em mono com informação real.
+
+## Decisões da construção (fase 3)
+
+- **Quieto em repouso, por decisão.** O estado de repouso do conceito é o do hero da home: a
+  ambulância com rodas lentas e o tracejado da via passando (`data-drive`), mais rápido com a
+  velocidade do scroll, pausado fora da tela e em `prefers-reduced-motion`. As páginas internas
+  cuja ilustração tem rodas (ambulância, remoção, locação) herdam o mesmo movimento; as demais
+  (casa, tenda, prédio, ambulatório, telefone, headset) ficam paradas em repouso, com a via
+  tracejada animando quando existe. Nada flutua só para o `idleMotion` do relatório ser `true`.
+- **Espinha**: caixa de 2 px posicionada pela fórmula `(100% − min(100%, max-w)) / 2 + gutter/2`
+  à direita da página; o desenho é `scale` com origem no topo e a ponta é um losango levado por
+  `translate` (GSAP), ambos em `setup.ts`. Sem JS ou com reduced motion, a linha aparece inteira.
+- **Rodas**: todo giro em SVG é GSAP com `transformOrigin: '50% 50%'` explícito. CSS
+  `transform-box`/`transform-origin` soma com a matriz do GSAP e faz a roda orbitar outro ponto.
+- **Prova social com acervo de 2011**: as 8 miniaturas do portfólio (220 × 133) entram como
+  "impressões" sobre cartão osso, nunca esticadas além de ~1,2×; os 29 logos de clientes em escala
+  de cinza com `multiply` sobre o papel e cor no hover. O ano aparece só onde é público.

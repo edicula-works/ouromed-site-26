@@ -2,8 +2,9 @@
 
 Este site é a **v1 para apresentação**: não haverá contato com o cliente antes. Tudo o que é
 provisório, ausente ou depende de confirmação está listado aqui, e esta lista acompanha a
-apresentação. A copy v1 (`docs/conteudo/copy-v1.md`, PR #1, branch `feat/edc-372-copy-v1`) continua
-valendo com as suas marcações ⚠️.
+apresentação. A copy v1 (`docs/conteudo/copy-v1.md`, mesclada na `dev`) continua valendo com as
+suas marcações ⚠️; `docs/PEDIDO-AO-CLIENTE.md` é o pedido que vai para a Ouromed com o porquê de
+cada item. Esta lista é o espelho do site no estado em que ele é apresentado.
 
 **Decisão de 2026-11-24 (a pessoa responsável pelo projeto):**
 
@@ -44,7 +45,10 @@ valendo com as suas marcações ⚠️.
 | Regras internas: uniforme e crachá, uso de sirene, composição da equipe por viatura | Removidas; a seção "Conduta" só traz o que o texto de 2011 publica (COVE, equipe própria, 24 h, calibração, ABNT e Star of Life, materiais) |
 | Modalidades comerciais: locação com ou sem equipe, área protegida (contrato), eventos (mínimo, hora ou diária) | Texto genérico |
 | Ficha no Google (3,6 em 25 avaliações, não reivindicada) | "Avaliar a Ouromed no Google" aponta para a busca; falta o place id e a reivindicação da ficha |
-| Formulário de orçamento | Sem backend: compõe `mailto:` (por serviço) e `wa.me` no navegador. Confirmar tempo de resposta |
+| Formulário de orçamento | Sem backend: compõe `mailto:` (por serviço) e `wa.me` no navegador. Confirmar tempo de resposta e se os e-mails por setor continuam certos |
+| Escritório: recebe clientes? Em que horário? | A página de contato diz só "venha até o escritório na Carlos Prates" (texto do site atual), sem horário |
+| Telefone principal do botão "Ligar" | `(31) 3786-1506`, o primeiro do site atual; confirmar qual é o principal |
+| Google Ads | Tag `AW-955189289` mantida (remarketing). Pendente: quem gere a conta configurar as conversões de "ligar" e "WhatsApp" no site novo |
 | Licenças e credenciais (CRM, COREN, licença sanitária, registro da frota) | Nenhuma citação; nunca inventar |
 
 ## Do acervo, não usado
@@ -53,6 +57,8 @@ valendo com as suas marcações ⚠️.
   banco. Fora, por decisão (nenhuma foto de banco).
 - `docs/conteudo-atual/imagens/logomarca-ouromed.jpg`: raster de baixa resolução; a marca
   tipográfica provisória está em `src/components/Illustrations.tsx` (`Wordmark`).
+- "Pioneira em qualidade em Belo Horizonte" e "as mais modernas ambulâncias do mercado, luxuosas,
+  novas": frases de 2011 que o site novo não repete (não são checáveis).
 
 ## Como conferir
 
