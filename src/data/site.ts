@@ -129,10 +129,12 @@ export const site = {
   emergency: { label: 'Em caso de emergência, ligue 192 (SAMU).', tel: 'tel:192' },
   ads: { id: 'AW-955189289' },
   trust: [
-    'Fundada e administrada por médicos de urgência e emergência',
+    'Central 24 h com triagem médica',
     'Motoristas com COVE',
-    'Todo o Brasil mediante agendamento',
+    'Fundada por médicos de urgência',
   ],
+  // O que a hero diz em 3 s: o que é, para quem, onde. O telefone está no botão.
+  lede: 'Ambulância UTI móvel, médico em casa e remoção de pacientes. Para famílias, hospitais, home cares e eventos, em Belo Horizonte e todo o Brasil.',
   // Único fato de história publicado: o evento mais antigo do portfólio.
   since: 'Cobrimos eventos desde 2010',
 };
@@ -655,28 +657,38 @@ export const services: Service[] = [
 export const howItWorks = {
   heading: 'Como funciona, do telefonema ao destino',
   lede: 'Todo atendimento começa igual: uma ligação, uma triagem médica, uma viatura. O que muda é o que o paciente precisa no caminho.',
+  // `station` é o rótulo curto da estação no palco; `glyph` o pictograma (Icons.tsx).
   steps: [
     {
       title: 'Você liga para a Central 24 h',
       text: 'Atendente identifica o caso e passa para a triagem médica.',
-      illustration: 'telefone' as IllustrationKey,
+      station: 'Ligação',
+      glyph: 'phone',
     },
     {
       title: 'A triagem define a viatura e a equipe',
       text: 'Suporte básico ou UTI móvel, com a equipe que o caso pede.',
-      illustration: 'triagem' as IllustrationKey,
+      station: 'Triagem',
+      glyph: 'headset',
     },
     {
       title: 'A equipe chega, estabiliza e transporta',
       text: 'Equipamentos calibrados, motorista com COVE.',
-      illustration: 'uti' as IllustrationKey,
+      station: 'Equipe',
+      glyph: 'cross',
     },
     {
       title: 'Você acompanha até o destino',
       text: 'Alta em casa, transferência entre hospitais ou entre estados.',
-      illustration: 'destino' as IllustrationKey,
+      station: 'Destino',
+      glyph: 'house',
     },
-  ],
+  ] as {
+    title: string;
+    text: string;
+    station: string;
+    glyph: 'phone' | 'headset' | 'cross' | 'house';
+  }[],
 };
 
 export const coverage = {
@@ -688,6 +700,28 @@ export const coverage = {
     { value: 'COVE', label: 'capacitação de todos os motoristas, exigida pelo CONTRAN' },
     { value: '2010', label: 'primeiro evento coberto no portfólio da Ouromed' },
   ],
+  // Equipamento publicado pela Ouromed para a UTI móvel (texto do site atual).
+  kit: {
+    heading: 'O que leva numa UTI móvel',
+    items: [
+      'Ventilador pulmonar',
+      'Bombas de infusão',
+      'Cardioversor com ECG digital',
+      'Oxigênio fixo e portátil',
+      'Oxímetro digital',
+      'Incubadora de transporte',
+      'Maca retrátil',
+      'Pranchas para ressonância',
+    ],
+  },
+  when: {
+    heading: 'Quando chamar',
+    items: [
+      { title: 'Suporte básico', text: 'alta, exame, consulta, volta para casa' },
+      { title: 'UTI móvel', text: 'respirador, medicação contínua, neonatal, viagem longa' },
+      { title: 'Emergência', text: 'ligue 192 (SAMU); a Central 24 h orienta' },
+    ],
+  },
 };
 
 // Cada item é uma regra publicada pela própria Ouromed em 2011 (checável no texto do site atual).

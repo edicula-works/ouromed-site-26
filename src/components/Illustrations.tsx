@@ -1,7 +1,7 @@
 // Ilustração própria (DESIGN.md): traço de tinta (3 px no viewBox 440), preenchimentos chapados de
 // white/bone/gold/steel, cantos levemente arredondados. Viaturas de perfil, de frente para a
-// direita (para a espinha). `data-wheel` e `data-dash` são alvos do motion.
-import { type ReactNode, useId } from 'react';
+// direita (para a espinha). `data-wheel` e `data-dash` são alvos do motion (GSAP).
+import type { ReactNode } from 'react';
 import type { IllustrationKey } from '@/data/site';
 
 const INK = 'var(--c-ink)';
@@ -39,13 +39,14 @@ const stroke = {
   strokeLinejoin: 'round' as const,
   strokeLinecap: 'round' as const,
 };
+const thin = { ...stroke, strokeWidth: 2 };
 
 /** Roda com raios; `data-wheel` gira em torno do centro do grupo (que é o centro da roda). */
 function Wheel({ cx, cy, r }: { cx: number; cy: number; r: number }) {
   return (
     <g data-wheel>
       <circle cx={cx} cy={cy} r={r} fill={INK} />
-      <circle cx={cx} cy={cy} r={r * 0.52} fill={BONE} {...stroke} strokeWidth={2} />
+      <circle cx={cx} cy={cy} r={r * 0.52} fill={BONE} {...thin} />
       <path
         d={`M${cx} ${cy - r * 0.52}V${cy + r * 0.52}M${cx - r * 0.52} ${cy}H${cx + r * 0.52}`}
         stroke={INK}
@@ -83,359 +84,331 @@ function Cross({ cx, cy, r, fill = GOLD }: { cx: number; cy: number; r: number; 
   );
 }
 
-/** Ambulância de van: UTI móvel (caixa longa, faixa ouro) ou suporte básico (caixa curta).
- *  A frente da carroceria é sempre x=398; só a traseira muda. */
-function Van({ variant = 'uti', className, title }: ArtProps & { variant?: 'uti' | 'basico' }) {
-  const id = useId();
-  const uti = variant === 'uti';
-  const rear = uti ? 36 : 78;
-  const w = 398 - rear;
-  const cab = 308; // onde começa o para-brisa
-  const bar = uti ? 196 : 206;
-  const body = `M${rear} 190V64q0-6 6-6h${292 - rear}q30 0 48 14l34 40q18 6 18 24v54z`;
+/** Cabine de van: para-brisa inclinado, porta, farol, para-choque. x = frente da caixa. */
+function Cab({ x }: { x: number }) {
   return (
-    <Svg className={art('art--van', className)} title={title}>
-      <defs>
-        <clipPath id={`${id}-body`}>
-          <path d={body} />
-        </clipPath>
-      </defs>
-      <ellipse cx={rear + w / 2} cy={228} rx={w * 0.46} ry={5} fill={INK} opacity={0.08} />
-      <Road />
-      {/* barra de luz */}
-      <rect x={bar} y={46} width={92} height={12} rx={3} fill={GOLD} {...stroke} />
-      <rect x={bar} y={46} width={30} height={12} rx={3} fill={RED} {...stroke} />
-      {/* carroceria */}
-      <path d={body} fill={WHITE} {...stroke} />
-      {/* para-brisa e porta */}
-      <path d={`M${cab} 66h28q6 0 10 6l22 40h-60z`} fill={STEEL} {...stroke} strokeWidth={2} />
-      <path d={`M${cab} 118v70`} stroke={INK} strokeWidth={2} />
-      {/* janelas e emblema */}
-      {uti ? (
-        <>
-          <rect
-            x={212}
-            y={78}
-            width={66}
-            height={38}
-            rx={4}
-            fill={STEEL}
-            {...stroke}
-            strokeWidth={2}
-          />
-          <Cross cx={106} cy={104} r={24} />
-          <rect
-            x={146}
-            y={80}
-            width={52}
-            height={34}
-            rx={4}
-            fill={STEEL}
-            {...stroke}
-            strokeWidth={2}
-          />
-        </>
-      ) : (
-        <>
-          <rect
-            x={206}
-            y={78}
-            width={56}
-            height={38}
-            rx={4}
-            fill={STEEL}
-            {...stroke}
-            strokeWidth={2}
-          />
-          <Cross cx={148} cy={100} r={20} />
-        </>
-      )}
-      {/* faixa */}
-      <rect
-        x={rear}
-        y={138}
-        width={w}
-        height={uti ? 12 : 8}
-        fill={GOLD}
-        clipPath={`url(#${id}-body)`}
-      />
-      {/* para-choques e farol, colados na frente (x=398) */}
-      <rect
-        x={396}
-        y={168}
-        width={10}
-        height={22}
-        rx={2}
-        fill={STEEL}
-        {...stroke}
-        strokeWidth={2}
-      />
-      <rect
-        x={rear - 8}
-        y={176}
-        width={8}
-        height={16}
-        rx={2}
-        fill={STEEL}
-        {...stroke}
-        strokeWidth={2}
-      />
-      <circle cx={390} cy={150} r={5} fill={BONE} {...stroke} strokeWidth={2} />
-      <Wheel cx={rear + 74} cy={190} r={30} />
-      <Wheel cx={332} cy={190} r={30} />
-    </Svg>
-  );
-}
-
-function Defender({ className, title }: ArtProps) {
-  return (
-    <Svg className={art('art--defender', className)} title={title}>
-      <ellipse cx={220} cy={228} rx={190} ry={5} fill={INK} opacity={0.08} />
-      <Road />
-      <rect x={210} y={40} width={70} height={12} rx={3} fill={GOLD} {...stroke} />
+    <>
       <path
-        d="M44 190V100q0-6 6-6h34l20-30q2-3 6-3h204q4 0 6 3l20 30h46q8 0 8 8v88z"
+        d={`M${x} 190V112q0-8 8-8h14l20-28q4-6 10-6h46q8 0 8 8v112z`}
         fill={WHITE}
         {...stroke}
       />
-      <path d="M84 94h22l18-26h-20z" fill={STEEL} {...stroke} strokeWidth={2} />
-      <rect x={130} y={72} width={60} height={26} rx={3} fill={STEEL} {...stroke} strokeWidth={2} />
-      <rect x={204} y={72} width={60} height={26} rx={3} fill={STEEL} {...stroke} strokeWidth={2} />
-      <path d="M278 94h38l-18-26h-20z" fill={STEEL} {...stroke} strokeWidth={2} />
-      <path d="M318 94h22l-18-26h-4z" fill={STEEL} {...stroke} strokeWidth={2} />
-      <path d="M196 100v90M282 100v90" stroke={INK} strokeWidth={2} />
-      {/* faixa: 44 → 394, a medida exata da carroceria */}
-      <rect x={44} y={150} width={350} height={10} fill={GOLD} />
-      <rect
-        x={398}
-        y={166}
-        width={12}
-        height={24}
-        rx={2}
-        fill={STEEL}
-        {...stroke}
-        strokeWidth={2}
-      />
-      <rect x={32} y={166} width={12} height={24} rx={2} fill={STEEL} {...stroke} strokeWidth={2} />
-      {/* estepe traseiro */}
-      <circle cx={40} cy={128} r={22} fill={INK} />
-      <circle cx={40} cy={128} r={11} fill={BONE} {...stroke} strokeWidth={2} />
-      <Cross cx={340} cy={128} r={14} />
-      <Wheel cx={120} cy={190} r={32} />
-      <Wheel cx={306} cy={190} r={32} />
+      <path d={`M${x + 16} 104l19-26h38v26z`} fill={STEEL} {...thin} />
+      <path d={`M${x + 86} 104v86`} stroke={INK} strokeWidth={2} />
+      <circle cx={414} cy={140} r={5} fill={BONE} {...thin} />
+      <rect x={420} y={168} width={10} height={22} rx={2} fill={STEEL} {...thin} />
+    </>
+  );
+}
+
+function LightBar({ x, y, w = 64 }: { x: number; y: number; w?: number }) {
+  return (
+    <>
+      <rect x={x} y={y} width={w} height={12} rx={3} fill={GOLD} {...thin} />
+      <rect x={x} y={y} width={w * 0.33} height={12} rx={3} fill={RED} {...thin} />
+    </>
+  );
+}
+
+/** Ambulância de caixa alta (UTI móvel): caixa reta alta, cabine à frente, faixa ouro, cruz. */
+function VanUti({ className, title, road = true }: ArtProps & { road?: boolean }) {
+  return (
+    <Svg className={art('art--van', className)} title={title}>
+      <ellipse cx={230} cy={228} rx={195} ry={5} fill={INK} opacity={0.08} />
+      {road && <Road />}
+      <LightBar x={346} y={50} />
+      {/* caixa alta */}
+      <path d="M40 190V62q0-8 8-8h282q8 0 8 8v128z" fill={WHITE} {...stroke} />
+      <path d="M54 62v128" stroke={INK} strokeWidth={2} />
+      <rect x={72} y={92} width={64} height={44} rx={4} fill={STEEL} {...thin} />
+      <rect x={150} y={92} width={64} height={44} rx={4} fill={STEEL} {...thin} />
+      <Cross cx={280} cy={114} r={24} />
+      <Cab x={338} />
+      {/* faixa */}
+      <rect x={40} y={150} width={380} height={12} fill={GOLD} />
+      <rect x={30} y={176} width={10} height={16} rx={2} fill={STEEL} {...thin} />
+      <Wheel cx={112} cy={190} r={30} />
+      <Wheel cx={372} cy={190} r={30} />
     </Svg>
   );
 }
 
+/** Ambulância de suporte básico: van de passageiros, teto baixo, janelas compridas. */
+function VanBasica({ className, title }: ArtProps) {
+  return (
+    <Svg className={art('art--van art--van-basica', className)} title={title}>
+      <ellipse cx={230} cy={228} rx={195} ry={5} fill={INK} opacity={0.08} />
+      <Road />
+      <LightBar x={226} y={58} w={52} />
+      <path d="M40 190V96q0-24 24-24h216l40 48h80q22 0 22 22v48z" fill={WHITE} {...stroke} />
+      {/* para-brisa e janelas */}
+      <path d="M288 80l32 40h36V80z" fill={STEEL} {...thin} />
+      <rect x={64} y={92} width={106} height={40} rx={4} fill={STEEL} {...thin} />
+      <rect x={182} y={92} width={66} height={40} rx={4} fill={STEEL} {...thin} />
+      <path d="M176 92v98M362 120v70" stroke={INK} strokeWidth={2} />
+      <Cross cx={264} cy={112} r={14} />
+      <rect x={40} y={166} width={380} height={8} fill={GOLD} />
+      <rect x={30} y={176} width={10} height={16} rx={2} fill={STEEL} {...thin} />
+      <rect x={420} y={168} width={10} height={22} rx={2} fill={STEEL} {...thin} />
+      <circle cx={414} cy={140} r={5} fill={BONE} {...thin} />
+      <Wheel cx={112} cy={190} r={30} />
+      <Wheel cx={372} cy={190} r={30} />
+    </Svg>
+  );
+}
+
+/** Ambulância 4×4: picape com caixa de resgate atrás, cabine e capô compridos, rodas grandes. */
+function Picape({ className, title }: ArtProps) {
+  return (
+    <Svg className={art('art--picape', className)} title={title}>
+      <ellipse cx={230} cy={228} rx={195} ry={5} fill={INK} opacity={0.08} />
+      <Road />
+      {/* caixa de resgate */}
+      <path d="M40 190V92q0-8 8-8h190q8 0 8 8v98z" fill={WHITE} {...stroke} />
+      <rect x={66} y={108} width={52} height={34} rx={4} fill={STEEL} {...thin} />
+      <Cross cx={184} cy={125} r={20} />
+      {/* cabine alta e capô */}
+      <path
+        d="M246 190v-78q0-8 8-8h20l16-24q3-4 8-4h32v36h74q16 0 16 16v62z"
+        fill={WHITE}
+        {...stroke}
+      />
+      <path d="M276 104l14-20h32v20z" fill={STEEL} {...thin} />
+      <path d="M330 104v86" stroke={INK} strokeWidth={2} />
+      <LightBar x={290} y={70} w={42} />
+      <rect x={40} y={150} width={380} height={10} fill={GOLD} />
+      <rect x={420} y={168} width={10} height={22} rx={2} fill={STEEL} {...thin} />
+      <circle cx={412} cy={132} r={5} fill={BONE} {...thin} />
+      <Wheel cx={104} cy={190} r={32} />
+      <Wheel cx={372} cy={190} r={32} />
+    </Svg>
+  );
+}
+
+/** Van pequena para cenas (com giroflex): base y = cy + r da roda. */
+function SmallVan({ x, ground }: { x: number; ground: number }) {
+  const top = ground - 46;
+  return (
+    <g>
+      <path
+        d={`M${x} ${ground}V${top + 12}q0-12 12-12h${70}q12 0 16 8l14 18h${20}q8 0 8 8v12z`}
+        fill={WHITE}
+        {...stroke}
+      />
+      <rect
+        x={x + 22}
+        y={top - 5}
+        width={16}
+        height={5}
+        rx={1.5}
+        fill={GOLD}
+        {...thin}
+        strokeWidth={1.5}
+      />
+      <rect
+        x={x + 22}
+        y={top - 5}
+        width={5}
+        height={5}
+        rx={1.5}
+        fill={RED}
+        {...thin}
+        strokeWidth={1.5}
+      />
+      <path d={`M${x + 76} ${top + 2}l14 20h${18}V${top + 2}z`} fill={STEEL} {...thin} />
+      <rect x={x + 12} y={top + 10} width={40} height={22} rx={3} fill={STEEL} {...thin} />
+      <Cross cx={x + 68} cy={top + 36} r={8} />
+      <rect x={x} y={ground - 18} width={140} height={6} fill={GOLD} />
+      <Wheel cx={x + 30} cy={ground - 2} r={13} />
+      <Wheel cx={x + 112} cy={ground - 2} r={13} />
+    </g>
+  );
+}
+
+/** Atendimento domiciliar: porta aberta, bolsa médica na soleira, van pequena à espera. */
 function House({ className, title }: ArtProps) {
   return (
     <Svg className={art('art--house', className)} title={title}>
       <Road y={226} />
-      <path d="M36 130L140 62l104 68" fill={BONE} {...stroke} />
-      <path d="M28 130h224" stroke={INK} strokeWidth={3} strokeLinecap="round" />
-      <rect x={58} y={130} width={164} height={96} fill={WHITE} {...stroke} />
-      <rect x={124} y={166} width={38} height={60} fill={INK} />
-      <rect x={78} y={146} width={30} height={30} rx={2} fill={STEEL} {...stroke} strokeWidth={2} />
+      <path d="M24 124L134 54l110 70" fill={BONE} {...stroke} />
+      <path d="M16 124h236" stroke={INK} strokeWidth={3} strokeLinecap="round" />
+      <rect x={46} y={124} width={176} height={100} fill={WHITE} {...stroke} />
+      {/* porta aberta e soleira */}
+      <rect x={130} y={140} width={46} height={84} fill={INK} />
+      <rect x={114} y={214} width={78} height={8} fill={STEEL} {...thin} />
+      <rect x={66} y={144} width={34} height={34} rx={2} fill={STEEL} {...thin} />
+      <rect x={188} y={144} width={34} height={34} rx={2} fill={STEEL} {...thin} />
+      <Cross cx={134} cy={98} r={12} />
+      {/* bolsa médica na soleira, encostada na porta */}
+      <path d="M204 192q0-8 8-8h20q8 0 8 8" fill="none" {...thin} />
+      <rect x={194} y={192} width={56} height={22} rx={7} fill={GOLD} {...stroke} />
+      <path d="M222 197v10M217 202h10" stroke={WHITE} strokeWidth={5} strokeLinecap="round" />
+      <SmallVan x={296} ground={226} />
+    </Svg>
+  );
+}
+
+/** Remoção: porta traseira aberta e a maca entrando na ambulância de UTI. */
+function Remocao({ className, title }: ArtProps) {
+  return (
+    <Svg className={art('art--remocao', className)} title={title}>
+      <ellipse cx={230} cy={228} rx={195} ry={5} fill={INK} opacity={0.08} />
+      <Road />
+      <LightBar x={346} y={50} />
+      {/* caixa com a traseira aberta: vão escuro com moldura */}
+      <path d="M100 190V62q0-8 8-8h222q8 0 8 8v128z" fill={WHITE} {...stroke} />
+      <rect x={104} y={96} width={56} height={94} fill={INK} />
+      <rect x={104} y={96} width={56} height={94} fill="none" {...thin} />
+      <rect x={176} y={92} width={62} height={40} rx={4} fill={STEEL} {...thin} />
+      <Cross cx={266} cy={114} r={22} />
+      <Cab x={338} />
+      <rect x={164} y={150} width={256} height={12} fill={GOLD} />
+      {/* maca entrando: encosto levantado à esquerda, travesseiro, colchão com grades, chassi e
+          dois pés com rodízios (o pé de dentro em osso, para aparecer no vão escuro) */}
+      <path d="M20 118l18 10v12H20z" fill={WHITE} {...thin} />
+      <rect x={38} y={128} width={34} height={10} rx={4} fill={WHITE} {...thin} />
       <rect
-        x={174}
-        y={146}
-        width={30}
-        height={30}
-        rx={2}
-        fill={STEEL}
+        x={38}
+        y={138}
+        width={138}
+        height={16}
+        rx={3}
+        fill={WHITE}
         {...stroke}
-        strokeWidth={2}
+        strokeWidth={2.5}
       />
-      <Cross cx={140} cy={104} r={16} />
-      {/* bolsa médica */}
-      <path d="M292 168q0-16 16-16h40q16 0 16 16" fill="none" {...stroke} />
-      <rect x={270} y={166} width={116} height={60} rx={10} fill={GOLD} {...stroke} />
-      <path d="M328 178v36M310 196h36" stroke={WHITE} strokeWidth={9} strokeLinecap="round" />
-      {/* calçada */}
       <path
-        d="M162 226h108"
+        d="M56 138v-10M150 138v-10M56 128h94"
         stroke={INK}
-        strokeWidth={3}
-        strokeDasharray="2 12"
+        strokeWidth={2.5}
         strokeLinecap="round"
       />
+      <rect x={34} y={154} width={146} height={5} fill={STEEL} {...thin} />
+      <path d="M50 159v58M128 159v58" stroke={INK} strokeWidth={5} strokeLinecap="round" />
+      <path d="M50 213v5M128 213v5" stroke={BONE} strokeWidth={4} strokeLinecap="round" />
+      <circle cx={50} cy={219} r={5} fill={INK} />
+      <circle cx={128} cy={219} r={5} fill={BONE} />
+      <Wheel cx={200} cy={190} r={30} />
+      <Wheel cx={372} cy={190} r={30} />
     </Svg>
   );
 }
 
-/** Cadeira de rodas: a roda grande toca a via (y=226); `data-wheel` gira em torno do eixo. */
-function Wheelchair({ className, title }: ArtProps) {
-  const spokes = (
-    <path
-      d="M200 129v92M154 175h92M167 142l66 66M233 142l-66 66"
-      stroke={INK}
-      strokeWidth={2}
-      opacity={0.5}
-    />
-  );
-  return (
-    <Svg className={art('art--wheelchair', className)} title={title}>
-      <Road y={226} />
-      <circle cx={200} cy={175} r={50} fill={BONE} {...stroke} />
-      <g data-wheel>
-        <circle cx={200} cy={175} r={50} fill="none" {...stroke} />
-        {spokes}
-      </g>
-      <circle cx={200} cy={175} r={7} fill={INK} />
-      {/* quadro: eixo → garfo do caster, encosto, braço, apoio do pé */}
-      <path d="M200 175h84" stroke={INK} strokeWidth={4} strokeLinecap="round" />
-      <path d="M284 175l12 35" stroke={INK} strokeWidth={4} strokeLinecap="round" />
-      <circle cx={296} cy={210} r={16} fill={INK} />
-      <circle cx={296} cy={210} r={6} fill={BONE} />
-      <path d="M176 175v-70h10v70z" fill={INK} />
-      <path d="M186 124h70v10h-70z" fill={INK} />
-      <path d="M248 134v41h20" fill="none" {...stroke} strokeWidth={6} />
-      <path d="M270 186h52v8h-52z" fill={STEEL} {...stroke} strokeWidth={2} />
-      <Cross cx={352} cy={96} r={26} />
-    </Svg>
-  );
-}
-
+/** Eventos: tenda com bandeirolas e a ambulância estacionada ao lado. */
 function Tent({ className, title }: ArtProps) {
-  const flags = [8, 14, 17, 14, 8, 14, 17, 14];
   return (
     <Svg className={art('art--tent', className)} title={title}>
       <Road y={226} />
-      <path d="M60 150h320" stroke={INK} strokeWidth={3} strokeLinecap="round" />
-      <path d="M48 150L220 70l172 80" fill={BONE} {...stroke} />
-      <path d="M110 150l110-80 110 80" fill={WHITE} {...stroke} strokeWidth={2} />
-      <path d="M48 150q43-14 86 0t86 0 86 0 86 0" fill="none" stroke={GOLD} strokeWidth={6} />
+      <path d="M24 200L150 88l126 112" fill={BONE} {...stroke} />
+      <path d="M84 200l66-78 66 78" fill={WHITE} {...thin} />
       <path
-        d="M70 150v76M370 150v76M220 70v-24"
+        d="M36 200V226M264 200V226M150 88V58"
         stroke={INK}
         strokeWidth={3}
         strokeLinecap="round"
       />
-      <path d="M220 46l56 12-56 14z" fill={GOLD} {...stroke} />
-      {/* bandeirolas */}
-      <path d="M70 150q75 34 150 0t150 0" fill="none" stroke={INK} strokeWidth={2} />
-      {flags.map((dy, i) => {
-        const x = 86 + i * 36;
+      <path d="M150 58l52 10-52 12z" fill={GOLD} {...stroke} />
+      <path d="M30 200q40-12 80 0t80 0 80 0" fill="none" stroke={GOLD} strokeWidth={6} />
+      {/* varal de bandeirolas dentro da face da tenda, seguindo a corda */}
+      <path d="M62 150q88 28 176 0" fill="none" stroke={INK} strokeWidth={2} />
+      {[...Array(8)].map((_, i) => {
+        const x = 72 + i * 21;
+        const t = i / 7;
+        const y = 150 + 4 * 28 * t * (1 - t) + 4;
         return (
           <path
             key={x}
-            d={`M${x} ${150 + dy}l10 2-6 12z`}
+            d={`M${x} ${y}l9 2-5 11z`}
             fill={i % 2 ? GOLD : STEEL}
             {...stroke}
             strokeWidth={1.5}
           />
         );
       })}
-      <Cross cx={220} cy={184} r={18} />
-      <path d="M190 226h60" stroke={INK} strokeWidth={3} />
+      <Cross cx={150} cy={172} r={16} />
+      <SmallVan x={292} ground={226} />
     </Svg>
   );
 }
 
+/** Área protegida: prédio dentro do perímetro tracejado, escudo com cruz sobre ele. */
 function Protected({ className, title }: ArtProps) {
   return (
     <Svg className={art('art--protected', className)} title={title}>
       <Road y={226} />
       <rect
-        x={56}
-        y={70}
-        width={230}
-        height={156}
+        x={36}
+        y={14}
+        width={372}
+        height={196}
         rx={8}
         fill="none"
         stroke={GOLD}
         strokeWidth={3}
         strokeDasharray="10 8"
       />
-      <rect x={88} y={94} width={166} height={132} fill={WHITE} {...stroke} />
-      {[0, 1, 2].map((r) =>
-        [0, 1, 2, 3].map((c) => (
+      <rect x={60} y={36} width={150} height={174} fill={WHITE} {...stroke} />
+      <path d="M60 52h150" stroke={INK} strokeWidth={3} />
+      {[0, 1, 2, 3].map((r) =>
+        [0, 1, 2].map((c) => (
           <rect
             key={`${r}-${c}`}
-            x={102 + c * 38}
-            y={108 + r * 36}
-            width={24}
-            height={24}
+            x={78 + c * 42}
+            y={66 + r * 34}
+            width={26}
+            height={22}
             rx={2}
             fill={STEEL}
-            {...stroke}
-            strokeWidth={2}
+            {...thin}
           />
         )),
       )}
-      <rect x={152} y={198} width={38} height={28} fill={INK} />
-      <path d="M330 80h60v52q0 30-30 46q-30-16-30-46z" fill={GOLD} {...stroke} />
-      <path d="M360 96v40M340 116h40" stroke={WHITE} strokeWidth={9} strokeLinecap="round" />
+      <rect x={120} y={178} width={26} height={32} fill={INK} />
+      <path d="M258 56h96v54q0 46-48 72q-48-26-48-72z" fill={GOLD} {...stroke} />
+      <path d="M306 76v46M283 99h46" stroke={WHITE} strokeWidth={10} strokeLinecap="round" />
     </Svg>
   );
 }
 
+/** Ambulatório: contêiner clínico com porta, janela, letreiro e escada. */
 function Clinic({ className, title }: ArtProps) {
   return (
     <Svg className={art('art--clinic', className)} title={title}>
       <Road y={226} />
-      <rect x={40} y={112} width={270} height={114} rx={6} fill={WHITE} {...stroke} />
-      {[...Array(9)].map((_, i) => {
-        const x = 60 + i * 28;
-        return <path key={x} d={`M${x} 124v90`} stroke={INK} strokeWidth={1.5} opacity={0.25} />;
+      <rect x={50} y={98} width={330} height={108} fill={WHITE} {...stroke} />
+      {[...Array(12)].map((_, i) => {
+        const x = 66 + i * 26;
+        return <path key={x} d={`M${x} 110v94`} stroke={INK} strokeWidth={1.5} opacity={0.22} />;
       })}
-      <rect x={70} y={146} width={40} height={80} fill={INK} />
-      <rect
-        x={130}
-        y={146}
-        width={84}
-        height={44}
-        rx={3}
-        fill={STEEL}
-        {...stroke}
-        strokeWidth={2}
-      />
-      <rect
-        x={228}
-        y={146}
-        width={64}
-        height={44}
-        rx={3}
-        fill={STEEL}
-        {...stroke}
-        strokeWidth={2}
-      />
-      <path d="M40 112h270" stroke={INK} strokeWidth={3} />
-      <path d="M120 112V92h60v20" fill={BONE} {...stroke} />
-      <Cross cx={150} cy={70} r={20} />
-      {/* capacete */}
-      <path d="M322 226q0-40 40-40t40 40z" fill={GOLD} {...stroke} />
-      <rect x={308} y={224} width={108} height={9} rx={3} fill={GOLD} {...stroke} strokeWidth={2} />
-      <path d="M362 186v-10" stroke={INK} strokeWidth={3} strokeLinecap="round" />
+      <rect x={46} y={94} width={338} height={6} fill={INK} />
+      <rect x={46} y={204} width={338} height={6} fill={INK} />
+      <rect x={80} y={120} width={72} height={40} rx={3} fill={STEEL} {...thin} />
+      <rect x={300} y={118} width={44} height={86} fill={INK} />
+      {/* escada até o chão */}
+      <rect x={346} y={200} width={44} height={8} fill={STEEL} {...thin} />
+      <rect x={352} y={210} width={38} height={8} fill={STEEL} {...thin} />
+      <rect x={358} y={220} width={32} height={6} fill={STEEL} {...thin} />
+      <rect x={294} y={70} width={56} height={22} rx={3} fill={GOLD} {...thin} />
+      <path d="M322 75v12M316 81h12" stroke={WHITE} strokeWidth={4} strokeLinecap="round" />
     </Svg>
   );
 }
 
+/** Telefone tocando: fone na tela e ondas simétricas dos dois lados. */
 function Phone({ className, title }: ArtProps) {
   return (
     <Svg className={art('art--phone', className)} title={title}>
       <rect x={160} y={40} width={120} height={190} rx={22} fill={WHITE} {...stroke} />
       <rect x={174} y={58} width={92} height={142} rx={8} fill={BONE} />
       <path
-        d="M176 140q30-26 44-6t44-10"
-        fill="none"
-        stroke={GOLD}
-        strokeWidth={4}
-        strokeLinecap="round"
-      />
-      <path
-        d="M200 100l16 16 30-30"
-        fill="none"
-        stroke={INK}
-        strokeWidth={5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M200 110h12l4 12-7 4a22 22 0 0 0 12 12l4-7 12 4v12a3 3 0 0 1-3 3 34 34 0 0 1-37-37 3 3 0 0 1 3-3z"
+        fill={INK}
       />
       <circle cx={220} cy={214} r={6} fill={INK} />
       {[0, 1, 2].map((i) => (
         <path
           key={`l${i}`}
-          d={`M${118 - i * 18} ${96 + i * 10}a60 60 0 0 0 0 ${48 + i * 10}`}
+          d={`M${124 - i * 20} ${104 + i * 10}a64 64 0 0 0 0 ${52 + i * 10}`}
           fill="none"
           stroke={GOLD}
           strokeWidth={3}
@@ -445,7 +418,7 @@ function Phone({ className, title }: ArtProps) {
       {[0, 1, 2].map((i) => (
         <path
           key={`r${i}`}
-          d={`M${322 + i * 18} ${96 + i * 10}a60 60 0 0 1 0 ${48 + i * 10}`}
+          d={`M${316 + i * 20} ${104 + i * 10}a64 64 0 0 1 0 ${52 + i * 10}`}
           fill="none"
           stroke={GOLD}
           strokeWidth={3}
@@ -456,20 +429,10 @@ function Phone({ className, title }: ArtProps) {
   );
 }
 
-/** Headset da triagem: a cabeça é um círculo tracejado (quem está do outro lado da linha). */
+/** Headset da triagem médica: quem atende na Central 24 h. */
 function Headset({ className, title }: ArtProps) {
   return (
     <Svg className={art('art--headset', className)} title={title}>
-      <circle
-        cx={220}
-        cy={140}
-        r={44}
-        fill="none"
-        stroke={INK}
-        strokeWidth={2.5}
-        strokeDasharray="6 8"
-        opacity={0.55}
-      />
       <path
         d="M112 150v-20a108 108 0 0 1 216 0v20"
         fill="none"
@@ -491,6 +454,7 @@ function Headset({ className, title }: ArtProps) {
   );
 }
 
+/** Hospital: prédio com letreiro e cruz grande no telhado, cruz vermelha na fachada. */
 function Hospital({ className, title }: ArtProps) {
   return (
     <Svg className={art('art--hospital', className)} title={title}>
@@ -498,7 +462,7 @@ function Hospital({ className, title }: ArtProps) {
       <rect x={120} y={90} width={230} height={136} fill={WHITE} {...stroke} />
       <rect x={200} y={52} width={70} height={38} fill={BONE} {...stroke} />
       <path d="M200 90h70" stroke={INK} strokeWidth={3} />
-      <Cross cx={235} cy={71} r={14} />
+      <Cross cx={235} cy={71} r={20} />
       {[0, 1, 2].map((r) =>
         [0, 1, 2, 3].map((c) => (
           <rect
@@ -509,12 +473,12 @@ function Hospital({ className, title }: ArtProps) {
             height={24}
             rx={2}
             fill={STEEL}
-            {...stroke}
-            strokeWidth={2}
+            {...thin}
           />
         )),
       )}
       <rect x={216} y={190} width={40} height={36} fill={INK} />
+      <path d="M300 124v28M286 138h28" stroke={RED} strokeWidth={8} strokeLinecap="round" />
       <path
         d="M40 226h80"
         stroke={GOLD}
@@ -529,15 +493,15 @@ function Hospital({ className, title }: ArtProps) {
 export function Illustration({ k, className, title }: ArtProps & { k: IllustrationKey }) {
   switch (k) {
     case 'uti':
-      return <Van variant="uti" className={className} title={title} />;
+      return <VanUti className={className} title={title} />;
     case 'basico':
-      return <Van variant="basico" className={className} title={title} />;
+      return <VanBasica className={className} title={title} />;
     case 'locacao':
-      return <Defender className={className} title={title} />;
+      return <Picape className={className} title={title} />;
     case 'domiciliar':
       return <House className={className} title={title} />;
     case 'remocao':
-      return <Wheelchair className={className} title={title} />;
+      return <Remocao className={className} title={title} />;
     case 'eventos':
       return <Tent className={className} title={title} />;
     case 'protegida':
@@ -553,6 +517,11 @@ export function Illustration({ k, className, title }: ArtProps & { k: Illustrati
     default:
       return null;
   }
+}
+
+/** A ambulância do palco "Como funciona": a UTI móvel sem a via (a via é a linha do palco). */
+export function StageVan({ className }: { className?: string }) {
+  return <VanUti className={className} road={false} />;
 }
 
 export function Wordmark({ className }: { className?: string }) {

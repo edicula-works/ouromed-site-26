@@ -59,6 +59,36 @@ export function Plus({ className }: IconProps) {
   );
 }
 
+export function Headset({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true" focusable="false">
+      <path d="M4 13a8 8 0 0 1 16 0" {...base} />
+      <rect x={3} y={12} width={4} height={7} rx={1.5} {...base} />
+      <rect x={17} y={12} width={4} height={7} rx={1.5} {...base} />
+      <path d="M19 19v1a3 3 0 0 1-3 3h-3" {...base} />
+    </svg>
+  );
+}
+
+export function Cross({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true" focusable="false">
+      <circle cx={12} cy={12} r={9} {...base} />
+      <path d="M12 8v8M8 12h8" {...base} />
+    </svg>
+  );
+}
+
+export function House({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true" focusable="false">
+      <path d="M3 11l9-7 9 7" {...base} />
+      <path d="M5 10v10h14V10" {...base} />
+      <path d="M10 20v-5h4v5" {...base} />
+    </svg>
+  );
+}
+
 /** Rótulo que rola no hover (um tratamento por papel: botões primários e navegação). */
 export function Roll({ children }: { children: ReactNode }) {
   return (

@@ -1,5 +1,5 @@
 // Seções da home e das páginas internas. Tudo é Server Component (o motion é declarativo,
-// por data-attributes); só o formulário de orçamento é client (ContactForm.tsx).
+// por data-attributes e pelo palco do "Como funciona"); só o formulário é client (ContactForm.tsx).
 import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
@@ -15,8 +15,8 @@ import {
   site,
   testimonials,
 } from '@/data/site';
-import { Arrow, Phone, Plus, Roll, Whats } from './Icons';
-import { Illustration } from './Illustrations';
+import { Arrow, Cross, Headset, House, Phone, Plus, Roll, Whats } from './Icons';
+import { Illustration, StageVan } from './Illustrations';
 import { stagger } from './stagger';
 
 type Cta = { label: string; href: string };
@@ -81,6 +81,29 @@ export function JsonLd({ data }: { data: object }) {
   );
 }
 
+/** CTA compacto: a última ação antes do rodapé, sem seção só para ele. */
+export function CtaBlock({ heading = 'Precisa falar com a Ouromed?' }: { heading?: string }) {
+  return (
+    <div className="cta-block" data-reveal="fade">
+      <h2 className="cta-block__h">{heading}</h2>
+      <p className="cta-block__text">
+        Central 24 h, todos os dias:{' '}
+        <a href={`tel:${site.phones.tel}`} className="link">
+          {site.phones.display}
+        </a>
+        . Para eventos, locação, área protegida e ambulatórios,{' '}
+        <Link href="/contato" className="link">
+          peça orçamento
+        </Link>
+        .
+      </p>
+      <div className="cta-block__btns">
+        <Ctas large items={[{ label: 'Pedir orçamento', href: '/contato' }]} />
+      </div>
+    </div>
+  );
+}
+
 /* ────────────────────────────── Home ────────────────────────────── */
 
 export function Hero() {
@@ -107,8 +130,7 @@ export function Hero() {
           />
         </div>
         <p className="hero__lede hero__fade" style={stagger(3)}>
-          Ambulância UTI, atendimento domiciliar, remoção de pacientes e cobertura de eventos, em
-          Belo Horizonte e em todo o Brasil. Central 24 h com triagem médica.
+          {site.lede}
         </p>
         <div className="hero__cta hero__fade" style={stagger(4)}>
           <a href={`tel:${site.phones.tel}`} className="btn btn--gold btn--lg">
@@ -153,7 +175,7 @@ export function ServiceIndex() {
         </header>
         <ol className="svc__list">
           {services.map((s, i) => (
-            <li key={s.slug} className="svc__row" data-reveal>
+            <li key={s.slug} className="svc__row" data-reveal="clip">
               <Link href={`/${s.slug}`} className="svc__link">
                 <span className="svc__num">{String(i + 1).padStart(2, '0')}</span>
                 <span className="svc__name">{s.nav}</span>
@@ -166,11 +188,22 @@ export function ServiceIndex() {
             </li>
           ))}
         </ol>
+        <dl className="svc__when" data-reveal="fade">
+          {coverage.when.items.map((w) => (
+            <div key={w.title}>
+              <dt>{w.title}</dt>
+              <dd>{w.text}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );
 }
 
+const glyphs = { phone: Phone, headset: Headset, cross: Cross, house: House };
+
+/** "Como funciona": palco pinado com a linha; a ambulância anda de estação em estação conforme os passos. */
 export function HowItWorks() {
   const steps = howItWorks.steps;
   return (
@@ -187,25 +220,37 @@ export function HowItWorks() {
         </header>
         <div className="how__grid">
           <div className="how__stage" data-stage data-state="0">
-            <div className="how__scenes" aria-hidden="true">
-              {steps.map((s, i) => (
-                <div key={s.title} className="how__scene" data-scene={i}>
-                  <Illustration k={s.illustration} />
-                </div>
-              ))}
-            </div>
-            <div className="how__rail" aria-hidden="true">
-              <span className="how__rail-draw" />
-              {steps.map((s, i) => (
-                <span key={s.title} className="how__mark">
-                  {String(i + 1).padStart(2, '0')} {s.title.split(' ').slice(0, 2).join(' ')}
-                </span>
-              ))}
+            <div className="how__scene" aria-hidden="true">
+              <div className="how__road">
+                <span className="how__road-draw" data-road-draw />
+              </div>
+              {steps.map((s, i) => {
+                const Glyph = glyphs[s.glyph];
+                return (
+                  <div
+                    key={s.title}
+                    className="how__station"
+                    data-station={i}
+                    style={{ left: `calc(var(--van-w) / 2 + (${i} / 3) * (100% - var(--van-w)))` }}
+                  >
+                    <span className="how__station-glyph">
+                      <Glyph />
+                    </span>
+                    <span className="how__station-label">
+                      <span className="how__station-num">{String(i + 1).padStart(2, '0')}</span>{' '}
+                      <span className="how__station-name">{s.station}</span>
+                    </span>
+                  </div>
+                );
+              })}
+              <div className="how__van" data-van>
+                <StageVan />
+              </div>
             </div>
           </div>
           <ol className="how__steps">
             {steps.map((s, i) => (
-              <li key={s.title} className="how__step" data-chapter data-reveal>
+              <li key={s.title} className="how__step" data-chapter data-reveal="fade">
                 <span className="how__num">{String(i + 1).padStart(2, '0')}</span>
                 <h3>{s.title}</h3>
                 <p>{s.text}</p>
@@ -220,7 +265,7 @@ export function HowItWorks() {
 
 export function Facts() {
   return (
-    <section className="facts onink" aria-labelledby="cov-h">
+    <section className="facts onink" aria-labelledby="cov-h" data-facts>
       <div className="wrap">
         <h2 id="cov-h" className="facts__title" data-split="lines">
           {coverage.heading}
@@ -230,12 +275,20 @@ export function Facts() {
         </p>
         <dl className="facts__grid">
           {coverage.facts.map((f) => (
-            <div key={f.label} className="fact" data-reveal>
+            <div key={f.label} className="fact" data-reveal="fade">
               <dt>{f.label}</dt>
               <dd>{f.value}</dd>
             </div>
           ))}
         </dl>
+        <div className="facts__kit" data-reveal="fade">
+          <h3 className="facts__kit-h">{coverage.kit.heading}</h3>
+          <ul className="facts__kit-list">
+            {coverage.kit.items.map((k) => (
+              <li key={k}>{k}</li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );
@@ -256,7 +309,7 @@ export function Conduct() {
         </header>
         <ol className="rule__list">
           {conduct.items.map((it, i) => (
-            <li key={it.reading} className="rule__row" data-reveal>
+            <li key={it.reading} className="rule__row" data-reveal="clip">
               <span className="rule__num">{String(i + 1).padStart(2, '0')}</span>
               <p className="rule__text">{it.text}</p>
               <span className="rule__reading read to-spine">{it.reading}</span>
@@ -275,9 +328,9 @@ export function EventsWall({ heading = 'Eventos que a Ouromed já cobriu' }: { h
       <h3 className="events__h" data-reveal="fade">
         {heading}
       </h3>
-      <ul className="events__wall">
+      <ul className="events__wall" data-reveal="clip">
         {events.map((e) => (
-          <li key={e.name} className="event" data-reveal="fade">
+          <li key={e.name} className="event">
             <figure className={`event__frame event__frame--${e.kind}`}>
               <Image src={e.image} alt={e.alt} width={220} height={133} />
             </figure>
@@ -288,11 +341,13 @@ export function EventsWall({ heading = 'Eventos que a Ouromed já cobriu' }: { h
             </p>
           </li>
         ))}
+        <li className="event event--note">
+          <p className="events__note">
+            Do portfólio publicado pela Ouromed: do Pedro Leopoldo Rodeio Show (2010) à Minas Trend
+            Preview (2014).
+          </p>
+        </li>
       </ul>
-      <p className="events__note">
-        Do portfólio publicado pela Ouromed: do Pedro Leopoldo Rodeio Show (2010) à Minas Trend
-        Preview (2014).
-      </p>
     </div>
   );
 }
@@ -307,7 +362,7 @@ export function Clients({ heading = 'Clientes' }: { heading?: string }) {
       <ul
         className="clients"
         aria-label="Clientes que já contaram com a Ouromed"
-        data-reveal="fade"
+        data-reveal="clip"
       >
         {clients.map((c) => (
           <li key={c.name} className="client">
@@ -321,21 +376,18 @@ export function Clients({ heading = 'Clientes' }: { heading?: string }) {
 
 export function Testimonials() {
   return (
-    <section className="sec quote" aria-labelledby="q-h">
+    <section className="sec sec--tight quote" aria-labelledby="q-h">
       <div className="wrap">
         <header className="sec__head">
           <h2 id="q-h" className="sec__title" data-split="lines">
             Quem já contou com a Ouromed
           </h2>
-          <p className="sec__lede" data-reveal="fade">
-            Rodeio, shopping e televisão: três parceiros, três depoimentos publicados pela Ouromed.
-          </p>
           <p className="sec__read read to-spine">{testimonials.length} depoimentos</p>
         </header>
         <div className="quote__grid">
           {testimonials.map((t) => (
             <div key={t.name} className="quote__off">
-              <figure className="quote__item" data-reveal>
+              <figure className="quote__item" data-reveal="clip">
                 <blockquote>
                   <p>{t.quote}</p>
                 </blockquote>
@@ -360,9 +412,6 @@ export function Proof() {
           <h2 id="proof-h" className="sec__title" data-split="lines">
             {site.since}
           </h2>
-          <p className="sec__lede" data-reveal="fade">
-            Alguns eventos e clientes do portfólio da Ouromed, em Minas e no Brasil.
-          </p>
           <p className="sec__read read to-spine">
             {events.length} eventos · {clients.length} clientes
           </p>
@@ -374,45 +423,24 @@ export function Proof() {
   );
 }
 
-export function FinalCta() {
-  return (
-    <section className="sec cta" aria-labelledby="cta-h">
-      <div className="wrap">
-        <h2 id="cta-h" className="sec__title" data-split="lines">
-          Precisa falar com a Ouromed?
-        </h2>
-        <p className="cta__text" data-reveal="fade">
-          Central 24 h:{' '}
-          <a href={`tel:${site.phones.tel}`} className="link">
-            {site.phones.display}
-          </a>
-          . Para orçamento de eventos, locação, área protegida ou ambulatórios,{' '}
-          <Link href="/contato" className="link">
-            peça pelo formulário
-          </Link>{' '}
-          ou pelo WhatsApp.
-        </p>
-        <div className="cta__btns" data-reveal="fade">
-          <Ctas large items={[{ label: 'Pedir orçamento', href: '/contato' }]} />
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export function Faq({
   items = homeFaq,
   heading = 'Perguntas frequentes',
+  cta = false,
 }: {
   items?: FaqItem[];
   heading?: string;
+  cta?: boolean;
 }) {
   return (
     <section className="sec faq" aria-labelledby="faq-h">
       <div className="wrap faq__grid">
-        <h2 id="faq-h" className="sec__title" data-split="lines">
-          {heading}
-        </h2>
+        <div className="faq__aside">
+          <h2 id="faq-h" className="sec__title" data-split="lines">
+            {heading}
+          </h2>
+          {cta && <CtaBlock />}
+        </div>
         <div className="faq__list">
           {items.map((f, i) => (
             <details key={f.q} className="faq__item" name="faq" open={i === 0}>
@@ -482,7 +510,7 @@ export function PageHero({
 }
 
 /** Um bloco de conteúdo tipado (prose, compare, steps, list, channels, events). */
-export function BlockView({ block, wide = false }: { block: Block; wide?: boolean }) {
+export function BlockView({ block }: { block: Block }) {
   const id =
     block.id ??
     block.heading
@@ -491,7 +519,7 @@ export function BlockView({ block, wide = false }: { block: Block; wide?: boolea
       .replace(/[\u0300-\u036f]/g, '')
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
-  const cls = `sec sec--tight block${wide ? ' block--wide' : ''}`;
+  const cls = 'sec sec--tight block';
   switch (block.type) {
     case 'prose':
       return (
@@ -575,9 +603,9 @@ export function BlockView({ block, wide = false }: { block: Block; wide?: boolea
               {block.heading}
             </h2>
             {block.intro && <p className="block__intro">{block.intro}</p>}
-            <ul className="list">
+            <ul className="list" data-reveal="fade">
               {block.items.map((it) => (
-                <li key={it.title} data-reveal="fade">
+                <li key={it.title}>
                   <h3>{it.title}</h3>
                   <p>{it.text}</p>
                 </li>
@@ -597,15 +625,7 @@ export function BlockView({ block, wide = false }: { block: Block; wide?: boolea
               {block.rows.map((r) => (
                 <div key={r.label}>
                   <dt>{r.label}</dt>
-                  <dd>
-                    {r.href ? (
-                      <a href={r.href} className={r.href.startsWith('http') ? 'link' : undefined}>
-                        {r.value}
-                      </a>
-                    ) : (
-                      r.value
-                    )}
-                  </dd>
+                  <dd>{r.href ? <a href={r.href}>{r.value}</a> : r.value}</dd>
                 </div>
               ))}
             </dl>

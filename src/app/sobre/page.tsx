@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { BlockView, Clients, Conduct, FinalCta, PageHero } from '@/components/Sections';
+import { BlockView, Clients, Conduct, CtaBlock, PageHero } from '@/components/Sections';
 import { about, illustrationAlt, site } from '@/data/site';
 
 export const metadata: Metadata = {
@@ -45,7 +45,11 @@ export default function Sobre() {
           <Clients />
         </div>
       </section>
-      <FinalCta />
+      <section className="sec sec--tight">
+        <div className="wrap">
+          <CtaBlock />
+        </div>
+      </section>
     </>
   );
 }

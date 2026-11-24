@@ -2,7 +2,7 @@
 // dentro (módulos 'use client' também rodam no servidor).
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { isMobile, isTouch, onPage, onScroll, prefersReducedMotion } from '@/engine';
+import { ease, isMobile, isTouch, onPage, onScroll, prefersReducedMotion } from '@/engine';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,6 +13,8 @@ export function setupMotion() {
   howItWorks();
   drive();
   serviceRows();
+  readings();
+  factsWipe();
 }
 
 /** Índice de serviços: ao passar o ponteiro (ou focar), a viatura da linha anda: rodas giram. */
@@ -101,31 +103,107 @@ function header() {
   });
 }
 
-/** "Como funciona": cada passo, ao passar do meio da tela, muda o estado do palco sticky. */
+/** "Como funciona": cada passo, ao passar do meio da tela, muda o estado do palco pinado e a
+ *  ambulância anda até a estação seguinte, com as rodas girando e a linha se desenhando à frente. */
 function howItWorks() {
   onPage(() => {
     const stage = document.querySelector<HTMLElement>('[data-stage]');
     const chapters = gsap.utils.toArray<HTMLElement>('[data-chapter]');
     if (!stage || !chapters.length || prefersReducedMotion()) return;
+    const scene = stage.querySelector<HTMLElement>('.how__scene');
+    const van = stage.querySelector<HTMLElement>('[data-van]');
+    const draw = stage.querySelector<HTMLElement>('[data-road-draw]');
+    const wheels = van?.querySelectorAll('[data-wheel]');
+    const drive = (i: number) => {
+      if (!scene || !van || !draw) return;
+      const w = scene.offsetWidth;
+      const vw = van.offsetWidth;
+      const x = (i / (chapters.length - 1)) * (w - vw);
+      gsap.to(van, { x, duration: 1.1, ease: ease.inOut, overwrite: true });
+      gsap.to(draw, {
+        scaleX: Math.min(1, (x + vw * 0.42) / w),
+        duration: 1.1,
+        ease: ease.inOut,
+        overwrite: true,
+      });
+      if (wheels?.length) {
+        gsap.fromTo(
+          wheels,
+          { rotate: 0 },
+          { rotate: 200, duration: 1.1, ease: 'none', transformOrigin: '50% 50%', overwrite: true },
+        );
+      }
+    };
+    drive(0);
     const triggers = chapters.map((ch, i) =>
       ScrollTrigger.create({
         trigger: ch,
         start: 'top 58%',
         end: 'bottom 58%',
         onToggle: (self) => {
-          if (self.isActive) {
-            stage.setAttribute('data-state', String(i));
-            chapters.forEach((c, j) => {
-              c.setAttribute('aria-current', j === i ? 'step' : 'false');
-            });
-          }
+          if (!self.isActive) return;
+          stage.setAttribute('data-state', String(i));
+          chapters.forEach((c, j) => {
+            c.setAttribute('aria-current', j === i ? 'step' : 'false');
+          });
+          drive(i);
         },
+      }),
+    );
+    const ro = new ResizeObserver(() => {
+      const i = Number(stage.dataset.state || 0);
+      const w = scene?.offsetWidth ?? 0;
+      if (van && w) gsap.set(van, { x: (i / (chapters.length - 1)) * (w - van.offsetWidth) });
+    });
+    if (scene) ro.observe(scene);
+    return () => {
+      triggers.forEach((t) => {
+        t.kill();
+      });
+      ro.disconnect();
+    };
+  });
+}
+
+/** As leituras em mono acendem quando a ponta da espinha passa por elas (a ponta vai a 84% da tela). */
+function readings() {
+  if (prefersReducedMotion()) return;
+  onPage(() => {
+    const els = gsap.utils.toArray<HTMLElement>('.sec__read.to-spine');
+    const triggers = els.map((el) =>
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 84%',
+        once: true,
+        onEnter: () => el.classList.add('is-lit'),
       }),
     );
     return () =>
       triggers.forEach((t) => {
         t.kill();
       });
+  });
+}
+
+/** A banda de cobertura entra como uma cortina de tinta que desce, com as leituras dentro dela. */
+function factsWipe() {
+  onPage(() => {
+    const band = document.querySelector<HTMLElement>('[data-facts]');
+    if (!band || prefersReducedMotion()) return;
+    const tween = gsap.fromTo(
+      band,
+      { clipPath: 'inset(0 0 100% 0)' },
+      {
+        clipPath: 'inset(0 0 0% 0)',
+        duration: 1.2,
+        ease: ease.inOut,
+        scrollTrigger: { trigger: band, start: 'top 85%', once: true },
+      },
+    );
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
   });
 }
 

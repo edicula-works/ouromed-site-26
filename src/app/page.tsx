@@ -3,7 +3,6 @@ import {
   Conduct,
   Facts,
   Faq,
-  FinalCta,
   faqJsonLd,
   Hero,
   HowItWorks,
@@ -32,8 +31,7 @@ export default function Home() {
       <Conduct />
       <Testimonials />
       <Proof />
-      <FinalCta />
-      <Faq />
+      <Faq cta />
       <JsonLd data={faqJsonLd(homeFaq)} />
     </>
   );
