@@ -27,40 +27,23 @@ export function setupMotion() {
   videos();
 }
 
-/** Intro da marca na primeira visita da sessão (≤ 1,3 s). O script de flags no <head> decide se
- *  ela roda (classe `intro-on`) antes da primeira tinta; aqui ela toca e se desfaz. Clique ou
- *  tecla pulam. O CSS tem uma trava que esconde a camada sozinha se este JS não chegar. */
+/** Intro da marca na primeira visita da sessão. A animação é CSS (começa antes do JS); aqui só
+ *  se pula com clique ou tecla e se tira a classe quando a cortina termina de subir, liberando a
+ *  entrada do hero. */
 function intro() {
   const root = document.documentElement;
   const el = document.getElementById('intro');
   if (!el || !root.classList.contains('intro-on')) return;
-  const done = () => {
+  const end = () => {
     root.classList.remove('intro-on');
-    removeEventListener('pointerdown', skip);
-    removeEventListener('keydown', skip);
+    removeEventListener('pointerdown', end);
+    removeEventListener('keydown', end);
   };
-  const tl = gsap.timeline({ onComplete: done });
-  const skip = () => tl.progress(1);
-  addEventListener('pointerdown', skip, { once: true });
-  addEventListener('keydown', skip, { once: true });
-  tl.fromTo(
-    el.querySelector('.intro__line'),
-    { scaleX: 0 },
-    { scaleX: 1, duration: 0.45, ease: ease.inOut },
-  )
-    .fromTo(
-      el.querySelector('.intro__mark'),
-      { scale: 0, rotate: -180 },
-      { scale: 1, rotate: 0, duration: 0.5, ease: ease.out, transformOrigin: '50% 50%' },
-      '-=0.2',
-    )
-    .fromTo(
-      el.querySelectorAll('.intro__word > span'),
-      { yPercent: 110 },
-      { yPercent: 0, duration: 0.45, stagger: 0.06, ease: ease.out },
-      '-=0.3',
-    )
-    .to(el, { yPercent: -100, duration: 0.55, ease: ease.inOut }, '+=0.12');
+  el.addEventListener('animationend', (e) => {
+    if (e.target === el) end();
+  });
+  addEventListener('pointerdown', end, { once: true });
+  addEventListener('keydown', end, { once: true });
 }
 
 /** Botões: o preenchimento nasce do ponto por onde o ponteiro entra e sai por onde ele sai. */

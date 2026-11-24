@@ -25,8 +25,9 @@ export const metadata: Metadata = {
 };
 
 // Antes da primeira tinta: estilos "escondido até revelar" só valem com JS e com motion permitidos.
-// A intro da marca roda só na primeira visita da sessão e só com motion permitido.
-const flags = `(function(){var h=document.documentElement;h.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;h.classList.add('motion');try{if(!sessionStorage.getItem('om-intro')){sessionStorage.setItem('om-intro','1');h.classList.add('intro-on')}}catch(e){}})()`;
+// A intro da marca roda só na primeira visita da sessão e só com motion permitido. O próprio
+// script tira a classe ao fim (1,7 s), então o hero nunca fica preso esperando o bundle.
+const flags = `(function(){var h=document.documentElement;h.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;h.classList.add('motion');try{if(!sessionStorage.getItem('om-intro')){sessionStorage.setItem('om-intro','1');h.classList.add('intro-on');setTimeout(function(){h.classList.remove('intro-on')},1700)}}catch(e){}})()`;
 
 // VLibras (tradução para Libras, do governo federal), carregado quando a página está ociosa.
 const vlibras = `(function(){var s=document.createElement('script');s.src='https://vlibras.gov.br/app/vlibras-plugin.js';s.async=true;s.onload=function(){try{new window.VLibras.Widget('https://vlibras.gov.br/app')}catch(e){}};document.body.appendChild(s)})()`;
