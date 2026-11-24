@@ -80,10 +80,10 @@ export function Hero() {
       <div className="wrap hero__content">
         <h1 id="hero-h" className="hero__title">
           <span className="hl">
-            <span>Padrão ouro</span>
+            <span>Padrão{'\u00a0'}ouro</span>
           </span>{' '}
           <span className="hl">
-            <span>em saúde móvel.</span>
+            <span>em saúde{'\u00a0'}móvel.</span>
           </span>
         </h1>
         <p className="hero__lede">
