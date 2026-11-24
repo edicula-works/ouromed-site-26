@@ -94,6 +94,8 @@ export function Footer() {
         <div className="footer__bottom">
           <p>
             <strong>{site.name}</strong>, {site.legalName.replace('Ouromed, ', '')}
+            {/* CNPJ: ausente no site atual; só renderiza quando o cliente enviar. */}
+            {site.cnpj && <> · CNPJ {site.cnpj}</>}
           </p>
           <p className="footer__emergency">
             <a href={site.emergency.tel}>{site.emergency.label}</a>

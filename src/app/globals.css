@@ -797,6 +797,18 @@ p {
 .hero__fade {
   opacity: 1;
 }
+@keyframes wipe {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.motion .hero__art {
+  animation: wipe 1.3s var(--ease-out) both;
+  animation-delay: 260ms;
+}
 .motion .hl > span {
   animation: rise 1.1s var(--ease-out) both;
   animation-delay: calc(110ms * var(--i, 0) + 120ms);
@@ -1156,7 +1168,7 @@ p {
   max-width: 18em;
 }
 .fact dd {
-  font-size: var(--t-l);
+  font-size: clamp(2.25rem, 1.4rem + 2.6vw, 3.5rem);
   font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1;
@@ -1236,7 +1248,7 @@ p {
   color: var(--c-dust);
 }
 .events {
-  margin-top: calc(var(--u) * 10);
+  margin-top: calc(var(--u) * 4);
 }
 .events__h {
   font-size: var(--t-l);
@@ -1244,34 +1256,93 @@ p {
   letter-spacing: -0.01em;
   margin-bottom: calc(var(--u) * 3);
 }
-.events__list li {
+/* Parede de eventos: as miniaturas públicas do portfólio, como uma folha de contato. */
+.events__wall {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--u) * 3) var(--gutter);
+}
+.event {
+  display: grid;
+  gap: 0.35em;
+  align-content: start;
+}
+.event__frame {
+  margin: 0 0 calc(var(--u) * 0.6);
+  aspect-ratio: 220 / 133;
+  overflow: clip;
+  background: var(--c-bone);
+  border: 1px solid var(--c-line);
+}
+.event__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.event__frame--foto img {
+  filter: saturate(0.85) contrast(1.04);
+}
+/* Logotipos de eventos têm fundo branco ou preto: multiply deixa o branco virar papel. */
+.event__frame--logo img {
+  object-fit: contain;
+  padding: 10%;
+  mix-blend-mode: multiply;
+}
+.event__name {
+  font-size: var(--t-s);
+  font-weight: 500;
+  line-height: 1.3;
+}
+.event__what {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25em calc(var(--u) * 1.5);
-  padding-block: calc(var(--u) * 1.5);
-  border-top: 1px solid var(--c-line);
-  font-size: var(--t-body);
-}
-.events__list li:last-child {
-  border-bottom: 1px solid var(--c-line);
-}
-.events__name {
-  font-weight: 500;
-}
-.events__year {
-  font-family: var(--f-mono);
-  font-size: var(--t-s);
-  color: var(--c-steel);
-}
-.events__what {
+  gap: 0.25em 1ch;
+  font-size: var(--t-xs);
   color: var(--c-muted);
-  font-size: var(--t-s);
+}
+.event__year {
+  font-family: var(--f-mono);
+  color: var(--c-steel);
+  font-variant-numeric: tabular-nums;
+}
+.event__year::before {
+  content: "·";
+  margin-right: 1ch;
+  color: var(--c-muted);
 }
 .events__note {
-  margin-top: calc(var(--u) * 2);
+  margin-top: calc(var(--u) * 2.5);
   font-size: var(--t-s);
   color: var(--c-muted);
+}
+/* Clientes publicados no site atual: logos em escala de cinza sobre o papel; a cor volta no hover. */
+.clients-wrap {
+  margin-top: calc(var(--u) * 8);
+}
+.clients {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+.client {
+  display: grid;
+  place-items: center;
+  min-height: 5.5rem;
+  padding: calc(var(--u) * 1.2) calc(var(--u) * 0.5);
+  border-top: 1px solid var(--c-line);
+}
+.client img {
+  width: 100%;
+  max-width: 11rem;
+  height: auto;
+  mix-blend-mode: multiply;
+  filter: grayscale(1) contrast(1.04);
+  transition: filter 0.4s var(--ease-out);
+}
+@media (hover: hover) {
+  .client img:hover {
+    filter: none;
+  }
 }
 
 /* ── CTA final e FAQ. ── */
@@ -1823,10 +1894,16 @@ p {
   .quote__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .quote__item:nth-child(2) {
+  .events__wall {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .clients {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .quote__off:nth-child(2) {
     translate: 0 calc(var(--u) * 5);
   }
-  .quote__item:nth-child(3) {
+  .quote__off:nth-child(3) {
     translate: 0 calc(var(--u) * 10);
   }
   .quote__grid {
@@ -1946,6 +2023,9 @@ p {
   .facts__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+  .clients {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
   .faq__grid {
     grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
     column-gap: var(--gutter);
@@ -1981,11 +2061,26 @@ p {
   .hero__title {
     font-size: clamp(2.6rem, 11vw, 3.4rem);
   }
+  /* Ligar e WhatsApp já estão na barra fixa da base: no hero do celular só o orçamento. */
   .hero__cta > .btn {
-    flex: 1 1 auto;
+    display: none;
   }
   .hero__trust {
     font-size: var(--t-s);
+  }
+  .svc__art {
+    width: min(100%, 14rem);
+  }
+  .rule__reading::after {
+    display: none;
+  }
+  .clients {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: calc(var(--gutter) / 2);
+  }
+  .client {
+    min-height: 4.25rem;
+    padding-inline: calc(var(--u) * 0.25);
   }
   .how__stage {
     top: var(--hdr-h);
@@ -2014,8 +2109,8 @@ p {
   .nf {
     min-height: calc(100svh - var(--hdr-h) - var(--ctabar-h));
   }
-  .quote__item:nth-child(2),
-  .quote__item:nth-child(3) {
+  .quote__off:nth-child(2),
+  .quote__off:nth-child(3) {
     translate: none;
   }
 }
@@ -2039,6 +2134,7 @@ p {
   .motion .hero__fade,
   .motion .phero__title,
   .motion .nf__title,
+  .motion .hero__art,
   .menu:not([hidden]) .menu__list li {
     animation: none;
   }

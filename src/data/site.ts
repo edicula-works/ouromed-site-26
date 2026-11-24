@@ -1,19 +1,23 @@
 // Conteúdo do site inteiro, em um lugar só. Fonte: docs/conteudo/copy-v1.md (branch
-// feat/edc-372-copy-v1), reescrita a partir de docs/conteudo-atual/textos-site-2011.txt.
+// feat/edc-372-copy-v1, PR #1), reescrita a partir de docs/conteudo-atual/textos-site-2011.txt.
 //
 // Regras de voz (AGENTS.md §3): fato concreto no lugar de adjetivo; "você"; frases curtas;
-// emergência é uma seção, não o tom. Nunca inventar número, credencial, depoimento, cliente.
+// emergência é uma seção, não o tom. Nunca inventar número, credencial, depoimento ou cliente.
 //
-// Pendências de confirmação do cliente antes de publicar (⚠️ na copy v1). Estão no site porque
-// a copy v1 as propôs; a revisão do cliente é etapa combinada da v1:
-//   1. WhatsApp oficial: hoje aponta para (31) 7818-7838 (celular publicado na página de APH do
-//      site de 2011; confirmar que é WhatsApp e quem atende).
-//   2. "Equipe uniformizada e identificada em todo atendimento" (conduta).
-//   3. "Sirene e prioridade de passagem só em emergência real" (redação da regra interna).
-//   4. Equipe da UTI móvel como "médico, enfermeiro e socorrista" (inferência da copy v1).
-//   5. Lista do atendimento domiciliar (avaliação, medicação, curativos, sinais, encaminhamento).
-//   6. Depoimentos ainda podem ser usados? Eventos de 2015 em diante? Lista de clientes.
-//   7. CNPJ (rodapé), ano de fundação, frota atual e fotos atuais.
+// Versão de apresentação (decisão da pessoa, 2026-11-24): vale tudo que o site atual publica
+// (endereço, 3 fixos, e-mails por setor, serviços, equipamentos, frota citada, depoimentos com
+// nome e cargo, eventos com ano e a lista de clientes). Frases que a copy v1 marcava com ⚠️ e que
+// o texto de 2011 não publica foram trocadas por fatos publicados ou por frases genéricas.
+// O que é provisório ou ausente está em docs/PENDENCIAS.md. Resumo:
+//   1. WhatsApp: (31) 7818-7838 é público na página de APH como telefone da central; usar como
+//      WhatsApp é PROVISÓRIO, a confirmar (wa.me/553178187838).
+//   2. CNPJ: null. Não renderizar enquanto for null.
+//   3. Fotos: só as miniaturas públicas do portfólio de eventos e os logos de clientes
+//      (public/imagens/); viaturas e equipe são ilustração SVG própria. Fotos atuais: pendência.
+//   4. Frota citada é a de 2011 (modelos publicados); frota atual: pendência.
+//   5. História: só "cobrimos eventos desde 2010" (fato do portfólio). Sem ano de fundação.
+//   6. Nunca: credencial específica, convênio aceito, preço, tempo de resposta em minutos,
+//      depoimento novo, cliente novo.
 
 export type IllustrationKey =
   | 'uti'
@@ -79,6 +83,7 @@ export type Service = {
   description: string;
   h1: string;
   intro: string;
+  read: string;
   blocks: Block[];
   faq: Faq[];
   cta: { label: string; href: string }[];
@@ -97,8 +102,11 @@ export const site = {
     all: ['(31) 3786-1506', '(31) 4103-5452', '(31) 3786-7112'],
     allTel: ['+553137861506', '+553141035452', '+553137867112'],
   },
-  // ⚠️ Pendência 1: confirmar o WhatsApp oficial.
-  whatsapp: { display: '(31) 7818-7838', href: 'https://wa.me/553178187838' },
+  // ⚠️ Provisório, a confirmar: (31) 7818-7838 é público na página de APH como telefone da central
+  // para triagem; o site novo usa o número como WhatsApp até o cliente confirmar o oficial.
+  whatsapp: { display: '(31) 7818-7838', href: 'https://wa.me/553178187838', provisional: true },
+  // Ausente no site atual: null até o cliente enviar. Não renderizar enquanto for null.
+  cnpj: null as string | null,
   emails: {
     agendamento: 'agendamento@ouromedbh.com.br',
     eventos: 'luciano@ouromedbh.com.br',
@@ -110,36 +118,41 @@ export const site = {
     city: 'Belo Horizonte',
     state: 'MG',
     zip: 'CEP 30710-070',
-    maps: 'https://www.google.com/maps/search/?api=1&query=Ouromed+Servi%C3%A7o+M%C3%B3vel+de+Sa%C3%BAde+Rua+Senador+L%C3%BAcio+Bittencourt+53+Belo+Horizonte',
+    maps: 'https://www.google.com/maps/search/?api=1&query=Ouromed+Servi%C3%83o+M%C3%B3vel+de+Sa%C3%BAde+Rua+Senador+L%C3%BAcio+Bittencourt+53+Belo+Horizonte',
+    // Incorporado do Google Maps (sem chave): busca pelo endereço.
+    embed:
+      'https://www.google.com/maps?q=Rua+Senador+L%C3%BAcio+Bittencourt+53,+Belo+Horizonte&output=embed',
   },
   // Ficha no Google: 3,6 em 25 avaliações, não reivindicada. Link de avaliação depende do place id.
   googleReview:
-    'https://www.google.com/maps/search/?api=1&query=Ouromed+Servi%C3%A7o+M%C3%B3vel+de+Sa%C3%BAde+Belo+Horizonte',
-  emergency: {
-    label: 'Em caso de emergência, ligue 192 (SAMU).',
-    tel: 'tel:192',
-  },
+    'https://www.google.com/maps/search/?api=1&query=Ouromed+Servi%C3%83o+M%C3%B3vel+de+Sa%C3%BAde+Belo+Horizonte',
+  emergency: { label: 'Em caso de emergência, ligue 192 (SAMU).', tel: 'tel:192' },
   ads: { id: 'AW-955189289' },
   trust: [
     'Fundada e administrada por médicos de urgência e emergência',
     'Motoristas com COVE',
     'Todo o Brasil mediante agendamento',
   ],
+  // Único fato de história publicado: o evento mais antigo do portfólio.
+  since: 'Cobrimos eventos desde 2010',
 };
+
+const equipeAvancada = 'Equipe de médicos, enfermagem e socorristas treinados da Ouromed.';
 
 export const services: Service[] = [
   {
     slug: 'ambulancia',
     nav: 'Ambulância e UTI móvel',
     title: 'Ambulância e UTI móvel',
-    lede: 'Suporte básico e UTI móvel com médico, enfermeiro e socorrista. Para exames, transferências e emergências.',
+    lede: 'Suporte básico e UTI móvel com equipe médica própria. Para exames, transferências e emergências.',
     illustration: 'uti',
     seoTitle: 'Ambulância UTI móvel e suporte básico em Belo Horizonte',
     description:
-      'Ambulância UTI móvel com médico, enfermeiro e socorrista, e suporte básico para exames e transferências em BH e todo o Brasil. Central 24 h: (31) 3786-1506.',
+      'Ambulância UTI móvel com equipe médica própria, e suporte básico para exames e transferências em BH e todo o Brasil. Central 24 h: (31) 3786-1506.',
     h1: 'Ambulância UTI móvel e suporte básico, com equipe própria',
     intro:
       'Duas categorias de viatura, uma só equipe. A triagem médica da Central decide qual é a certa para o seu caso.',
+    read: 'Central 24 h · triagem médica',
     blocks: [
       {
         type: 'compare',
@@ -152,11 +165,7 @@ export const services: Service[] = [
             a: 'Transporte de paciente estável: exames, consultas, alta, transferência sem risco.',
             b: 'Paciente que precisa de suporte avançado durante o trajeto.',
           },
-          {
-            label: 'Equipe',
-            a: 'Socorrista e motorista com COVE.',
-            b: 'Médico, enfermeiro e socorrista.',
-          },
+          { label: 'Equipe', a: 'Socorristas treinados e motorista com COVE.', b: equipeAvancada },
           {
             label: 'Equipamento',
             a: 'Oxigênio, maca retrátil, pranchas de imobilização.',
@@ -178,6 +187,7 @@ export const services: Service[] = [
         paragraphs: [
           'Mercedes-Benz Sprinter 313 CDI, Ford Transit, Renault Master, Fiat Ducato e Land Rover Defender 4×4: confortáveis e espaçosas, montadas para UTI móvel.',
         ],
+        note: 'Frota publicada pela Ouromed; a lista atual é confirmada na contratação.',
       },
       {
         type: 'list',
@@ -212,7 +222,7 @@ export const services: Service[] = [
       },
       {
         q: 'A UTI móvel tem médico?',
-        a: 'Sim: médico, enfermeiro e socorrista, com equipamento de suporte avançado a bordo.',
+        a: 'Sim: equipe de médicos, enfermagem e socorristas treinados da Ouromed, com equipamento de suporte avançado a bordo.',
       },
       {
         q: 'Atendem bebês?',
@@ -236,7 +246,8 @@ export const services: Service[] = [
       'Médico e enfermagem em casa em Belo Horizonte: atendimento pré-hospitalar (APH) para particulares e empresas de home care, com triagem médica pela Central 24 h. Ligue (31) 3786-1506.',
     h1: 'Atendimento médico em casa, com a resolutividade de uma equipe de urgência',
     intro:
-      'A Ouromed nasceu do atendimento de urgência e emergência. É essa experiência que chega à sua porta: avaliação, medicação, curativo, encaminhamento. Em casa, quando dá para ficar em casa.',
+      'A Ouromed nasceu do atendimento de urgência e emergência. É essa experiência que chega à sua porta: médico em casa, com a resolutividade de quem vive urgência. Em casa, quando dá para ficar em casa.',
+    read: 'APH · particulares e home care',
     blocks: [
       {
         type: 'prose',
@@ -246,26 +257,10 @@ export const services: Service[] = [
         ],
       },
       {
-        type: 'list',
-        heading: 'O que a equipe faz em casa',
-        intro: 'A Ouromed obtém alta resolutividade em casa e baixa taxa de remoção hospitalar.',
-        items: [
-          {
-            title: 'Avaliação médica',
-            text: 'Quem chega é médico de urgência, com equipamento de urgência, não só uma bolsa.',
-          },
-          {
-            title: 'Medicação e soroterapia',
-            text: 'Aplicação e acompanhamento no local.',
-          },
-          {
-            title: 'Curativos e sinais',
-            text: 'Curativos e verificação de sinais, com registro do que foi feito.',
-          },
-          {
-            title: 'Encaminhamento',
-            text: 'Quando o caso pede hospital, a mesma equipe transporta, sem quebrar o cuidado.',
-          },
+        type: 'prose',
+        heading: 'Alta resolutividade em casa',
+        paragraphs: [
+          'A Ouromed presta atendimento médico domiciliar obtendo alta resolutividade em casa e baixa remoção hospitalar. Quem chega é médico, com o equipamento que o caso pede.',
         ],
       },
       {
@@ -277,12 +272,12 @@ export const services: Service[] = [
             text: 'Uma triagem médica decide o que o caso precisa.',
           },
           {
-            title: 'A equipe adequada vai até você',
-            text: 'Com equipamento de urgência, não só uma bolsa.',
+            title: 'Médico e enfermagem vão até você',
+            text: 'Em casa, com o equipamento que o caso pede.',
           },
           {
-            title: 'Se precisar de hospital, a mesma equipe transporta',
-            text: 'Sem quebrar o cuidado.',
+            title: 'Se o caso pedir hospital, a Ouromed faz a remoção',
+            text: 'Suporte básico ou UTI móvel, 24 horas por dia.',
           },
         ],
       },
@@ -299,7 +294,7 @@ export const services: Service[] = [
     faq: [
       {
         q: 'Fazem atendimento para empresas de home care?',
-        a: 'Sim, é um dos serviços principais da Ouromed desde a origem.',
+        a: 'Sim, é um dos serviços principais da Ouromed.',
       },
       {
         q: 'Atendem idosos acamados?',
@@ -316,7 +311,7 @@ export const services: Service[] = [
     slug: 'remocao',
     nav: 'Remoção de pacientes',
     title: 'Remoção de pacientes',
-    lede: 'Alta hospitalar, transferência entre cidades, pacientes pediátricos, neonatais e psiquiátricos, 24 h.',
+    lede: 'Alta hospitalar, transferência entre hospitais e viagem entre estados: adulto, pediátrico, neonatal e psiquiátrico, 24 h.',
     illustration: 'remocao',
     seoTitle: 'Remoção de pacientes em BH e todo o Brasil',
     description:
@@ -324,6 +319,7 @@ export const services: Service[] = [
     h1: 'Remoção de pacientes, da alta hospitalar à viagem entre estados',
     intro:
       'Cada remoção começa com uma pergunta: o que esse paciente precisa durante o caminho? A resposta define a viatura, a equipe e o equipamento.',
+    read: '24 h · todo o Brasil',
     blocks: [
       {
         type: 'list',
@@ -337,18 +333,12 @@ export const services: Service[] = [
             title: 'Transferência entre hospitais',
             text: 'Suporte básico ou UTI móvel conforme o caso.',
           },
-          {
-            title: 'Entre cidades e estados',
-            text: 'Em todo o Brasil, mediante agendamento.',
-          },
+          { title: 'Entre cidades e estados', text: 'Em todo o Brasil, mediante agendamento.' },
           {
             title: 'Pediátrica e neonatal',
             text: 'Incubadora de transporte, equipe de pediatria e neonatologia.',
           },
-          {
-            title: 'Psiquiátrica',
-            text: 'Equipe treinada para o transporte seguro.',
-          },
+          { title: 'Psiquiátrica', text: 'Equipe treinada para o transporte seguro.' },
         ],
       },
       {
@@ -362,7 +352,7 @@ export const services: Service[] = [
           { title: 'Triagem médica', text: 'Avalia o paciente e o trecho.' },
           {
             title: 'Viatura e equipe',
-            text: 'Suporte básico ou UTI móvel; médico, enfermeiro e socorrista quando preciso.',
+            text: 'Suporte básico ou UTI móvel, com a equipe que o caso pede.',
           },
           {
             title: 'Equipamentos calibrados',
@@ -398,10 +388,7 @@ export const services: Service[] = [
     ],
     cta: [
       { label: 'Ligar para a Central 24 h', href: 'tel:+553137861506' },
-      {
-        label: 'Agendar por e-mail',
-        href: 'mailto:agendamento@ouromedbh.com.br',
-      },
+      { label: 'Agendar por e-mail', href: 'mailto:agendamento@ouromedbh.com.br' },
     ],
   },
   {
@@ -416,6 +403,7 @@ export const services: Service[] = [
     h1: 'Cobertura médica para o seu evento, do casamento ao congresso',
     intro:
       'A Ouromed leva o suporte adequado ao porte do evento: uma ambulância, um ambulatório montado no local, ou uma equipe completa. Em Minas ou em qualquer estado do Brasil.',
+    read: 'Desde 2010 · todo o Brasil',
     blocks: [
       {
         type: 'list',
@@ -431,7 +419,7 @@ export const services: Service[] = [
           },
           {
             title: 'Equipe de suporte básico e avançado',
-            text: 'Médico, enfermeiro e socorristas, com material médico-hospitalar suficiente para qualquer pessoa que precise.',
+            text: 'Equipe da Ouromed, com material médico-hospitalar suficiente para qualquer pessoa que precise.',
           },
           {
             title: 'Todo o território nacional',
@@ -482,6 +470,7 @@ export const services: Service[] = [
     h1: 'Locação de ambulâncias para quem não pode parar',
     intro:
       'Mineração, siderurgia, construção civil, shoppings: operações em que a ambulância faz parte do planejamento de segurança. A Ouromed fornece a viatura certa, com os opcionais que a sua operação exige.',
+    read: '4×2 e 4×4 · normas ABNT e Star of Life',
     blocks: [
       {
         type: 'prose',
@@ -497,15 +486,12 @@ export const services: Service[] = [
         items: [
           {
             title: 'Mineradoras e siderúrgicas',
-            text: 'Tração 4×4 para acessar frentes de trabalho.',
+            text: 'Viaturas 4×4 e dispositivos de segurança exigidos pelo setor.',
           },
-          {
-            title: 'Construção civil',
-            text: 'Viatura fixa na obra ou itinerante.',
-          },
+          { title: 'Construção civil', text: 'Ambulância na obra e posto médico itinerante.' },
           {
             title: 'Shoppings e empresas',
-            text: 'Ambulância como parte do plano de segurança do local.',
+            text: 'Ambulância locada com os equipamentos médicos que a operação exige.',
           },
         ],
       },
@@ -540,6 +526,7 @@ export const services: Service[] = [
     h1: 'Área protegida: a equipe de urgência a uma ligação do seu negócio',
     intro:
       'Clubes, shoppings, colégios, faculdades, condomínios, empresas, clínicas de exames e laboratórios já aderiram. Em uma intercorrência com cliente ou funcionário, você aciona a Central e a equipe vai até você.',
+    read: 'Para empresas e condomínios',
     blocks: [
       {
         type: 'steps',
@@ -555,7 +542,7 @@ export const services: Service[] = [
           },
           {
             title: 'Uma equipe se desloca imediatamente',
-            text: 'Atendimento no local, com médico, enfermeiro e socorristas quando o caso pede.',
+            text: 'Atendimento no local, com a equipe que o caso pede.',
           },
         ],
       },
@@ -607,6 +594,7 @@ export const services: Service[] = [
     h1: 'Ambulatório onde a sua operação está',
     intro:
       'Obras, empresas, hotéis e shoppings: a Ouromed monta o posto médico e coloca a equipe, com a infraestrutura que o local exige.',
+    read: 'Obras, empresas, hotéis e shoppings',
     blocks: [
       {
         type: 'prose',
@@ -620,14 +608,8 @@ export const services: Service[] = [
         type: 'list',
         heading: 'Onde',
         items: [
-          {
-            title: 'Obras',
-            text: 'Posto médico itinerante que acompanha a frente de trabalho.',
-          },
-          {
-            title: 'Empresas',
-            text: 'Ambulatório dentro da operação, com equipe da Ouromed.',
-          },
+          { title: 'Obras', text: 'Posto médico itinerante que acompanha a frente de trabalho.' },
+          { title: 'Empresas', text: 'Ambulatório dentro da operação, com equipe da Ouromed.' },
           {
             title: 'Hotéis e shoppings',
             text: 'Atendimento de pronto socorro para clientes e colaboradores.',
@@ -666,7 +648,7 @@ export const howItWorks = {
     },
     {
       title: 'A triagem define a viatura e a equipe',
-      text: 'Suporte básico ou UTI móvel; com médico, enfermeiro e socorrista quando o caso pede.',
+      text: 'Suporte básico ou UTI móvel, com a equipe que o caso pede.',
       illustration: 'triagem' as IllustrationKey,
     },
     {
@@ -684,18 +666,16 @@ export const howItWorks = {
 
 export const coverage = {
   heading: 'Belo Horizonte hoje, o Brasil quando você precisar',
-  text: 'Atendemos Belo Horizonte e região 24 horas por dia. Remoções e eventos fora da cidade, em qualquer estado, mediante agendamento.',
+  text: 'Central 24 horas por dia em Belo Horizonte. Remoções e eventos em qualquer estado, mediante agendamento.',
   facts: [
     { value: '24 h', label: 'Central com triagem médica, todos os dias' },
     { value: '7', label: 'frentes de serviço, uma só equipe' },
-    {
-      value: 'COVE',
-      label: 'capacitação de todos os motoristas, exigida pelo CONTRAN',
-    },
+    { value: 'COVE', label: 'capacitação de todos os motoristas, exigida pelo CONTRAN' },
     { value: '2010', label: 'primeiro evento coberto no portfólio da Ouromed' },
   ],
 };
 
+// Cada item é uma regra publicada pela própria Ouromed em 2011 (checável no texto do site atual).
 export const conduct = {
   heading: 'Segurança começa antes do atendimento',
   lede: 'O que a Ouromed faz de verdade, e não o que ela promete. Cada item é uma regra da casa, checável.',
@@ -706,23 +686,23 @@ export const conduct = {
     },
     {
       reading: 'Equipe',
-      text: 'Equipe uniformizada e identificada em todo atendimento.',
+      text: 'Médicos, enfermagem e socorristas treinados, próprios da Ouromed, com equipes de geriatria e gerontologia, pediatria e neonatologia.',
     },
     {
-      reading: 'Sirene',
-      text: 'Sirene e prioridade de passagem só em emergência real, conforme o Código de Trânsito.',
-    },
-    {
-      reading: 'Médicos',
-      text: 'Médicos, enfermeiros e socorristas próprios, com equipes de geriatria, pediatria e neonatologia.',
+      reading: '24 h',
+      text: 'Remoções de pacientes adulto, pediátrico, neonatal e psiquiátrico 24 horas por dia, com equipes treinadas.',
     },
     {
       reading: 'Calibração',
-      text: 'Equipamentos com aferição e calibração periódicas.',
+      text: 'Equipamentos submetidos a padrões de calibração periódicos, com aferição para ganho de tempo e pontualidade.',
     },
     {
       reading: 'Norma',
       text: 'Viaturas dentro das especificações da ABNT e da norma federal norte-americana para veículos de emergência (Star of Life).',
+    },
+    {
+      reading: 'Material',
+      text: 'Materiais com tratamento antibacteriano e resistentes a fungos e umidade.',
     },
   ],
 };
@@ -748,23 +728,115 @@ export const testimonials = [
   },
 ];
 
-export const events = [
+export type Event = {
+  name: string;
+  what: string;
+  year: string;
+  image: string;
+  kind: 'foto' | 'logo';
+  alt: string;
+};
+
+// Portfólio publicado pela Ouromed (miniaturas do site atual). O ano só aparece onde é público.
+export const events: Event[] = [
   {
     name: 'Pedro Leopoldo Rodeio Show',
     what: 'Cobertura médica',
     year: '2010 a 2013',
+    image: '/imagens/eventos/pedro-leopoldo-rodeio-show.jpg',
+    kind: 'foto',
+    alt: 'Arena de rodeio iluminada à noite, com tendas brancas e o público ao longe',
   },
-  { name: 'Minas Trend Preview', what: 'Cobertura médica', year: '2014' },
-  { name: 'Mostra das Profissões, UFMG', what: 'Cobertura médica', year: '' },
-  { name: 'Balanço Geral, Rede Record', what: 'Cobertura médica', year: '' },
-  { name: 'Jogos em Sete Lagoas', what: 'Cobertura', year: '' },
-  { name: 'Equipo Mining', what: 'Feira de mineração', year: '' },
-  { name: 'AgroZ, leilão de Nelore em Uberaba', what: 'Cobertura', year: '' },
+  {
+    name: 'Minas Trend Preview',
+    what: 'Cobertura médica',
+    year: '2014',
+    image: '/imagens/eventos/minas-trend-preview.jpg',
+    kind: 'logo',
+    alt: 'Logotipo Minas Trend Preview em letras brancas sobre fundo preto',
+  },
+  {
+    name: 'Mostra das Profissões, UFMG',
+    what: 'Cobertura médica',
+    year: '2010',
+    image: '/imagens/eventos/mostra-das-profissoes-ufmg.jpg',
+    kind: 'logo',
+    alt: 'Logotipo da Mostra das Profissões da UFMG 2010, em letras coloridas',
+  },
+  {
+    name: 'Balanço Geral, Rede Record',
+    what: 'Cobertura médica',
+    year: '',
+    image: '/imagens/eventos/balanco-geral-record.jpg',
+    kind: 'logo',
+    alt: 'Logotipo do programa Balanço Geral em letras azuis com detalhes laranja',
+  },
+  {
+    name: 'Jogos em Sete Lagoas',
+    what: 'Cobertura',
+    year: '',
+    image: '/imagens/eventos/arena-do-jacare.jpg',
+    kind: 'foto',
+    alt: 'Arena do Jacaré lotada em dia de jogo, em Sete Lagoas',
+  },
+  {
+    name: 'Equipo Mining',
+    what: 'Feira de mineração',
+    year: '',
+    image: '/imagens/eventos/equipo-mining.jpg',
+    kind: 'foto',
+    alt: 'Máquinas de mineração iluminadas por refletores em feira à noite',
+  },
+  {
+    name: 'AgroZ, leilão de Nelore em Uberaba',
+    what: 'Cobertura',
+    year: '',
+    image: '/imagens/eventos/agroz.jpg',
+    kind: 'foto',
+    alt: 'Fachada iluminada com o logotipo Agroz à noite',
+  },
   {
     name: 'Pedalando no Topo',
     what: 'Ciclismo indoor nas montanhas de Minas',
     year: '',
+    image: '/imagens/eventos/pedalando-no-topo.jpg',
+    kind: 'foto',
+    alt: 'Multidão de ciclistas em longas filas em evento ao ar livre',
   },
+];
+
+// Clientes publicados no site atual (2011). A lista acompanha a apresentação: o cliente confirma
+// quais podem continuar aparecendo (muitos são de 2011 a 2014).
+export const clients: { name: string; logo: string }[] = [
+  { name: 'Medial Saúde', logo: 'medial-saude.jpg' },
+  { name: 'Amil', logo: 'amil.jpg' },
+  { name: 'Aterpa', logo: 'aterpa.jpg' },
+  { name: 'BAND', logo: 'band.jpg' },
+  { name: 'Cassi', logo: 'cassi.jpg' },
+  { name: 'Clinemge', logo: 'clinemge.jpg' },
+  { name: 'Fiat', logo: 'fiat.jpg' },
+  { name: 'Hospital Belo Horizonte', logo: 'hospital-belo-horizonte.jpg' },
+  { name: 'Hospital da Baleia', logo: 'hospital-da-baleia.jpg' },
+  { name: 'Nestlé', logo: 'nestle.jpg' },
+  { name: 'Record', logo: 'record.jpg' },
+  { name: 'Shopping Del Rey', logo: 'shopping-del-rey.jpg' },
+  { name: 'Socor', logo: 'socor.jpg' },
+  { name: 'Pirelli', logo: 'pirelli.jpg' },
+  { name: 'UFMG', logo: 'ufmg.jpg' },
+  { name: 'BRMALLS', logo: 'brmalls.jpg' },
+  { name: 'Diante do Trono', logo: 'diante-do-trono.jpg' },
+  { name: 'Magazine Luiza', logo: 'magazineluiza.jpg' },
+  { name: 'SESI', logo: 'sesi.jpg' },
+  { name: 'Shopping Center Sete Lagoas', logo: 'shopping-center-sete-lagoas.jpg' },
+  { name: 'Unimed BH', logo: 'unimed-bh.jpg' },
+  { name: 'Volkswagen', logo: 'volkswagen.jpg' },
+  { name: 'Mitsubishi', logo: 'mitsubishi.jpg' },
+  { name: 'Mercedes-Benz', logo: 'mercedes-benz.jpg' },
+  { name: 'Mater Dei', logo: 'hospital-mater-dei.jpg' },
+  { name: 'Felício Rocho', logo: 'hospital-felicio-rocho.jpg' },
+  { name: 'Ricardo Eletro', logo: 'ricardo-eletro.jpg' },
+  { name: 'Unimed Rio', logo: 'unimed-rio.jpg' },
+  { name: 'Azul Linhas Aéreas', logo: 'azul-linhas-aereas.jpg' },
 ];
 
 export const homeFaq: Faq[] = [
@@ -778,7 +850,7 @@ export const homeFaq: Faq[] = [
   },
   {
     q: 'Tem ambulância UTI?',
-    a: 'Sim, UTI móvel com médico, enfermeiro e socorrista, equipada com respirador, bombas de infusão, cardioversor e incubadora de transporte para recém-nascidos.',
+    a: 'Sim, UTI móvel com equipe de médicos, enfermagem e socorristas, equipada com respirador, bombas de infusão, cardioversor e incubadora de transporte para recém-nascidos.',
   },
   {
     q: 'Quanto custa?',
@@ -793,6 +865,7 @@ export const about = {
   h1: 'Feita por médicos de urgência, do começo ao fim',
   intro:
     'Ouro de Minas, padrão ouro. A Ouromed nasceu da analogia entre o ouro das Minas Gerais e o gold standard dos nossos serviços, e é administrada por quem vive urgência e emergência.',
+  read: 'Belo Horizonte · eventos desde 2010',
   what: {
     heading: 'O que a Ouromed é',
     paragraphs: [
@@ -806,6 +879,13 @@ export const about = {
       'Médicos e enfermagem com anos de urgência e emergência.',
       'Equipes de geriatria e gerontologia, pediatria e neonatologia, com profissionais especializados no atendimento ao idoso, a crianças e a recém-nascidos.',
     ],
+  },
+  fleet: {
+    heading: 'Frota',
+    paragraphs: [
+      'Mercedes-Benz Sprinter 313 CDI, Ford Transit, Renault Master, Fiat Ducato e Land Rover Defender 4×4: veículos robustos e funcionais, montados para UTI móvel, com ventilador pulmonar, bombas de infusão, cardioversor com eletrocardiografia digital, oxigênio fixo e portátil, incubadora de transporte de recém-nascidos e maca retrátil.',
+    ],
+    note: 'Frota publicada pela Ouromed; a lista atual é confirmada na contratação.',
   },
   pqo: {
     heading: 'PQO, Padrão de Qualidade Ouromed',
@@ -825,7 +905,8 @@ export const contact = {
     'Fale com a Ouromed: Central 24 h (31) 3786-1506, WhatsApp, e-mails por setor e endereço na Rua Senador Lúcio Bittencourt, 53, Carlos Prates, Belo Horizonte.',
   h1: 'Estamos a uma ligação de distância',
   intro:
-    'Para urgência, ligue. Para orçamento e eventos, WhatsApp ou e-mail. Para conhecer, venha tomar um café na Carlos Prates.',
+    'Para urgência, ligue. Para orçamento e eventos, WhatsApp ou e-mail. Para conhecer, venha até o escritório na Carlos Prates.',
+  read: 'Carlos Prates, Belo Horizonte',
   channels: {
     heading: 'Por onde falar',
     rows: [
@@ -849,18 +930,14 @@ export const contact = {
         value: 'diretoria@ouromedbh.com.br',
         href: 'mailto:diretoria@ouromedbh.com.br',
       },
-      {
-        label: 'WhatsApp',
-        value: '(31) 7818-7838',
-        href: 'https://wa.me/553178187838',
-      },
+      { label: 'WhatsApp', value: '(31) 7818-7838', href: site.whatsapp.href },
     ],
   },
   form: {
     heading: 'Peça um orçamento',
     intro:
       'Para eventos, locação, área protegida e ambulatórios. Para urgências, ligue: o formulário não é monitorado em tempo real.',
-    note: 'Ao enviar, o seu aplicativo de e-mail abre com a mensagem pronta. Nada fica guardado neste site.',
+    note: 'Ao enviar, o seu aplicativo de e-mail ou o WhatsApp abre com a mensagem pronta. Nada fica guardado neste site.',
     services: [
       'Cobertura de eventos',
       'Locação de ambulâncias',
