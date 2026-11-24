@@ -33,6 +33,8 @@ escrito.
 | 3.3 | **≤ 120 palavras por tela** | entre 85 e 146 | Auto |
 | 3.4 | **No máximo 2 famílias e 3 pesos de fonte** | 1–2 famílias, 2–3 pesos | Auto |
 | 3.5 | Uma ideia por tela: nenhuma tela do desktop com mais de 2 blocos de assunto diferentes | Awwwards | Manual |
+| 3.6 | Sem os tells de IA nº 1 (creme quente + acento), nº 3 (fios em tudo, raio zero) e nº 5 (eyebrow em todo título, mono em todo rótulo, seta em todo link) | `.agents/skills/awwwards/references/art-direction.md` | Manual + Auto (cor de fundo, fontes mono) |
+| 3.7 | **No máximo 5 páginas**: home, Para você, Para empresas, Sobre, Contato | decisão da pessoa, 24/11 | Auto (sitemap) |
 
 ## 4. Confiança
 
@@ -48,7 +50,7 @@ escrito.
 
 | # | Critério | Fonte | Como checar |
 |---|---|---|---|
-| 5.1 | No máximo estes **5 padrões** no site inteiro: (1) intro que surge e dissolve; (2) título entrando por máscara; (3) imagem que se revela e sai da escala 1,08 para 1; (4) cartão com zoom leve no hover; (5) textura de curvas de nível com deriva lenta | Awwwards (olympic, Namaha) | Manual + Auto (lista de animações) |
+| 5.1 | No máximo estes **6 padrões** no site inteiro: (1) intro que surge e dissolve; (2) título entrando por máscara; (3) imagem que se revela e sai da escala 1,06 para 1; (4) cartão com zoom leve no hover; (5) textura de curvas de nível com deriva lenta; (6) menu e painéis abrindo por clip-path com itens em cascata | Awwwards (olympic, Namaha); o 6º a pedido da pessoa | Manual + Auto (lista de animações) |
 | 5.2 | Intro: **≤ 1,2 s**, só na 1ª visita da sessão, pulável, **em fade**, sem nada deslizando | pedido da pessoa | Auto (quadros em 0, 0,4, 0,8 e 1,2 s) |
 | 5.3 | Com `prefers-reduced-motion`, nenhum desses 5 roda | WCAG; AGENTS §5 | Auto |
 
@@ -75,6 +77,7 @@ escrito.
 |---|---|---|---|
 | 8.1 | Um crítico novo, com visão, recebe as capturas da Ouromed **ao lado** das do olympic e do Namaha: nota **≥ 7,5** | régua do AGENTS §1 | Manual (`/jury`) |
 | 8.2 | Nenhum item da lista do crítico marcado como "genérico" ou "previsível" | pedido da pessoa | Manual |
+| 8.3 | **A aprovação da pessoa é o gate final.** O crítico automático deu 7,05–7,3 a versões que ela avaliou abaixo de 4/10: a nota dele orienta, não aprova | decisão da pessoa, 24/11 | Manual |
 
 ## Estado na rodada 4 (antes da reconstrução)
 

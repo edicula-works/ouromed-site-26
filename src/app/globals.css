@@ -39,7 +39,7 @@
   /* Espaço e forma */
   --u: clamp(0.5rem, 0.35rem + 0.6vw, 1rem);
   --gutter: clamp(1.25rem, 0.6rem + 2.4vw, 3rem);
-  --sec: clamp(4.5rem, 3rem + 6vw, 9rem);
+  --sec: clamp(4rem, 2.6rem + 5vw, 7.5rem);
   --max-w: 88rem;
   --r: 8px;
   --hdr-h: 4.5rem;
@@ -426,11 +426,11 @@ html:not(.is-scrolled) .hdr[data-home] {
   color: var(--c-paper);
 }
 html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
-  color: var(--c-paper);
+  fill: var(--c-paper);
 }
 /* Depois de rolar: vidro claro. O blur é estático; só a cor do fundo transiciona. */
 .is-scrolled .hdr {
-  background: rgb(247 248 249 / 0.74);
+  background: rgb(247 248 249 / 0.88);
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
   backdrop-filter: blur(14px) saturate(1.2);
   border-bottom-color: var(--c-line);
@@ -460,18 +460,20 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   height: 1.5rem;
 }
 .wordmark__text {
-  font-size: 1.375rem;
+  width: 5.75rem;
+  height: 1.5rem;
+  font-family: var(--f);
+  font-size: 22px;
   font-weight: 700;
   font-style: italic;
   letter-spacing: -0.02em;
-  line-height: 1;
 }
 .wordmark__ouro {
-  color: var(--c-gold);
+  fill: var(--c-gold);
 }
 .wordmark__med {
-  color: var(--c-navy);
-  transition: color 0.35s var(--ease-out);
+  fill: var(--c-navy);
+  transition: fill 0.35s var(--ease-out);
 }
 .hdr__nav {
   display: none;
@@ -538,7 +540,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   padding: 0.75rem;
   border-radius: 14px;
   color: var(--c-ink);
-  background: rgb(247 248 249 / 0.86);
+  background: rgb(250 251 252 / 0.95);
   -webkit-backdrop-filter: blur(18px) saturate(1.3);
   backdrop-filter: blur(18px) saturate(1.3);
   box-shadow:
@@ -656,7 +658,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   height: var(--hdr-h);
 }
 .menu__top .wordmark__med {
-  color: var(--c-paper);
+  fill: var(--c-paper);
 }
 .menu__nav {
   display: grid;
@@ -725,8 +727,9 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   inset: 0;
 }
 .hero .media__ph {
+  align-items: flex-start;
   justify-content: flex-end;
-  padding: 0 var(--gutter) calc(var(--u) * 3);
+  padding: calc(var(--hdr-h) + var(--u) * 2) var(--gutter) 0;
   background: var(--c-night);
 }
 .hero__veil {
@@ -981,6 +984,11 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 .when__item .btn,
 .when__item .link-arrow {
   justify-self: start;
+}
+.when__note a,
+.footer__bottom a {
+  display: inline-block;
+  padding-block: 0.3rem;
 }
 .when__note {
   margin-top: calc(var(--u) * 3);
