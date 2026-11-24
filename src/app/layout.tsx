@@ -4,7 +4,7 @@ import { CtaBar, Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Motion } from '@/components/Motion';
 import { site } from '@/data/site';
-import { archivo } from './fonts';
+import { archivo, mono } from './fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -76,7 +76,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={archivo.variable} suppressHydrationWarning>
+    <html lang="pt-BR" className={`${archivo.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: script de flags constante, antes da primeira tinta; sem input */}
         <script dangerouslySetInnerHTML={{ __html: flags }} />
