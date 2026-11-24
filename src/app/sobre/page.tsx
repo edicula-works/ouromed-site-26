@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { BlockView, Clients, Conduct, CtaBlock, PageHero } from '@/components/Sections';
-import { about, illustrationAlt, site } from '@/data/site';
+import { about, site } from '@/data/site';
 
 export const metadata: Metadata = {
   title: about.seoTitle,
@@ -15,8 +15,7 @@ export default function Sobre() {
         read={about.read}
         title={about.h1}
         intro={about.intro}
-        illustration="triagem"
-        artTitle={illustrationAlt.triagem}
+        media="equipe"
         ctas={[{ label: 'Ligar para a Central 24 h', href: `tel:${site.phones.tel}` }]}
       />
       <BlockView

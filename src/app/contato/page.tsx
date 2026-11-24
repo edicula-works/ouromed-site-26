@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { ContactForm } from '@/components/ContactForm';
 import { PageHero } from '@/components/Sections';
-import { contact, illustrationAlt, site } from '@/data/site';
+import { contact, site } from '@/data/site';
 
 export const metadata: Metadata = {
   title: contact.seoTitle,
@@ -21,8 +21,7 @@ export default function Contato() {
         read={contact.read}
         title={contact.h1}
         intro={contact.intro}
-        illustration="telefone"
-        artTitle={illustrationAlt.telefone}
+        media="central"
         ctas={[]}
         wa="um orçamento"
       />

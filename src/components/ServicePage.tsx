@@ -1,6 +1,6 @@
-// Página de serviço: hero com a viatura do serviço, os blocos tipados do site.ts, FAQ e JSON-LD.
+// Página de serviço: hero com a foto do serviço, os blocos tipados do site.ts, FAQ e JSON-LD.
 
-import { illustrationAlt, type Service } from '@/data/site';
+import type { Service } from '@/data/site';
 import { BlockView, Faq, faqJsonLd, Honesty, JsonLd, PageHero } from './Sections';
 
 export function ServicePage({ service: s }: { service: Service }) {
@@ -10,8 +10,7 @@ export function ServicePage({ service: s }: { service: Service }) {
         read={s.read}
         title={s.h1}
         intro={s.intro}
-        illustration={s.illustration}
-        artTitle={illustrationAlt[s.illustration]}
+        media={s.media}
         ctas={s.cta}
         wa={s.slug === 'locacao-de-ambulancias' ? undefined : s.wa}
       />

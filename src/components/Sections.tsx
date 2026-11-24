@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import type { Block, Faq as FaqItem, IllustrationKey } from '@/data/site';
+import type { Block, Faq as FaqItem, MediaKey } from '@/data/site';
 import {
   clients,
   conduct,
@@ -17,8 +17,10 @@ import {
   testimonials,
   waHref,
 } from '@/data/site';
-import { Arrow, Cross, Headset, House, Phone, Plus, Roll, Whats } from './Icons';
-import { Illustration, StageVan } from './Illustrations';
+import { AudienceTabs, HeroAudience } from './Audience';
+import { Arrow, Phone, Plus, Roll, Whats } from './Icons';
+import { Media } from './Media';
+import { ServiceIcon } from './ServiceIcon';
 import { stagger } from './stagger';
 
 type Cta = { label: string; href: string };
@@ -152,33 +154,16 @@ export function Hero() {
             <span>móvel.</span>
           </span>
         </h1>
-        <div className="hero__art" data-drive>
-          <Illustration
-            k="uti"
-            title="Ambulância UTI móvel da Ouromed, de perfil, com a faixa ouro"
+        <div className="hero__art">
+          <Media
+            k="hero"
+            ratio="4 / 5"
+            priority
+            reveal={false}
+            sizes="(min-width: 1024px) 34vw, 100vw"
           />
         </div>
-        <p className="hero__lede hero__fade" style={stagger(3)}>
-          {site.lede}
-        </p>
-        <div className="hero__cta hero__fade" style={stagger(4)}>
-          <a href={`tel:${site.phones.tel}`} className="btn btn--gold btn--lg">
-            <Phone className="ico" />
-            <Roll>Ligar {site.phones.display}</Roll>
-          </a>
-          <a
-            href={waHref('uma ambulância')}
-            className="btn btn--ghost btn--lg"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Whats className="ico" />
-            <Roll>WhatsApp</Roll>
-          </a>
-          <Link href="/contato" className="link-arrow">
-            Solicitar orçamento <Arrow className="ico" />
-          </Link>
-        </div>
+        <HeroAudience />
         <ul className="hero__trust hero__fade" style={stagger(5)} aria-label="Por que a Ouromed">
           {site.trust.map((t) => (
             <li key={t}>{t}</li>
@@ -195,37 +180,34 @@ export function ServiceIndex() {
       <div className="wrap">
         <header className="sec__head">
           <h2 id="svc-h" className="sec__title" data-split="lines">
-            Qual ambulância você precisa?
+            O que a Ouromed faz
           </h2>
           <p className="sec__lede" data-reveal="fade">
-            Ou outro dos sete serviços da Ouromed: da emergência em casa à UTI móvel entre estados.
+            Da emergência em casa à UTI móvel entre estados, e do evento de fim de semana ao
+            contrato com a empresa.
           </p>
           <p className="sec__read read to-spine">7 frentes · 24 h</p>
+          <AudienceTabs id="svc" className="svc__aud" />
         </header>
-        <ol className="svc__list">
-          {services.map((s, i) => (
-            <li key={s.slug} className="svc__row" data-reveal="clip">
+        <ul className="svc__list" id="svc-panel">
+          {services.map((s) => (
+            <li key={s.slug} className="svc__row" data-publico={s.publico} data-reveal="clip">
               <Link href={`/${s.slug}`} className="svc__link">
-                <span className="svc__num">{String(i + 1).padStart(2, '0')}</span>
+                <ServiceIcon k={s.icon} className="svc__icon" />
                 <span className="svc__name">{s.nav}</span>
                 <span className="svc__lede">{s.lede}</span>
-                <span className="svc__art">
-                  <Illustration k={s.illustration} />
-                </span>
                 <Arrow className="ico svc__arrow" />
               </Link>
             </li>
           ))}
-        </ol>
+        </ul>
       </div>
     </section>
   );
 }
 
-const glyphs = { phone: Phone, headset: Headset, cross: Cross, house: House };
-
-/** "Como funciona": palco pinado com a linha; a ambulância anda de estação em estação conforme os passos. */
-/** Honestidade: Ouromed, SAMU 192 ou convênio, quando usar cada um. Sem preço, sem convênio nomeado. */
+/** Quando chamar a Ouromed: emergência (se há viatura livre), remoção agendada, empresas.
+ *  O 192 fica numa nota de segurança, sem destaque. */
 export function Honesty() {
   return (
     <section className="sec sec--tight honesty" aria-labelledby="hon-h">
@@ -239,36 +221,35 @@ export function Honesty() {
           </p>
         </header>
         <ul className="honesty__grid">
-          {honesty.items.map((it) => {
-            const is192 = it.href === 'tel:192';
-            return (
-              <li
-                key={it.title}
-                className={`honesty__item${is192 ? ' honesty__item--192' : ''}`}
-                data-reveal="clip"
-              >
-                <span className="honesty__tag read">{it.tag}</span>
-                <h3 className="honesty__title">{it.title}</h3>
-                <p className="honesty__text">{it.text}</p>
-                {it.href.startsWith('tel:') ? (
-                  <a href={it.href} className={is192 ? 'btn btn--192' : 'btn btn--gold'}>
-                    <Phone className="ico" />
-                    <Roll>{it.cta}</Roll>
-                  </a>
-                ) : (
-                  <Link href={it.href} className="link-arrow">
-                    {it.cta} <Arrow className="ico" />
-                  </Link>
-                )}
-              </li>
-            );
-          })}
+          {honesty.items.map((it) => (
+            <li key={it.title} className="honesty__item" data-reveal="clip">
+              <span className="honesty__tag read">{it.tag}</span>
+              <h3 className="honesty__title">{it.title}</h3>
+              <p className="honesty__text">{it.text}</p>
+              {it.href.startsWith('tel:') ? (
+                <a href={it.href} className="btn btn--gold">
+                  <Phone className="ico" />
+                  <Roll>{it.cta}</Roll>
+                </a>
+              ) : (
+                <Link href={it.href} className="link-arrow">
+                  {it.cta} <Arrow className="ico" />
+                </Link>
+              )}
+            </li>
+          ))}
         </ul>
+        <p className="honesty__note" data-reveal="fade">
+          <a href={site.emergency.tel} className="link">
+            {honesty.note}
+          </a>
+        </p>
       </div>
     </section>
   );
 }
 
+/** "Como funciona": palco fixo com uma foto por passo; a linha ouro avança com os passos. */
 export function HowItWorks() {
   const steps = howItWorks.steps;
   return (
@@ -285,32 +266,15 @@ export function HowItWorks() {
         </header>
         <div className="how__grid">
           <div className="how__stage" data-stage data-state="0">
-            <div className="how__scene" aria-hidden="true">
-              <div className="how__road">
-                <span className="how__road-draw" data-road-draw />
-              </div>
-              {steps.map((s, i) => {
-                const Glyph = glyphs[s.glyph];
-                return (
-                  <div
-                    key={s.title}
-                    className="how__station"
-                    data-station={i}
-                    style={{ left: `calc(var(--van-w) / 2 + (${i} / 3) * (100% - var(--van-w)))` }}
-                  >
-                    <span className="how__station-glyph">
-                      <Glyph />
-                    </span>
-                    <span className="how__station-label">
-                      <span className="how__station-num">{String(i + 1).padStart(2, '0')}</span>{' '}
-                      <span className="how__station-name">{s.station}</span>
-                    </span>
-                  </div>
-                );
-              })}
-              <div className="how__van" data-van>
-                <StageVan />
-              </div>
+            <div className="how__shots">
+              {steps.map((s, i) => (
+                <div key={s.title} className="how__shot" data-shot={i}>
+                  <Media k={s.media} ratio="4 / 3" reveal={false} />
+                </div>
+              ))}
+            </div>
+            <div className="how__bar" aria-hidden="true">
+              <span className="how__bar-draw" />
             </div>
           </div>
           <ol className="how__steps">
@@ -346,13 +310,16 @@ export function Facts() {
             </div>
           ))}
         </dl>
-        <div className="facts__kit" data-reveal="fade">
-          <h3 className="facts__kit-h">{coverage.kit.heading}</h3>
-          <ul className="facts__kit-list">
-            {coverage.kit.items.map((k) => (
-              <li key={k}>{k}</li>
-            ))}
-          </ul>
+        <div className="facts__kit">
+          <Media k="uti-interior" ratio="3 / 2" className="facts__kit-media" />
+          <div className="facts__kit-text" data-reveal="fade">
+            <h3 className="facts__kit-h">{coverage.kit.heading}</h3>
+            <ul className="facts__kit-list">
+              {coverage.kit.items.map((k) => (
+                <li key={k}>{k}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -548,16 +515,14 @@ export function PageHero({
   read,
   title,
   intro,
-  illustration,
-  artTitle,
+  media: mk,
   ctas,
   wa,
 }: {
   read: string;
   title: string;
   intro: string;
-  illustration?: IllustrationKey;
-  artTitle?: string;
+  media?: MediaKey;
   ctas?: Cta[];
   wa?: string;
 }) {
@@ -574,9 +539,9 @@ export function PageHero({
             <Ctas items={ctas} wa={wa} tel={false} />
           </div>
         </div>
-        {illustration && (
-          <div className="phero__art" data-drive>
-            <Illustration k={illustration} title={artTitle} />
+        {mk && (
+          <div className="phero__art">
+            <Media k={mk} ratio="4 / 3" priority reveal={false} />
           </div>
         )}
       </div>
@@ -687,10 +652,7 @@ export function BlockView({ block }: { block: Block }) {
             {block.intro && <p className="block__intro">{block.intro}</p>}
             <ul className="list" data-reveal="fade">
               {block.items.map((it) => (
-                <li
-                  key={it.title}
-                  className={/192|emerg/i.test(it.title + it.text) ? 'list__item--192' : undefined}
-                >
+                <li key={it.title}>
                   <h3>{it.title}</h3>
                   <p>{it.text}</p>
                 </li>

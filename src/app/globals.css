@@ -358,6 +358,9 @@ p {
 
 /* Botões: pílula (o único raio do site) porque everything else é reto como instrumento. */
 .btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -394,15 +397,29 @@ p {
   padding: 1em 1.6em;
   font-size: var(--t-body);
 }
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--btn-fill, var(--c-navy));
+  clip-path: circle(0 at var(--fx, 50%) var(--fy, 50%));
+  transition: clip-path 0.55s var(--ease-out);
+}
+.btn--onink {
+  --btn-fill: var(--c-gold);
+}
 @media (hover: hover) {
-  .btn--gold:hover {
-    background: var(--c-gold-deep);
+  .btn:hover::before {
+    clip-path: circle(150% at var(--fx, 50%) var(--fy, 50%));
   }
+  .btn--gold:hover,
   .btn--ghost:hover {
-    background: var(--c-bone);
+    color: var(--c-paper);
   }
   .btn--ghost.btn--onink:hover {
-    background: rgb(245 240 232 / 0.1);
+    color: var(--c-ink);
   }
 }
 .btn:active {
@@ -410,9 +427,163 @@ p {
 }
 
 /* Ilustrações: traço de tinta, preenchimentos chapados; rodas e via são alvos do motion. */
-.art {
+
+/* Foto e vídeo: um tratamento só (cor levemente contida, granulação fina, base em azul-noite),
+   para foto real e imagem gerada lerem como a mesma série. Sem arquivo, o slot diz o que vai ali. */
+.media {
+  position: relative;
+  aspect-ratio: var(--ratio, 4 / 3);
+  overflow: hidden;
+  margin: 0;
+  background: var(--c-night);
+}
+.media__el {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.88) contrast(1.04);
+}
+.media:not(.media--empty)::before,
+.media:not(.media--empty)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.media:not(.media--empty)::before {
+  background: linear-gradient(to top, rgb(11 37 69 / 0.38), rgb(11 37 69 / 0) 45%);
+}
+.media:not(.media--empty)::after {
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.media__ph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: calc(var(--u) * 1.5);
+  background: repeating-linear-gradient(135deg, rgb(245 240 232 / 0.04) 0 1px, transparent 1px 14px)
+    var(--c-night);
+}
+.media__ph::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--c-gold);
+}
+.media__ph-label {
+  max-width: 24em;
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.02em;
+  color: var(--c-dust);
+}
+.onink .media--empty {
+  box-shadow: inset 0 0 0 1px var(--c-line-ink);
+}
+
+/* Seletor de público: duas abas em pílula (a escolhida em azul-marinho). */
+.aud {
+  display: inline-flex;
+  justify-self: start;
+  width: max-content;
+  max-width: 100%;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--c-bone);
+}
+.aud__tab {
+  min-height: 44px;
+  padding: 0 1.1em;
+  border-radius: 999px;
+  font-size: var(--t-s);
+  font-weight: 500;
+  color: var(--c-muted);
+  transition:
+    background-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out);
+}
+.aud__tab[aria-selected="true"] {
+  background: var(--c-navy);
+  color: var(--c-paper);
+}
+@media (hover: hover) {
+  .aud__tab:not([aria-selected="true"]):hover {
+    color: var(--c-ink);
+  }
+}
+
+/* Intro da marca (primeira visita). Sem o JS, uma trava esconde a camada sozinha. */
+#intro {
+  display: none;
+}
+.intro-on #intro {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-curtain) + 20);
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: calc(var(--u) * 2);
+  background: var(--c-night);
+  animation: intro-failsafe 0.01s 3.2s forwards;
+}
+@keyframes intro-failsafe {
+  to {
+    visibility: hidden;
+  }
+}
+.intro__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  font-size: clamp(2.5rem, 1.5rem + 5vw, 5rem);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.intro__mark {
+  width: 0.85em;
+  height: 0.85em;
+  transform: scale(0);
+}
+.intro__word {
+  display: inline-flex;
+  overflow: clip;
+  padding-bottom: 0.08em;
+}
+.intro__word > span {
+  display: block;
+  transform: translateY(110%);
+}
+.intro__ouro {
+  color: var(--c-gold);
+}
+.intro__med {
+  color: var(--c-paper);
+}
+.intro__line {
+  display: block;
+  width: min(60vw, 28rem);
+  height: 3px;
+  background: var(--c-gold);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+/* O hero espera a cortina subir para fazer a própria entrada. */
+.intro-on .hero,
+.intro-on .hero * {
+  animation-play-state: paused;
 }
 
 /* ────────────────────────────── Cortina ────────────────────────────── */
@@ -520,16 +691,7 @@ p {
   border-bottom-color: var(--c-line);
 }
 /* Degradê curto sob o header: o texto que passa por baixo entra em fade em vez de corte seco. */
-.is-scrolled .hdr::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 100%;
-  height: 1.25rem;
-  background: linear-gradient(var(--c-paper), rgb(245 240 232 / 0));
-  pointer-events: none;
-}
+
 .header-away .hdr {
   translate: 0 -100%;
 }
@@ -792,8 +954,14 @@ p {
 }
 .hero__art {
   grid-column: 1 / -1;
-  margin-right: calc(var(--spine-x) * -1);
-  margin-bottom: calc(var(--u) * -1);
+}
+.hero__aud {
+  grid-column: 1 / -1;
+}
+.hero__panel {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: calc(var(--u) * 2.5);
 }
 .hero__lede {
   grid-column: 1 / -1;
@@ -961,15 +1129,22 @@ p {
 .svc__row {
   border-top: 1px solid var(--c-line);
 }
-.svc__row:last-child {
+.svc__list {
   border-bottom: 1px solid var(--c-line);
+}
+.svc__aud {
+  margin-top: calc(var(--u) * 1.5);
+}
+/* O seletor "Para você / Para empresas" filtra as linhas (sem JS, html não tem data-aud: tudo aparece). */
+html[data-aud="voce"] .svc__row[data-publico="empresa"],
+html[data-aud="empresa"] .svc__row[data-publico="voce"] {
+  display: none;
 }
 .svc__link {
   display: grid;
   grid-template-columns: 2.5rem minmax(0, 1fr) 1.75rem;
   grid-template-areas:
-    "num name arrow"
-    "art art art"
+    "icon name arrow"
     "lede lede lede";
   align-items: center;
   column-gap: calc(var(--u) * 1.5);
@@ -977,12 +1152,14 @@ p {
   padding-block: calc(var(--u) * 2);
   transition: background-color 0.35s var(--ease-out);
 }
-.svc__num {
-  grid-area: num;
-  font-family: var(--f-mono);
-  font-size: var(--t-s);
-  color: var(--c-steel);
-  font-variant-numeric: tabular-nums;
+.svc__icon {
+  grid-area: icon;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--c-navy);
+  transition:
+    translate 0.45s var(--ease-out),
+    color 0.3s;
 }
 .svc__name {
   grid-area: name;
@@ -999,11 +1176,6 @@ p {
   line-height: 1.4;
   color: var(--c-muted);
   max-width: 40em;
-}
-.svc__art {
-  grid-area: art;
-  display: block;
-  width: min(100%, 18rem);
 }
 .svc__arrow {
   grid-area: arrow;
@@ -1022,18 +1194,13 @@ p {
   .svc__link:hover .svc__arrow {
     translate: 6px 0;
   }
-  .svc__link:hover .svc__art {
-    translate: 8px 0;
-  }
-  .svc__link:hover .art [data-dash] {
-    animation: dash 0.9s linear infinite;
+  .svc__link:hover .svc__icon {
+    translate: 4px 0;
+    color: var(--c-gold-deep);
   }
 }
 .svc__link:focus-visible .svc__name {
   background-size: 100% 1.5px;
-}
-.svc__art {
-  transition: translate 0.6s var(--ease-out);
 }
 
 /* ── Como funciona: palco pinado com a linha; a ambulância anda de estação em estação (GSAP). ── */
@@ -1050,91 +1217,53 @@ p {
   background: var(--c-paper);
   padding-top: calc(var(--u) * 1.5);
 }
-.how__scene {
-  --van-w: 13.75rem;
-  --line-y: 3.75rem; /* do fundo da cena ao centro da linha (= centro do pictograma) */
+/* Estações já alcançadas: risco tinta; a atual: ouro. */
+
+.how__shots {
   position: relative;
-  height: 11rem;
-  margin-bottom: calc(var(--u) * 2);
+  aspect-ratio: 4 / 3;
+  background: var(--c-night);
 }
-.how__road {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: calc(var(--line-y) - 1.5px);
-  height: 3px;
-  background: var(--c-line);
-}
-.how__road-draw {
+.how__shot {
   position: absolute;
   inset: 0;
+  clip-path: inset(0 0 0 100%);
+  /* A foto que sai só some depois que a nova terminou de cobrir. */
+  transition: clip-path 0s 0.9s;
+}
+.how__shot .media {
+  aspect-ratio: auto;
+  height: 100%;
+}
+[data-state="0"] [data-shot="0"],
+[data-state="1"] [data-shot="1"],
+[data-state="2"] [data-shot="2"],
+[data-state="3"] [data-shot="3"] {
+  z-index: 1;
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 0.9s var(--ease-out);
+}
+.how__bar {
+  height: 3px;
+  margin-top: calc(var(--u) * 1.5);
+  background: var(--c-line);
+}
+.how__bar-draw {
+  display: block;
+  height: 100%;
   background: var(--c-gold);
   transform-origin: 0 50%;
-  scale: 0.13 1;
+  scale: 0.25 1;
+  transition: scale 0.9s var(--ease-out);
 }
-.how__station {
-  position: absolute;
-  bottom: 0;
-  translate: -50% 0;
-  display: grid;
-  justify-items: center;
-  gap: calc(var(--u) * 1.2);
+[data-state="1"] .how__bar-draw {
+  scale: 0.5 1;
 }
-.how__station-glyph {
-  display: grid;
-  place-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 50%;
-  background: var(--c-paper);
-  border: 2px solid var(--c-line);
-  color: var(--c-steel);
-  transition:
-    border-color 0.4s,
-    background-color 0.4s,
-    color 0.4s;
+[data-state="2"] .how__bar-draw {
+  scale: 0.75 1;
 }
-.how__station-glyph svg {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-.how__station-label {
-  font-family: var(--f-mono);
-  font-size: var(--t-xs);
-  letter-spacing: 0.02em;
-  color: var(--c-steel);
-  white-space: nowrap;
-  transition: color 0.4s;
-}
-/* Estações já alcançadas: risco tinta; a atual: ouro. */
-[data-state="1"] [data-station="0"] .how__station-glyph,
-[data-state="2"] [data-station="-n + 2"] .how__station-glyph,
-[data-state="3"] .how__station-glyph {
-  border-color: var(--c-ink);
-  color: var(--c-ink);
-}
-[data-state="0"] [data-station="0"] .how__station-glyph,
-[data-state="1"] [data-station="1"] .how__station-glyph,
-[data-state="2"] [data-station="2"] .how__station-glyph,
-[data-state="3"] [data-station="3"] .how__station-glyph {
-  border-color: var(--c-gold);
-  background: var(--c-gold);
-  color: var(--c-ink);
-}
-[data-state="0"] [data-station="0"] .how__station-label,
-[data-state="1"] [data-station="1"] .how__station-label,
-[data-state="2"] [data-station="2"] .how__station-label,
-[data-state="3"] [data-station="3"] .how__station-label {
-  color: var(--c-ink);
-}
-.how__van {
-  position: absolute;
-  left: 0;
-  /* As rodas tocam a linha: 20 das 240 unidades do viewBox ficam abaixo do chão da viatura,
-     e a altura é 240/440 da largura → largura / 22. */
-  bottom: calc(var(--line-y) - var(--van-w) / 22);
-  width: var(--van-w);
-  will-change: transform;
+[data-state="3"] .how__bar-draw {
+  scale: 1 1;
 }
 .how__steps {
   display: grid;
@@ -1222,9 +1351,18 @@ p {
   max-width: 18em;
 }
 .facts__kit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: calc(var(--u) * 3) var(--gutter);
+  align-items: start;
   margin-top: calc(var(--u) * 5);
   padding-top: calc(var(--u) * 2.5);
   border-top: 1px solid var(--c-line-ink);
+}
+@media (min-width: 1024px) {
+  .facts__kit {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
 }
 .facts__kit-h {
   font-family: var(--f-mono);
@@ -1547,9 +1685,6 @@ p {
   flex-wrap: wrap;
   gap: calc(var(--u) * 1.25);
 }
-.phero__art {
-  margin-right: calc(var(--spine-x) * -1);
-}
 
 .block {
   padding-block: calc(var(--u) * 6);
@@ -1698,24 +1833,6 @@ p {
 .list p {
   color: var(--c-muted);
 }
-.list__item--192 {
-  border-top-color: var(--c-red);
-}
-.list__item--192 h3 {
-  color: var(--c-red);
-}
-.list__item--192 h3::before {
-  content: "192";
-  display: inline-block;
-  margin-right: 0.6em;
-  padding: 0.1em 0.6em;
-  border: 1.5px solid var(--c-red);
-  border-radius: 999px;
-  font-family: var(--f-mono);
-  font-size: var(--t-xs);
-  letter-spacing: 0.04em;
-  vertical-align: 0.15em;
-}
 
 .channels {
   display: grid;
@@ -1797,7 +1914,7 @@ p {
   }
 }
 
-/* Honestidade: Ouromed × SAMU 192 × convênio, quando usar cada um. */
+/* Quando chamar a Ouromed: emergência, remoção, empresas; o 192 é uma nota de segurança. */
 .honesty__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -1808,16 +1925,10 @@ p {
   gap: calc(var(--u) * 1);
   align-content: start;
   padding-top: calc(var(--u) * 1.8);
-  border-top: 2px solid var(--c-ink);
-}
-.honesty__item--192 {
-  border-top-color: var(--c-red);
+  border-top: 2px solid var(--c-navy);
 }
 .honesty__tag {
   color: var(--c-steel);
-}
-.honesty__item--192 .honesty__tag {
-  color: var(--c-red);
 }
 .honesty__title {
   font-size: var(--t-m);
@@ -1829,19 +1940,15 @@ p {
   line-height: 1.45;
   color: var(--c-muted);
 }
+.honesty__note {
+  margin-top: calc(var(--u) * 3);
+  font-size: var(--t-s);
+  color: var(--c-muted);
+}
 .honesty__item .btn,
 .honesty__item .link-arrow {
   justify-self: start;
   margin-top: calc(var(--u) * 0.5);
-}
-.btn--192 {
-  background: var(--c-red);
-  color: var(--c-paper);
-}
-@media (hover: hover) {
-  .btn--192:hover {
-    background: #8f1d17;
-  }
 }
 @media (min-width: 1024px) {
   .honesty__grid {
@@ -2162,8 +2269,8 @@ p {
     font-size: clamp(3.25rem, 1.25rem + 7vw, 7.5rem);
   }
   .svc__link {
-    grid-template-columns: 2.5rem minmax(0, 3fr) minmax(0, 4fr) minmax(6rem, 8.5rem) 1.75rem;
-    grid-template-areas: "num name lede art arrow";
+    grid-template-columns: 2.5rem minmax(0, 3fr) minmax(0, 5fr) 1.75rem;
+    grid-template-areas: "icon name lede arrow";
     align-items: center;
   }
   .svc__lede {
@@ -2191,9 +2298,6 @@ p {
   .svc__when dd {
     font-size: var(--t-body);
     line-height: 1.4;
-  }
-  .svc__art {
-    width: 100%;
   }
   .facts__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2286,16 +2390,15 @@ p {
   }
   .hero__art {
     grid-column: 2;
-    grid-row: 1;
-    align-self: end;
+    grid-row: 1 / 4;
+    align-self: start;
   }
-  .hero__lede {
+  .hero__aud {
     grid-column: 1;
     grid-row: 2;
-    max-width: 30em;
   }
-  .hero__cta {
-    grid-column: 1 / -1;
+  .hero__panel {
+    grid-column: 1;
     grid-row: 3;
   }
   .hero__trust {
@@ -2322,12 +2425,7 @@ p {
     column-gap: var(--gutter);
   }
   .how__stage {
-    /* Palco pinado no meio da altura: a coluna da esquerda não fica com a metade de baixo vazia. */
-    top: calc(50vh - 8.5rem);
-  }
-  .how__scene {
-    --van-w: 16rem;
-    height: 13rem;
+    top: calc(var(--hdr-h) + var(--u) * 2);
   }
   .how__steps {
     grid-column: 2;
@@ -2446,18 +2544,17 @@ p {
   .hero__cta > .btn {
     display: none;
   }
-  .hero__art,
-  .phero__art {
-    margin-right: 0;
+  .hero__art .media {
+    aspect-ratio: 16 / 10;
+  }
+  .how__shots {
+    aspect-ratio: 16 / 9;
   }
   .menu__list a {
     font-size: clamp(1.75rem, 7vw, 2.5rem);
   }
   .hero__trust {
     font-size: var(--t-s);
-  }
-  .svc__art {
-    width: min(100%, 14rem);
   }
   .rule__reading::after {
     display: none;
@@ -2474,13 +2571,6 @@ p {
     top: var(--hdr-h);
     margin-inline: calc(var(--gutter) * -1);
     padding-inline: var(--gutter);
-  }
-  .how__scene {
-    --van-w: 11.5rem;
-    height: 9.5rem;
-  }
-  .how__station-name {
-    display: none;
   }
   #curtain {
     bottom: var(--ctabar-h);
@@ -2561,8 +2651,6 @@ p {
   .footer__number,
   .link-arrow .ico,
   .svc__arrow,
-  .svc__art,
-  .how__scene,
   .faq__item summary .ico {
     transition: none;
   }
@@ -2581,20 +2669,6 @@ p {
   .how__stage {
     position: static;
   }
-  .how__road-draw {
-    scale: 1 1;
-  }
-  .how__van {
-    left: calc(50% - var(--van-w) / 2);
-  }
-  .how__station-glyph {
-    border-color: var(--c-gold);
-    background: var(--c-gold);
-    color: var(--c-ink);
-  }
-  .how__station-label {
-    color: var(--c-ink);
-  }
   .how__step::after {
     background: var(--c-gold);
   }
@@ -2607,8 +2681,5 @@ p {
   }
   .sec__read.to-spine::after {
     scale: 1 1;
-  }
-  .svc__link:hover .art [data-dash] {
-    animation: none;
   }
 }

@@ -13,24 +13,38 @@
 //      WhatsApp é PROVISÓRIO, a confirmar (wa.me/553178187838).
 //   2. CNPJ: null. Não renderizar enquanto for null.
 //   3. Fotos: só as miniaturas públicas do portfólio de eventos e os logos de clientes
-//      (public/imagens/); viaturas e equipe são ilustração SVG própria. Fotos atuais: pendência.
+//      (public/imagens/); viaturas, equipe e interior são slots de foto (`media`), preenchidos com
+//      fotos reais ou imagens do Google Flow. Fotos atuais: pendência.
 //   4. Frota citada é a de 2011 (modelos publicados); frota atual: pendência.
 //   5. História: só "cobrimos eventos desde 2010" (fato do portfólio). Sem ano de fundação.
 //   6. Nunca: credencial específica, convênio aceito, preço, tempo de resposta em minutos,
 //      depoimento novo, cliente novo.
 
-export type IllustrationKey =
+export type MediaKey =
+  | 'hero'
   | 'uti'
-  | 'basico'
+  | 'uti-interior'
   | 'domiciliar'
   | 'remocao'
   | 'eventos'
   | 'locacao'
   | 'protegida'
   | 'ambulatorios'
-  | 'telefone'
+  | 'central'
   | 'triagem'
+  | 'equipe'
   | 'destino';
+
+export type Publico = 'voce' | 'empresa';
+
+export type IconKey =
+  | 'ambulance'
+  | 'stethoscope'
+  | 'wheelchair'
+  | 'tent'
+  | 'jeep'
+  | 'shield'
+  | 'hardhat';
 
 export type Block =
   | {
@@ -80,7 +94,11 @@ export type Service = {
   nav: string;
   title: string;
   lede: string;
-  illustration: IllustrationKey;
+  /** Foto ou vídeo do serviço (public/midia/; até chegar, o slot mostra o que vai ali). */
+  media: MediaKey;
+  /** Para quem o serviço é, no seletor do hero e no índice. */
+  publico: Publico;
+  icon: IconKey;
   seoTitle: string;
   description: string;
   h1: string;
@@ -130,7 +148,10 @@ export const site = {
   // Ficha no Google: 3,6 em 25 avaliações, não reivindicada. Link de avaliação depende do place id.
   googleReview:
     'https://www.google.com/maps/search/?api=1&query=Ouromed+Servi%C3%83o+M%C3%B3vel+de+Sa%C3%BAde+Belo+Horizonte',
-  emergency: { label: 'Em caso de emergência, ligue 192 (SAMU).', tel: 'tel:192' },
+  emergency: {
+    label: 'Risco de vida e sem viatura disponível na hora? Ligue 192 (SAMU).',
+    tel: 'tel:192',
+  },
   ads: { id: 'AW-955189289' },
   trust: [
     'Central 24 h com triagem médica',
@@ -145,20 +166,64 @@ export const site = {
 
 const equipeAvancada = 'Equipe de médicos, enfermagem e socorristas treinados da Ouromed.';
 
-/** Texto alternativo das ilustrações (imagem de conteúdo: descreve o que se vê). */
-export const illustrationAlt: Record<IllustrationKey, string> = {
-  uti: 'Ambulância UTI móvel da Ouromed, de perfil, com a faixa ouro e a barra de luz',
-  basico: 'Ambulância de suporte básico da Ouromed, de perfil, com a faixa ouro',
-  locacao: 'Ambulância 4×4 para locação, de perfil, com a faixa ouro',
-  domiciliar: 'Casa com bolsa médica ao lado: atendimento domiciliar',
-  remocao: 'Cadeira de rodas sobre a via: remoção de pacientes',
-  eventos: 'Tenda de evento com bandeirolas e cruz médica',
-  protegida: 'Prédio cercado por área tracejada e escudo com cruz',
-  ambulatorios: 'Ambulatório com porta e capacete de obra ao lado',
-  telefone: 'Telefone com a central: ondas de chamada dos dois lados',
-  triagem: 'Headset da triagem médica com a cabeça tracejada de quem ligou',
-  destino: 'Hospital com cruz na fachada, o destino do atendimento',
-};
+/** Fotos e vídeos do site. Sem `src`, o slot mostra o rótulo do que vai ali (pendência de fotos:
+ *  fotos reais da Ouromed ou imagens geradas no Google Flow, sempre sem texto, sem logo de terceiros
+ *  e sem rosto em close; prompts em docs/brief/PROMPTS-FLOW.md). `alt` descreve o que se vê. */
+export const media: Record<MediaKey, { label: string; alt: string; src?: string; video?: string }> =
+  {
+    hero: {
+      label: 'Vídeo: viatura UTI em avenida de BH ao entardecer',
+      alt: 'Ambulância UTI branca em movimento numa avenida de Belo Horizonte ao entardecer',
+    },
+    uti: {
+      label: 'Foto: viatura UTI de perfil',
+      alt: 'Ambulância UTI móvel branca, de perfil, estacionada',
+    },
+    'uti-interior': {
+      label: 'Foto: interior da UTI móvel',
+      alt: 'Interior de uma UTI móvel: maca, monitor, ventilador pulmonar e cilindros de oxigênio',
+    },
+    domiciliar: {
+      label: 'Foto: atendimento em casa',
+      alt: 'Profissional de saúde medindo a pressão de uma paciente idosa em casa',
+    },
+    remocao: {
+      label: 'Foto: maca entrando na viatura',
+      alt: 'Equipe colocando a maca com o paciente pela porta traseira da ambulância',
+    },
+    eventos: {
+      label: 'Foto: equipe em evento',
+      alt: 'Ambulância e equipe de plantão na lateral de um evento ao ar livre',
+    },
+    locacao: {
+      label: 'Foto: ambulância 4×4 em mineração',
+      alt: 'Ambulância 4×4 em estrada de terra de uma área de mineração',
+    },
+    protegida: {
+      label: 'Foto: área protegida em empresa',
+      alt: 'Ambulância de prontidão na entrada de um centro empresarial',
+    },
+    ambulatorios: {
+      label: 'Foto: ambulatório em obra',
+      alt: 'Ambulatório montado num canteiro de obras, com maca e armário de medicamentos',
+    },
+    central: {
+      label: 'Foto: a Central 24 h',
+      alt: 'Atendente da central com headset, diante de monitores',
+    },
+    triagem: {
+      label: 'Foto: triagem médica',
+      alt: 'Médico com headset fazendo a triagem de uma ligação',
+    },
+    equipe: {
+      label: 'Foto: equipe saindo com a viatura',
+      alt: 'Equipe uniformizada embarcando na ambulância',
+    },
+    destino: {
+      label: 'Foto: chegada ao hospital',
+      alt: 'Ambulância chegando à entrada de emergência de um hospital',
+    },
+  };
 
 export const services: Service[] = [
   {
@@ -166,7 +231,9 @@ export const services: Service[] = [
     nav: 'Ambulância e UTI móvel',
     title: 'Ambulância e UTI móvel',
     lede: 'Suporte básico e UTI móvel com equipe médica própria. Para exames, transferências e emergências.',
-    illustration: 'uti',
+    media: 'uti',
+    publico: 'voce',
+    icon: 'ambulance',
     seoTitle: 'Ambulância UTI móvel e suporte básico em Belo Horizonte',
     description:
       'Ambulância UTI móvel com equipe médica própria, e suporte básico para exames e transferências em BH e todo o Brasil. Central 24 h: (31) 3786-1506.',
@@ -225,7 +292,7 @@ export const services: Service[] = [
           },
           {
             title: 'Emergência',
-            text: 'Ligue 192 (SAMU) ou para a Central 24 h da Ouromed: a triagem orienta.',
+            text: 'Ligue para a Central 24 h: com viatura e equipe livres, a Ouromed vai, e a triagem orienta desde a ligação. Risco de vida sem viatura livre na hora: 192 (SAMU).',
           },
         ],
       },
@@ -262,7 +329,9 @@ export const services: Service[] = [
     nav: 'Atendimento domiciliar',
     title: 'Atendimento domiciliar',
     lede: 'Médico e enfermagem em casa, com alta resolutividade e menos idas ao hospital.',
-    illustration: 'domiciliar',
+    media: 'domiciliar',
+    publico: 'voce',
+    icon: 'stethoscope',
     seoTitle: 'Atendimento médico domiciliar em Belo Horizonte',
     description:
       'Médico e enfermagem em casa em Belo Horizonte: atendimento pré-hospitalar (APH) para particulares e empresas de home care, com triagem pela Central 24 h.',
@@ -335,7 +404,9 @@ export const services: Service[] = [
     nav: 'Remoção de pacientes',
     title: 'Remoção de pacientes',
     lede: 'Alta hospitalar, transferência entre hospitais e viagem entre estados: adulto, pediátrico, neonatal e psiquiátrico, 24 h.',
-    illustration: 'remocao',
+    media: 'remocao',
+    publico: 'voce',
+    icon: 'wheelchair',
     seoTitle: 'Remoção de pacientes em BH e todo o Brasil',
     description:
       'Remoção de pacientes adulto, pediátrico, neonatal e psiquiátrico, 24 h, com UTI móvel e equipe própria, em BH e todo o Brasil. Ligue (31) 3786-1506.',
@@ -420,7 +491,9 @@ export const services: Service[] = [
     nav: 'Cobertura de eventos',
     title: 'Cobertura de festas e eventos',
     lede: 'Ambulância, ambulatório montado e equipe para qualquer porte, em todo o Brasil.',
-    illustration: 'eventos',
+    media: 'eventos',
+    publico: 'empresa',
+    icon: 'tent',
     seoTitle: 'Ambulância e médico para eventos em BH e todo o Brasil',
     description:
       'Cobertura médica para congressos, shows, casamentos, formaturas, rodeios e feiras: ambulância, ambulatório montado e equipe de suporte básico e avançado.',
@@ -488,7 +561,9 @@ export const services: Service[] = [
     nav: 'Locação de ambulâncias',
     title: 'Locação de ambulâncias',
     lede: 'Viaturas 4×2 e 4×4 para mineradoras, obras, shoppings e empresas.',
-    illustration: 'locacao',
+    media: 'locacao',
+    publico: 'empresa',
+    icon: 'jeep',
     seoTitle: 'Locação de ambulâncias 4×2 e 4×4 para empresas',
     description:
       'Locação de ambulâncias para mineradoras, construção civil, shoppings e empresas: furgões 4×2 e 4×4, com equipamentos médicos e telemetria. Fale com a Ouromed.',
@@ -556,7 +631,9 @@ export const services: Service[] = [
     nav: 'Área protegida',
     title: 'Área protegida',
     lede: 'Contrato de urgência para empresas, shoppings, escolas e condomínios: você aciona, a equipe vai até você.',
-    illustration: 'protegida',
+    media: 'protegida',
+    publico: 'empresa',
+    icon: 'shield',
     seoTitle: 'Área protegida: urgência para empresas e condomínios',
     description:
       'Área protegida Ouromed: sua empresa, shopping, escola ou condomínio aciona a Central e recebe uma equipe de urgência no local, após triagem médica.',
@@ -625,7 +702,9 @@ export const services: Service[] = [
     nav: 'Ambulatórios',
     title: 'Ambulatórios em obras e empresas',
     lede: 'Posto médico itinerante em obras e ambulatórios dentro de empresas e hotéis.',
-    illustration: 'ambulatorios',
+    media: 'ambulatorios',
+    publico: 'empresa',
+    icon: 'hardhat',
     seoTitle: 'Ambulatórios em obras e empresas',
     description:
       'Posto médico itinerante em obras e ambulatórios montados em empresas, hotéis e shoppings, com equipe e equipamentos. Ouromed, Belo Horizonte.',
@@ -679,38 +758,29 @@ export const services: Service[] = [
 export const howItWorks = {
   heading: 'Como funciona, do telefonema ao destino',
   lede: 'Todo atendimento começa igual: uma ligação, uma triagem médica, uma viatura. O que muda é o que o paciente precisa no caminho.',
-  // `station` é o rótulo curto da estação no palco; `glyph` o pictograma (Icons.tsx).
+  // Cada passo troca a foto do palco fixo.
   steps: [
     {
       title: 'Você liga',
       text: 'Atendente identifica o caso e passa para a triagem médica.',
-      station: 'Ligação',
-      glyph: 'phone',
+      media: 'central',
     },
     {
       title: 'A triagem decide',
       text: 'Suporte básico ou UTI móvel, com a equipe que o caso pede.',
-      station: 'Triagem',
-      glyph: 'headset',
+      media: 'triagem',
     },
     {
       title: 'A equipe sai',
       text: 'Equipamentos calibrados, motorista com COVE. Chega, estabiliza e transporta.',
-      station: 'Equipe',
-      glyph: 'cross',
+      media: 'equipe',
     },
     {
       title: 'Você acompanha',
       text: 'Até o destino: alta em casa, transferência entre hospitais ou entre estados.',
-      station: 'Destino',
-      glyph: 'house',
+      media: 'destino',
     },
-  ] as {
-    title: string;
-    text: string;
-    station: string;
-    glyph: 'phone' | 'headset' | 'cross' | 'house';
-  }[],
+  ] as { title: string; text: string; media: MediaKey }[],
 };
 
 export const coverage = {
@@ -738,34 +808,55 @@ export const coverage = {
   },
 };
 
-/** Honestidade: quando cada um é o caminho. Sem preço e sem convênio nomeado (nada disso é
- *  publicado pela Ouromed; a regra de cada plano é com o plano). */
+/** Quando chamar a Ouromed. A Ouromed atende emergência quando há viatura e equipe disponíveis
+ *  (decisão da pessoa, 24/11/2026); o SAMU fica como nota de segurança, sem destaque. Sem preço,
+ *  sem convênio nomeado e sem tempo de resposta em minutos. */
 export const honesty = {
-  heading: 'Ouromed, SAMU 192 ou convênio?',
-  lede: 'Três caminhos diferentes. Escolher o certo economiza o tempo que mais importa.',
+  heading: 'Quando chamar a Ouromed',
+  lede: 'A Central atende 24 h e diz na hora o que pode fazer pelo seu caso.',
   items: [
     {
-      title: 'SAMU 192',
-      tag: 'emergência',
-      text: 'Risco de vida imediato: infarto, acidente grave, falta de ar. É o serviço público e gratuito. Ligue 192.',
-      href: 'tel:192',
-      cta: 'Ligar 192',
-    },
-    {
-      title: 'Ouromed',
-      tag: 'transporte médico',
-      text: 'Remoção, alta, transferência, UTI móvel, evento ou viagem: particular, 24 h, com triagem médica pela Central. Em todo o Brasil mediante agendamento.',
+      title: 'Emergência',
+      tag: 'agora',
+      text: 'A Ouromed atende emergência 24 h quando há viatura e equipe disponíveis. A Central confirma na própria ligação.',
       href: `tel:${site.phones.tel}`,
       cta: `Ligar ${site.phones.display}`,
     },
     {
-      title: 'Convênio',
-      tag: 'cobertura',
-      text: 'Cada plano tem regra própria para transporte médico. Confirme a cobertura com o seu plano; a Central da Ouromed orienta a viatura certa para o caso.',
+      title: 'Remoção e transferência',
+      tag: 'agendado',
+      text: 'Alta hospitalar, exames, transferência entre hospitais ou entre estados, com UTI móvel ou suporte básico.',
+      href: '/remocao',
+      cta: 'Solicitar remoção',
+    },
+    {
+      title: 'Empresas e eventos',
+      tag: 'contrato',
+      text: 'Área protegida, ambulatório em obra, cobertura de eventos e locação de ambulâncias, com orçamento por escrito.',
       href: '/contato',
-      cta: 'Tirar dúvida',
+      cta: 'Pedir orçamento',
     },
   ],
+  note: 'Risco de vida e a Central sem viatura livre na hora? Ligue 192 (SAMU).',
+};
+
+/** Seletor "Para você / Para empresas" do hero: a frase de apoio e o caminho secundário mudam. */
+export const audiences: Record<
+  Publico,
+  { tab: string; lede: string; wa: string; cta: { label: string; href: string } }
+> = {
+  voce: {
+    tab: 'Para você',
+    lede: 'Ambulância UTI móvel, médico em casa e remoção de pacientes, em Belo Horizonte e em todo o Brasil.',
+    wa: 'uma ambulância',
+    cta: { label: 'Solicitar remoção', href: '/remocao' },
+  },
+  empresa: {
+    tab: 'Para empresas',
+    lede: 'Área protegida, ambulatório em obra, cobertura de eventos e locação de ambulâncias 4×2 e 4×4, para empresas, mineradoras, shoppings e condomínios.',
+    wa: 'um orçamento para empresa',
+    cta: { label: 'Pedir orçamento para empresa', href: '/contato' },
+  },
 };
 
 // Cada item é uma regra publicada pela própria Ouromed em 2011 (checável no texto do site atual).

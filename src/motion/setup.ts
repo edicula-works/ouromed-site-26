@@ -16,55 +16,76 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function setupMotion() {
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
+  intro();
   curtain();
   spine();
   header();
   howItWorks();
-  drive();
-  serviceRows();
+  buttonFill();
   readings();
   factsWipe();
+  videos();
 }
 
-/** Índice de serviços: ao passar o ponteiro (ou focar), a viatura da linha anda: rodas giram. */
-function serviceRows() {
+/** Intro da marca na primeira visita da sessão (≤ 1,3 s). O script de flags no <head> decide se
+ *  ela roda (classe `intro-on`) antes da primeira tinta; aqui ela toca e se desfaz. Clique ou
+ *  tecla pulam. O CSS tem uma trava que esconde a camada sozinha se este JS não chegar. */
+function intro() {
+  const root = document.documentElement;
+  const el = document.getElementById('intro');
+  if (!el || !root.classList.contains('intro-on')) return;
+  const done = () => {
+    root.classList.remove('intro-on');
+    removeEventListener('pointerdown', skip);
+    removeEventListener('keydown', skip);
+  };
+  const tl = gsap.timeline({ onComplete: done });
+  const skip = () => tl.progress(1);
+  addEventListener('pointerdown', skip, { once: true });
+  addEventListener('keydown', skip, { once: true });
+  tl.fromTo(
+    el.querySelector('.intro__line'),
+    { scaleX: 0 },
+    { scaleX: 1, duration: 0.45, ease: ease.inOut },
+  )
+    .fromTo(
+      el.querySelector('.intro__mark'),
+      { scale: 0, rotate: -180 },
+      { scale: 1, rotate: 0, duration: 0.5, ease: ease.out, transformOrigin: '50% 50%' },
+      '-=0.2',
+    )
+    .fromTo(
+      el.querySelectorAll('.intro__word > span'),
+      { yPercent: 110 },
+      { yPercent: 0, duration: 0.45, stagger: 0.06, ease: ease.out },
+      '-=0.3',
+    )
+    .to(el, { yPercent: -100, duration: 0.55, ease: ease.inOut }, '+=0.12');
+}
+
+/** Botões: o preenchimento nasce do ponto por onde o ponteiro entra e sai por onde ele sai. */
+function buttonFill() {
+  if (isTouch()) return;
+  const at = (e: PointerEvent) => {
+    const b = (e.target as Element | null)?.closest?.<HTMLElement>('.btn');
+    if (!b) return;
+    const r = b.getBoundingClientRect();
+    b.style.setProperty('--fx', `${e.clientX - r.left}px`);
+    b.style.setProperty('--fy', `${e.clientY - r.top}px`);
+  };
+  document.addEventListener('pointerover', at, { passive: true });
+  document.addEventListener('pointerout', at, { passive: true });
+}
+
+/** Vídeos em loop param para quem pediu menos movimento (fica o pôster). */
+function videos() {
   onPage(() => {
-    if (isTouch()) return;
-    const offs: (() => void)[] = [];
-    document.querySelectorAll<HTMLElement>('.svc__link').forEach((link) => {
-      const wheels = link.querySelectorAll('[data-wheel]');
-      if (!wheels.length) return;
-      let spin: gsap.core.Tween | null = null;
-      const start = () => {
-        spin = gsap.to(wheels, {
-          rotate: '+=360',
-          duration: 1.2,
-          ease: 'none',
-          repeat: -1,
-          overwrite: true,
-          transformOrigin: '50% 50%',
-        });
-      };
-      const stop = () => {
-        spin?.kill();
-        spin = null;
-      };
-      link.addEventListener('pointerenter', start);
-      link.addEventListener('pointerleave', stop);
-      link.addEventListener('focusin', start);
-      link.addEventListener('focusout', stop);
-      offs.push(() => {
-        stop();
-        link.removeEventListener('pointerenter', start);
-        link.removeEventListener('pointerleave', stop);
-        link.removeEventListener('focusin', start);
-        link.removeEventListener('focusout', stop);
-      });
+    if (!prefersReducedMotion()) return;
+    document.querySelectorAll<HTMLVideoElement>('video[data-media-video]').forEach((v) => {
+      v.removeAttribute('autoplay');
+      v.pause();
     });
-    return () =>
-      offs.forEach((f) => {
-        f();
-      });
+    return undefined;
   });
 }
 
@@ -161,38 +182,13 @@ function header() {
   });
 }
 
-/** "Como funciona": cada passo, ao passar do meio da tela, muda o estado do palco pinado e a
- *  ambulância anda até a estação seguinte, com as rodas girando e a linha se desenhando à frente. */
+/** "Como funciona": cada passo, ao passar do meio da tela, troca a foto do palco fixo e avança a
+ *  linha ouro (o CSS faz a troca a partir de data-state). */
 function howItWorks() {
   onPage(() => {
     const stage = document.querySelector<HTMLElement>('[data-stage]');
     const chapters = gsap.utils.toArray<HTMLElement>('[data-chapter]');
-    if (!stage || !chapters.length || prefersReducedMotion()) return;
-    const scene = stage.querySelector<HTMLElement>('.how__scene');
-    const van = stage.querySelector<HTMLElement>('[data-van]');
-    const draw = stage.querySelector<HTMLElement>('[data-road-draw]');
-    const wheels = van?.querySelectorAll('[data-wheel]');
-    const drive = (i: number) => {
-      if (!scene || !van || !draw) return;
-      const w = scene.offsetWidth;
-      const vw = van.offsetWidth;
-      const x = (i / (chapters.length - 1)) * (w - vw);
-      gsap.to(van, { x, duration: 1.1, ease: ease.inOut, overwrite: true });
-      gsap.to(draw, {
-        scaleX: Math.min(1, (x + vw * 0.42) / w),
-        duration: 1.1,
-        ease: ease.inOut,
-        overwrite: true,
-      });
-      if (wheels?.length) {
-        gsap.fromTo(
-          wheels,
-          { rotate: 0 },
-          { rotate: 200, duration: 1.1, ease: 'none', transformOrigin: '50% 50%', overwrite: true },
-        );
-      }
-    };
-    drive(0);
+    if (!stage || !chapters.length) return;
     const triggers = chapters.map((ch, i) =>
       ScrollTrigger.create({
         trigger: ch,
@@ -204,21 +200,13 @@ function howItWorks() {
           chapters.forEach((c, j) => {
             c.setAttribute('aria-current', j === i ? 'step' : 'false');
           });
-          drive(i);
         },
       }),
     );
-    const ro = new ResizeObserver(() => {
-      const i = Number(stage.dataset.state || 0);
-      const w = scene?.offsetWidth ?? 0;
-      if (van && w) gsap.set(van, { x: (i / (chapters.length - 1)) * (w - van.offsetWidth) });
-    });
-    if (scene) ro.observe(scene);
     return () => {
       triggers.forEach((t) => {
         t.kill();
       });
-      ro.disconnect();
     };
   });
 }
@@ -261,55 +249,6 @@ function factsWipe() {
     return () => {
       tween.scrollTrigger?.kill();
       tween.kill();
-    };
-  });
-}
-
-/** A ambulância do hero anda: rodas e tracejado da via em loop lento no repouso, mais rápido com
- *  a velocidade do scroll. Pausado fora da tela e em prefers-reduced-motion. */
-function drive() {
-  if (prefersReducedMotion()) return;
-  onPage(() => {
-    const hero = document.querySelector<HTMLElement>('[data-drive]');
-    if (!hero) return;
-    const wheels = hero.querySelectorAll('[data-wheel]');
-    const dashes = hero.querySelectorAll('[data-dash]');
-    const spins = gsap.to(wheels, {
-      rotate: 360,
-      duration: 9,
-      ease: 'none',
-      repeat: -1,
-      transformOrigin: '50% 50%',
-    });
-    const road = dashes.length
-      ? gsap.to(dashes, {
-          strokeDashoffset: -38,
-          duration: 1.4,
-          ease: 'none',
-          repeat: -1,
-        })
-      : null;
-    const off = onScroll(({ velocity }) => {
-      const k = 1 + Math.min(Math.abs(velocity) / 5, 7);
-      gsap.to([spins, road], { timeScale: k, duration: 0.5, overwrite: true });
-    });
-    const vis = ScrollTrigger.create({
-      trigger: hero,
-      start: 'top bottom',
-      end: 'bottom top',
-      onToggle: (s) => {
-        if (s.isActive) {
-          spins.play();
-          road?.play();
-        } else {
-          spins.pause();
-          road?.pause();
-        }
-      },
-    });
-    return () => {
-      off();
-      vis.kill();
     };
   });
 }

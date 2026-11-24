@@ -184,3 +184,19 @@ hero segue em movimento: rodas lentas e tracejado da via passando (pausado em `p
 - **Prova social com acervo de 2011**: as 8 miniaturas do portfólio (220 × 133) entram como
   "impressões" sobre cartão osso, nunca esticadas além de ~1,2×; os 29 logos de clientes em escala
   de cinza com `multiply` sobre o papel e cor no hover. O ano aparece só onde é público.
+
+## Revisão de 24/11/2026 (rodada 4): imagem real no lugar da ilustração
+
+A pessoa reprovou as ilustrações SVG das viaturas ("nem parece ambulância"). A direção passa a ser:
+o premium vem de tipo, grid, espaço e imagem real bem tratada, não de desenho próprio.
+
+- **Imagem**: fotos reais da Ouromed quando chegarem; até lá, imagens e loops gerados no Google
+  Flow (sem texto, sem logo de terceiros, sem rosto em close). Um tratamento único para tudo
+  (`.media`): cor levemente contida, granulação fina, base em azul-noite. Sem arquivo, o slot mostra
+  em mono o que vai ali. Catálogo em `src/data/site.ts` (`media`), arquivos em `public/midia/`.
+- **Ícones**: Phosphor, traço regular, só nas linhas de serviço.
+- **Públicos**: seletor "Para você / Para empresas" no hero e no índice de serviços.
+- **Intro**: a marca se monta sobre o azul-noite na primeira visita da sessão (≤ 1,3 s, pulável,
+  fora em `prefers-reduced-motion`).
+- **Botões**: preenchimento azul-marinho que nasce do lado por onde o ponteiro entra.
+- **Emergência**: a Ouromed atende quando há viatura e equipe livres; o 192 vira nota de segurança.

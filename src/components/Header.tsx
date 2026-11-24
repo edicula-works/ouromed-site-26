@@ -5,9 +5,9 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { services, site } from '@/data/site';
 import { Phone, Roll, Whats } from './Icons';
-import { Wordmark } from './Illustrations';
 import { stagger } from './stagger';
 import { useWaHref } from './WaLink';
+import { Wordmark } from './Wordmark';
 
 export function Header() {
   const path = usePathname();

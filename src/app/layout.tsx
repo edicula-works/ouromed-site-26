@@ -25,7 +25,15 @@ export const metadata: Metadata = {
 };
 
 // Antes da primeira tinta: estilos "escondido até revelar" só valem com JS e com motion permitidos.
-const flags = `document.documentElement.classList.add('js');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion')`;
+// A intro da marca roda só na primeira visita da sessão e só com motion permitido.
+const flags = `(function(){var h=document.documentElement;h.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;h.classList.add('motion');try{if(!sessionStorage.getItem('om-intro')){sessionStorage.setItem('om-intro','1');h.classList.add('intro-on')}}catch(e){}})()`;
+
+// VLibras (tradução para Libras, do governo federal), carregado quando a página está ociosa.
+const vlibras = `(function(){var s=document.createElement('script');s.src='https://vlibras.gov.br/app/vlibras-plugin.js';s.async=true;s.onload=function(){try{new window.VLibras.Widget('https://vlibras.gov.br/app')}catch(e){}};document.body.appendChild(s)})()`;
+// Atributos sem hífen que o widget procura no DOM.
+const vw = { vw: '' } as Record<string, string>;
+const vwButton = { 'vw-access-button': '' } as Record<string, string>;
+const vwWrapper = { 'vw-plugin-wrapper': '' } as Record<string, string>;
 
 // Tag do Google Ads (ID 955189289, só remarketing; não havia label de conversão no site de 2011).
 const gtag = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${site.ads.id}');`;
@@ -73,6 +81,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: flags }} />
       </head>
       <body>
+        {/* Intro da marca (primeira visita): só aparece com a classe intro-on, posta pelo script de flags. */}
+        <div id="intro" aria-hidden="true">
+          <div className="intro__brand">
+            <svg viewBox="0 0 24 24" className="intro__mark" aria-hidden="true" focusable="false">
+              <circle cx={12} cy={12} r={11} fill="var(--c-gold)" />
+              <path
+                d="M12 6.5v11M6.5 12h11"
+                stroke="var(--c-night)"
+                strokeWidth={3}
+                strokeLinecap="round"
+              />
+            </svg>
+            <span className="intro__word">
+              <span className="intro__ouro">Ouro</span>
+              <span className="intro__med">med</span>
+            </span>
+          </div>
+          <span className="intro__line" />
+        </div>
         <a className="skip-link" href="#main">
           Pular para o conteúdo
         </a>
@@ -110,6 +137,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <Script id="gtag-init" strategy="afterInteractive">
           {gtag}
+        </Script>
+        <div {...vw} className="enabled">
+          <div {...vwButton} className="active" />
+          <div {...vwWrapper}>
+            <div className="vw-plugin-top-wrapper" />
+          </div>
+        </div>
+        <Script id="vlibras" strategy="lazyOnload">
+          {vlibras}
         </Script>
         <Motion />
       </body>
