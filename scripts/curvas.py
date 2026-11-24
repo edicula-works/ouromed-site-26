@@ -82,7 +82,7 @@ def main():
     svg = (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 {vb_h}" '
         f'preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" '
-        f'stroke-width="1" vector-effect="non-scaling-stroke">'
+        f'stroke-width="1.5" vector-effect="non-scaling-stroke">'
         f"<!-- Curvas de nível a cada {STEP} m: Serra do Curral e sul de Belo Horizonte "
         f"(lat {LAT}, lon {LON}). Dados: AWS Terrain Tiles (Terrarium). -->"
         + "".join(paths)

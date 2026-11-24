@@ -342,13 +342,13 @@ a {
 }
 .tex--hero {
   z-index: 1;
-  --tex-c: rgb(212 173 42 / 0.14);
+  --tex-c: rgb(212 173 42 / 0.15);
 }
 .tex--facts {
-  --tex-c: rgb(3 68 135 / 0.08);
+  --tex-c: rgb(3 68 135 / 0.13);
 }
 .tex--footer {
-  --tex-c: rgb(212 173 42 / 0.1);
+  --tex-c: rgb(212 173 42 / 0.14);
 }
 
 /* ────────────────────────────── Mídia ────────────────────────────── */
@@ -539,13 +539,13 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   width: 27rem;
   padding: 0.75rem;
   border-radius: 14px;
-  color: var(--c-ink);
-  background: rgb(250 251 252 / 0.95);
+  color: var(--c-paper);
+  background: rgb(11 37 69 / 0.94);
   -webkit-backdrop-filter: blur(18px) saturate(1.3);
   backdrop-filter: blur(18px) saturate(1.3);
   box-shadow:
-    0 0 0 1px rgb(255 255 255 / 0.6) inset,
-    0 24px 60px rgb(11 37 69 / 0.22);
+    0 0 0 1px var(--c-line-ink) inset,
+    0 24px 60px rgb(11 37 69 / 0.35);
   visibility: hidden;
   clip-path: inset(0 0 100% 0 round 14px);
   transition:
@@ -591,7 +591,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 }
 @media (hover: hover) {
   .drop__item:hover {
-    background: rgb(3 68 135 / 0.07);
+    background: rgb(247 248 249 / 0.07);
   }
 }
 .drop__icon {
@@ -599,7 +599,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   width: 1.5rem;
   height: 1.5rem;
   margin-top: 0.1rem;
-  color: var(--c-navy);
+  color: var(--c-gold);
 }
 .drop__name {
   grid-area: name;
@@ -609,7 +609,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   grid-area: lede;
   font-size: var(--t-xs);
   line-height: 1.4;
-  color: var(--c-muted);
+  color: var(--c-dust);
 }
 .drop__all {
   display: flex;
@@ -617,10 +617,10 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   min-height: 44px;
   margin: 0.25rem 0.75rem 0;
   padding-top: 0.5rem;
-  border-top: 1px solid var(--c-line);
+  border-top: 1px solid var(--c-line-ink);
   font-size: var(--t-s);
   font-weight: 500;
-  color: var(--c-navy);
+  color: var(--c-gold);
 }
 
 /* Menu do celular (padrão 6): overlay azul-noite que se abre por clip-path, itens em cascata. */
@@ -842,16 +842,17 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 }
 .fact dd {
   order: -1;
-  font-size: clamp(1.75rem, 1.1rem + 2.2vw, 3rem);
+  font-size: clamp(2.5rem, 1.2rem + 4.2vw, 5.25rem);
   font-weight: 700;
   font-stretch: 125%;
   text-transform: uppercase;
-  line-height: 1;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
   color: var(--c-navy);
 }
 .fact dt {
-  max-width: 18em;
-  font-size: var(--t-s);
+  max-width: 20em;
+  font-size: var(--t-body);
   color: var(--c-muted);
 }
 
@@ -1020,10 +1021,29 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   padding-top: 1.5rem;
   border-top: 1px solid var(--c-line-ink);
 }
+.quote blockquote {
+  position: relative;
+}
+.quote blockquote::before {
+  content: "\201C";
+  display: block;
+  height: 0.55em;
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--c-gold);
+}
 .quote blockquote p {
-  font-size: var(--t-body);
-  line-height: 1.6;
-  color: rgb(247 248 249 / 0.9);
+  font-size: var(--t-m);
+  line-height: 1.5;
+  color: rgb(247 248 249 / 0.92);
+}
+.quote:first-child blockquote p {
+  max-width: 34em;
+  font-size: var(--t-l);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--c-paper);
 }
 .quote figcaption {
   display: grid;
@@ -1383,7 +1403,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   color: var(--c-dust);
 }
 .footer__number {
-  font-size: clamp(2.25rem, 1rem + 5.2vw, 5.5rem);
+  font-size: clamp(1.75rem, 1rem + 2.6vw, 3.25rem);
   font-weight: 700;
   font-stretch: 125%;
   letter-spacing: -0.01em;
@@ -1445,6 +1465,19 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   text-underline-offset: 0.2em;
 }
 
+/* VLibras (widget do governo): no canto de baixo, acima da barra do celular, e fora do caminho
+   com o menu aberto. O widget fixa a própria posição inline, por isso o !important. */
+[vw].enabled {
+  /* biome-ignore lint/complexity/noImportantStyles: sobrepõe a posição inline do widget de terceiros */
+  top: auto !important;
+  /* biome-ignore lint/complexity/noImportantStyles: idem */
+  bottom: calc(var(--ctabar-h) + 1rem) !important;
+}
+.menu-open [vw] {
+  /* biome-ignore lint/complexity/noImportantStyles: idem */
+  display: none !important;
+}
+
 /* ────────────────────────────── Tablet ────────────────────────────── */
 
 @media (min-width: 640px) {
@@ -1487,10 +1520,36 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
     column-gap: var(--gutter);
   }
   .cards__grid--3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+  .cards__grid--3 .card:first-child {
+    grid-row: span 2;
+  }
+  .cards__grid--3 .card:first-child .card__link {
+    height: 100%;
+    grid-template-rows: 1fr auto;
+  }
+  .cards__grid--3 .card:first-child .card__media {
+    aspect-ratio: auto;
+    min-height: 100%;
+  }
+  .cards__grid--3 .card:first-child .card__name {
+    font-size: var(--t-l);
+  }
+  .cards__grid--3 .card:not(:first-child) .card__media {
+    aspect-ratio: 16 / 9;
   }
   .cards__grid--4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .cards__grid--4 .card__media {
+    aspect-ratio: 3 / 4;
+  }
+  .quotes__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .quote:first-child {
+    grid-column: 1 / -1;
   }
   .types__grid {
     grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
@@ -1502,8 +1561,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   .kit {
     grid-column: 1 / -1;
   }
-  .when__grid,
-  .quotes__grid {
+  .when__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .faq__grid {

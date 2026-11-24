@@ -1,8 +1,8 @@
 # O padrão: Awwwards × ambulâncias × Ouromed
 
 Medido em 24/11/2026 com `scripts/padrao.mjs` (Playwright, 1440×900 e 390×844, as mesmas regras em
-todos os sites, banners de cookie escondidos). Dados brutos: `padrao/medidas.json`. Capturas da 1ª tela:
-`padrao/primeira-tela-desktop.jpg` e `padrao/primeira-tela-celular.jpg`.
+todos os sites, banners de cookie escondidos). Dados brutos: `padrao/medidas.json`. As capturas de tela dos sites (de terceiros) ficam fora deste
+repositório público, na pasta de análises do gestor (`analises/raw/padrao-ouromed/`).
 
 **Amostra**
 - **Awwwards:** olympic.no (HM), namaha.healthcare (HM), lifecare.org.au e rega.ch. O gematik.de saiu da
