@@ -14,3 +14,7 @@ Edícula Works (time EDC).
   avaliações e concorrência no Google, imagens (logos de clientes e fotos de eventos).
 
 Stack: Next.js (App Router) · TypeScript · Tailwind CSS · Biome · Bun · Vercel.
+
+**Repositório público** (a Vercel importa direto dele). Por isso: nunca versionar credencial, dado pessoal
+(de cliente, paciente ou avaliador), conteúdo interno do cliente além do que ele já publica, e nem note de
+trabalho da Edícula — essas coisas ficam na issue do Linear ou em `PROGRESSO.md` (fora do git).

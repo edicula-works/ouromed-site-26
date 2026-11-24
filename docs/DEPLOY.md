@@ -13,6 +13,12 @@ a Vercel detecta o framework e serve o `out/` sem configuração extra. O `verce
 - **Cache imutável** para `_next/static/*` e cabeçalhos básicos de segurança. Sem CSP por enquanto (scripts inline
   de flags e do gtag exigiriam nonce/hash; fica para a v1.1).
 
+## Por que o repositório é público
+
+A conta Vercel da Edícula importa repositórios sem custo só quando são abertos; repo privado exigiria plano pago.
+Em exchange, **nada de credencial, dado pessoal ou conteúdo interno entra aqui** (ver `README.md`). O código de
+um site institucional é público por natureza — o que o navegador recebe é este build.
+
 ## Criar o projeto (uma vez, por uma pessoa)
 
 1. Vercel → *Add New → Project* → importar `edicula-works/ouromed-site-26`.
