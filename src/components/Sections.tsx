@@ -83,7 +83,7 @@ export function Hero() {
             <span>Padrão{'\u00a0'}ouro</span>
           </span>{' '}
           <span className="hl">
-            <span>em saúde{'\u00a0'}móvel.</span>
+            <span>em saúde móvel.</span>
           </span>
         </h1>
         <p className="hero__lede">

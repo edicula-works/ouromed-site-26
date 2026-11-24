@@ -1601,6 +1601,10 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   .hero {
     min-height: max(32rem, 88svh);
   }
+  /* "PADRÃO OURO" não quebra: o tamanho cabe nos 390 px do celular. */
+  .hero__title {
+    font-size: min(2.25rem, 9vw);
+  }
   .ctabar {
     position: fixed;
     left: 0;
