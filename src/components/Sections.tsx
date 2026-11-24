@@ -325,6 +325,9 @@ export function Testimonials() {
           <h2 id="q-h" className="sec__title" data-split="lines">
             Quem já contou com a Ouromed
           </h2>
+          <p className="sec__lede" data-reveal="fade">
+            Rodeio, shopping e televisão: três parceiros, três depoimentos publicados pela Ouromed.
+          </p>
           <p className="sec__read read to-spine">{testimonials.length} depoimentos</p>
         </header>
         <div className="quote__grid">

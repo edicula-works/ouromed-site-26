@@ -10,7 +10,7 @@ export function Footer() {
       <div className="wrap">
         <div className="footer__top">
           <p className="footer__lede">
-            Central 24 h com triagem médica.
+            Central 24 horas com triagem médica.
             <br />
             Em Belo Horizonte e em todo o Brasil.
           </p>
@@ -47,6 +47,8 @@ export function Footer() {
                 </a>
               </li>
             </ul>
+          </div>
+          <div className="footer__col">
             <h2 className="footer__h">E-mails</h2>
             <ul className="footer__list">
               <li>

@@ -2,7 +2,7 @@
 // dentro (módulos 'use client' também rodam no servidor).
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { isMobile, onPage, onScroll, prefersReducedMotion } from '@/engine';
+import { isMobile, isTouch, onPage, onScroll, prefersReducedMotion } from '@/engine';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,6 +12,49 @@ export function setupMotion() {
   header();
   howItWorks();
   drive();
+  serviceRows();
+}
+
+/** Índice de serviços: ao passar o ponteiro (ou focar), a viatura da linha anda: rodas giram. */
+function serviceRows() {
+  onPage(() => {
+    if (isTouch()) return;
+    const offs: (() => void)[] = [];
+    document.querySelectorAll<HTMLElement>('.svc__link').forEach((link) => {
+      const wheels = link.querySelectorAll('[data-wheel]');
+      if (!wheels.length) return;
+      let spin: gsap.core.Tween | null = null;
+      const start = () => {
+        spin = gsap.to(wheels, {
+          rotate: '+=360',
+          duration: 1.2,
+          ease: 'none',
+          repeat: -1,
+          overwrite: true,
+          transformOrigin: '50% 50%',
+        });
+      };
+      const stop = () => {
+        spin?.kill();
+        spin = null;
+      };
+      link.addEventListener('pointerenter', start);
+      link.addEventListener('pointerleave', stop);
+      link.addEventListener('focusin', start);
+      link.addEventListener('focusout', stop);
+      offs.push(() => {
+        stop();
+        link.removeEventListener('pointerenter', start);
+        link.removeEventListener('pointerleave', stop);
+        link.removeEventListener('focusin', start);
+        link.removeEventListener('focusout', stop);
+      });
+    });
+    return () =>
+      offs.forEach((f) => {
+        f();
+      });
+  });
 }
 
 /** A espinha: a linha ouro desenha-se do topo até perto da borda de baixo, conforme o scroll. */
@@ -100,6 +143,7 @@ function drive() {
       duration: 9,
       ease: 'none',
       repeat: -1,
+      transformOrigin: '50% 50%',
     });
     const road = dashes.length
       ? gsap.to(dashes, {

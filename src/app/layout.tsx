@@ -10,11 +10,10 @@ import './globals.css';
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: 'Ouromed: ambulância UTI, atendimento domiciliar e remoção em BH | Central 24 h',
+    default: 'Ouromed: ambulância UTI e atendimento domiciliar em BH | Central 24 h',
     template: '%s | Ouromed',
   },
   description: site.description,
-  alternates: { canonical: './' },
   openGraph: {
     type: 'website',
     locale: 'pt_BR',

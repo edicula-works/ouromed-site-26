@@ -95,7 +95,7 @@ export const site = {
   tagline: 'Padrão ouro em saúde móvel',
   url: 'https://ouromedbh.com.br',
   description:
-    'Ambulância UTI móvel e suporte básico, atendimento domiciliar, remoção de pacientes e cobertura médica de eventos em Belo Horizonte e todo o Brasil. Central 24 h com triagem médica.',
+    'Ambulância UTI móvel, atendimento domiciliar, remoção de pacientes e cobertura médica de eventos em BH e todo o Brasil. Central 24 h com triagem médica.',
   phones: {
     display: '(31) 3786-1506',
     tel: '+553137861506',
@@ -138,6 +138,21 @@ export const site = {
 };
 
 const equipeAvancada = 'Equipe de médicos, enfermagem e socorristas treinados da Ouromed.';
+
+/** Texto alternativo das ilustrações (imagem de conteúdo: descreve o que se vê). */
+export const illustrationAlt: Record<IllustrationKey, string> = {
+  uti: 'Ambulância UTI móvel da Ouromed, de perfil, com a faixa ouro e a barra de luz',
+  basico: 'Ambulância de suporte básico da Ouromed, de perfil, com a faixa ouro',
+  locacao: 'Ambulância 4×4 para locação, de perfil, com a faixa ouro',
+  domiciliar: 'Casa com bolsa médica ao lado: atendimento domiciliar',
+  remocao: 'Cadeira de rodas sobre a via: remoção de pacientes',
+  eventos: 'Tenda de evento com bandeirolas e cruz médica',
+  protegida: 'Prédio cercado por área tracejada e escudo com cruz',
+  ambulatorios: 'Ambulatório com porta e capacete de obra ao lado',
+  telefone: 'Telefone com a central: ondas de chamada dos dois lados',
+  triagem: 'Headset da triagem médica com a cabeça tracejada de quem ligou',
+  destino: 'Hospital com cruz na fachada, o destino do atendimento',
+};
 
 export const services: Service[] = [
   {
@@ -243,7 +258,7 @@ export const services: Service[] = [
     illustration: 'domiciliar',
     seoTitle: 'Atendimento médico domiciliar em Belo Horizonte',
     description:
-      'Médico e enfermagem em casa em Belo Horizonte: atendimento pré-hospitalar (APH) para particulares e empresas de home care, com triagem médica pela Central 24 h. Ligue (31) 3786-1506.',
+      'Médico e enfermagem em casa em Belo Horizonte: atendimento pré-hospitalar (APH) para particulares e empresas de home care, com triagem pela Central 24 h.',
     h1: 'Atendimento médico em casa, com a resolutividade de uma equipe de urgência',
     intro:
       'A Ouromed nasceu do atendimento de urgência e emergência. É essa experiência que chega à sua porta: médico em casa, com a resolutividade de quem vive urgência. Em casa, quando dá para ficar em casa.',
@@ -315,7 +330,7 @@ export const services: Service[] = [
     illustration: 'remocao',
     seoTitle: 'Remoção de pacientes em BH e todo o Brasil',
     description:
-      'Remoção de pacientes adulto, pediátrico, neonatal e psiquiátrico, 24 h, com UTI móvel e equipe própria. Alta hospitalar e transferência entre cidades e estados. Ligue (31) 3786-1506.',
+      'Remoção de pacientes adulto, pediátrico, neonatal e psiquiátrico, 24 h, com UTI móvel e equipe própria, em BH e todo o Brasil. Ligue (31) 3786-1506.',
     h1: 'Remoção de pacientes, da alta hospitalar à viagem entre estados',
     intro:
       'Cada remoção começa com uma pergunta: o que esse paciente precisa durante o caminho? A resposta define a viatura, a equipe e o equipamento.',
@@ -399,7 +414,7 @@ export const services: Service[] = [
     illustration: 'eventos',
     seoTitle: 'Ambulância e médico para eventos em BH e todo o Brasil',
     description:
-      'Cobertura médica para congressos, shows, casamentos, formaturas, rodeios e feiras: ambulância, ambulatório montado e equipe de suporte básico e avançado. Peça orçamento.',
+      'Cobertura médica para congressos, shows, casamentos, formaturas, rodeios e feiras: ambulância, ambulatório montado e equipe de suporte básico e avançado.',
     h1: 'Cobertura médica para o seu evento, do casamento ao congresso',
     intro:
       'A Ouromed leva o suporte adequado ao porte do evento: uma ambulância, um ambulatório montado no local, ou uma equipe completa. Em Minas ou em qualquer estado do Brasil.',
@@ -466,7 +481,7 @@ export const services: Service[] = [
     illustration: 'locacao',
     seoTitle: 'Locação de ambulâncias 4×2 e 4×4 para empresas',
     description:
-      'Locação de ambulâncias para mineradoras, siderúrgicas, construção civil, shoppings e empresas: furgões pequenos e grandes, 4×2 e 4×4, com equipamentos médicos e telemetria. Fale com a Ouromed.',
+      'Locação de ambulâncias para mineradoras, construção civil, shoppings e empresas: furgões 4×2 e 4×4, com equipamentos médicos e telemetria. Fale com a Ouromed.',
     h1: 'Locação de ambulâncias para quem não pode parar',
     intro:
       'Mineração, siderurgia, construção civil, shoppings: operações em que a ambulância faz parte do planejamento de segurança. A Ouromed fornece a viatura certa, com os opcionais que a sua operação exige.',
@@ -520,9 +535,9 @@ export const services: Service[] = [
     title: 'Área protegida',
     lede: 'Contrato de urgência para empresas, shoppings, escolas e condomínios: você aciona, a equipe vai até você.',
     illustration: 'protegida',
-    seoTitle: 'Área protegida: contrato de urgência para empresas e condomínios',
+    seoTitle: 'Área protegida: urgência para empresas e condomínios',
     description:
-      'Área protegida Ouromed: sua empresa, shopping, escola ou condomínio aciona a Central e recebe uma equipe de urgência no local, após triagem médica. Fale com a Ouromed.',
+      'Área protegida Ouromed: sua empresa, shopping, escola ou condomínio aciona a Central e recebe uma equipe de urgência no local, após triagem médica.',
     h1: 'Área protegida: a equipe de urgência a uma ligação do seu negócio',
     intro:
       'Clubes, shoppings, colégios, faculdades, condomínios, empresas, clínicas de exames e laboratórios já aderiram. Em uma intercorrência com cliente ou funcionário, você aciona a Central e a equipe vai até você.',
@@ -859,9 +874,9 @@ export const homeFaq: Faq[] = [
 ];
 
 export const about = {
-  seoTitle: 'Sobre a Ouromed: saúde móvel com padrão ouro, feita por médicos',
+  seoTitle: 'Sobre a Ouromed: padrão ouro em saúde móvel',
   description:
-    'A Ouromed foi fundada e administrada por médicos de urgência e emergência. Conheça a equipe, a frota, o PQO (Padrão de Qualidade Ouromed) e a conduta que a Central 24 h segue.',
+    'A Ouromed é fundada e administrada por médicos de urgência e emergência. Conheça a equipe, a frota, o PQO e a conduta que a Central 24 h segue.',
   h1: 'Feita por médicos de urgência, do começo ao fim',
   intro:
     'Ouro de Minas, padrão ouro. A Ouromed nasceu da analogia entre o ouro das Minas Gerais e o gold standard dos nossos serviços, e é administrada por quem vive urgência e emergência.',
@@ -949,4 +964,9 @@ export const contact = {
   },
 };
 
-export const serviceBySlug = (slug: string) => services.find((s) => s.slug === slug);
+/** Serviço por slug; lança se o slug não existe (as rotas são fixas, então isso é erro de build). */
+export const serviceBySlug = (slug: string): Service => {
+  const s = services.find((x) => x.slug === slug);
+  if (!s) throw new Error(`Serviço '${slug}' não existe em src/data/site.ts`);
+  return s;
+};

@@ -16,7 +16,7 @@ import { homeFaq, site } from '@/data/site';
 
 export const metadata: Metadata = {
   title: {
-    absolute: 'Ouromed: ambulância UTI, atendimento domiciliar e remoção em BH | Central 24 h',
+    absolute: 'Ouromed: ambulância UTI e atendimento domiciliar em BH | Central 24 h',
   },
   description: site.description,
   alternates: { canonical: './' },
