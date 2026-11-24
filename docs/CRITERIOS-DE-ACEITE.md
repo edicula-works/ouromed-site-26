@@ -60,7 +60,6 @@ escrito.
 |---|---|---|---|
 | 6.1 | Gerada de dados reais de relevo, com o script no repositório | escolha da pessoa | Manual |
 | 6.2 | Em **≤ 3 lugares**, opacidade **≤ 15 %**, arquivo **≤ 60 KB**, nunca sob texto corrido | — | Auto |
-| 6.4 | O horizonte da Serra do Curral (`scripts/serra.py`) é o acento principal; as curvas de nível ficam secundárias (só atrás dos números) | decisão da pessoa, 24/11 | Manual |
 | 6.3 | Um crítico novo identifica "relevo" ou "linhas topográficas" sem ser avisado | — | Manual (júri) |
 
 ## 7. Técnica e acessibilidade

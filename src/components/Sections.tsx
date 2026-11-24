@@ -22,8 +22,7 @@ import { Arrow, Phone, Plus, Whats } from './Icons';
 import { Media } from './Media';
 import { ServiceIcon } from './ServiceIcon';
 
-/** Textura da marca, de dados reais de relevo: o horizonte da Serra do Curral (scripts/serra.py,
- *  `tex--horizon`) e, secundárias, as curvas de nível (scripts/curvas.py). */
+/** Textura da marca: curvas de nível reais da Serra do Curral (scripts/curvas.py). */
 export function Texture({ className }: { className: string }) {
   return <span className={`tex ${className}`} aria-hidden="true" data-parallax="0.06" />;
 }
