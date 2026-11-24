@@ -361,8 +361,11 @@ a {
   height: 100%;
   -webkit-mask-image: url("/textura/bh-serra.png");
   mask-image: url("/textura/bh-serra.png");
-  -webkit-mask-position: center 30%;
-  mask-position: center 30%;
+  /* Ancorado no alto: a crista da serra inteira; o primeiro plano do desenho fica de fora. */
+  -webkit-mask-size: 100% auto;
+  mask-size: 100% auto;
+  -webkit-mask-position: center top;
+  mask-position: center top;
 }
 .tex--hero {
   z-index: 1;
@@ -1486,7 +1489,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 }
 .footer__ridge {
   position: relative;
-  height: clamp(9rem, 20vw, 17rem);
+  height: clamp(9rem, 25vw, 22rem);
   margin-inline: calc(var(--gutter) * -1);
   overflow: hidden;
 }
