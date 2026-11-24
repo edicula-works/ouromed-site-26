@@ -71,14 +71,17 @@ própria (traço de tinta, preenchimentos chapados); título nunca em ouro sobre
 | `ink` | `#1E1B17` | texto, cortina, fundo do rodapé e das bandas escuras |
 | `muted` | `#6A6258` | texto secundário (5,3:1 sobre papel) |
 | `line` | `rgb(30 27 23 / 0.14)` | fios |
-| `gold` | `#C9952B` | a linha, preenchimento do CTA, leitura grande sobre tinta (6,4:1). Nunca texto pequeno sobre papel (2,4:1) |
-| `gold-deep` | `#A87A1E` | estado hover do ouro |
+| `gold` | `#D4AD2A` | ouro do logotipo: a linha, preenchimento do CTA, leitura grande sobre o azul-noite (7,6:1). Nunca texto pequeno sobre papel (2,1:1) |
+| `gold-deep` | `#B48F17` | estado hover do ouro |
+| `navy` | `#034487` | azul-marinho do logotipo ("med"): títulos h1/h2 (8,6:1 sobre papel) e o "med" da marca |
+| `night` | `#0B2545` | superfície escura: banda de cobertura, depoimentos, menu, rodapé, cortina |
 | `steel` | `#4F5B66` | vidros e equipamentos na ilustração; texto alternativo (6,3:1) |
 | `red` | `#B3261E` | só emergência (192, faixa de urgência) |
 | `white` | `#FFFDF9` | carroceria das viaturas |
 
-Duas cores de marca (ouro, tinta) e uma de ação (vermelho, com semântica de emergência). O azul
-clínico fica de fora de propósito: a referência de saúde premiada é quente.
+Duas cores de marca, as do logotipo (ouro e azul-marinho), e uma de ação (vermelho, com semântica
+de emergência). A tinta é só texto corrido; superfícies escuras são azul-noite. (Revisão de
+24/11/2026: o logotipo da Ouromed é ouro + azul-marinho; o papel quente continua.)
 
 ### Tipo
 

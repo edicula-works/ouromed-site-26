@@ -561,17 +561,6 @@ p {
   line-height: 1;
   padding-bottom: 0.14em;
   font-style: italic;
-  background: linear-gradient(var(--c-gold), var(--c-gold)) 0 100% / 2.05em 0.11em no-repeat;
-  transition: background-size 0.5s var(--ease-out);
-}
-/* A linha ouro da marca se estende do "Ouro" para o nome inteiro. */
-@media (hover: hover) {
-  .hdr__brand:hover .wordmark__text {
-    background-size: 100% 0.11em;
-  }
-}
-.hdr__brand:focus-visible .wordmark__text {
-  background-size: 100% 0.11em;
 }
 .wordmark__ouro {
   color: var(--c-gold);
