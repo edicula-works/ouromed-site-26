@@ -29,11 +29,42 @@ export type IllustrationKey =
   | 'destino';
 
 export type Block =
-  | { type: 'prose'; heading: string; id?: string; paragraphs?: string[]; list?: string[]; note?: string }
-  | { type: 'compare'; heading: string; id?: string; intro?: string; columns: [string, string]; rows: { label: string; a: string; b: string }[] }
-  | { type: 'steps'; heading: string; id?: string; intro?: string; steps: { title: string; text: string }[] }
-  | { type: 'list'; heading: string; id?: string; intro?: string; items: { title: string; text: string }[] }
-  | { type: 'channels'; heading: string; id?: string; rows: { label: string; value: string; href?: string }[] }
+  | {
+      type: 'prose';
+      heading: string;
+      id?: string;
+      paragraphs?: string[];
+      list?: string[];
+      note?: string;
+    }
+  | {
+      type: 'compare';
+      heading: string;
+      id?: string;
+      intro?: string;
+      columns: [string, string];
+      rows: { label: string; a: string; b: string }[];
+    }
+  | {
+      type: 'steps';
+      heading: string;
+      id?: string;
+      intro?: string;
+      steps: { title: string; text: string }[];
+    }
+  | {
+      type: 'list';
+      heading: string;
+      id?: string;
+      intro?: string;
+      items: { title: string; text: string }[];
+    }
+  | {
+      type: 'channels';
+      heading: string;
+      id?: string;
+      rows: { label: string; value: string; href?: string }[];
+    }
   | { type: 'events'; heading: string; id?: string };
 
 export type Faq = { q: string; a: string };
@@ -82,8 +113,12 @@ export const site = {
     maps: 'https://www.google.com/maps/search/?api=1&query=Ouromed+Servi%C3%A7o+M%C3%B3vel+de+Sa%C3%BAde+Rua+Senador+L%C3%BAcio+Bittencourt+53+Belo+Horizonte',
   },
   // Ficha no Google: 3,6 em 25 avaliações, não reivindicada. Link de avaliação depende do place id.
-  googleReview: 'https://www.google.com/maps/search/?api=1&query=Ouromed+Servi%C3%A7o+M%C3%B3vel+de+Sa%C3%BAde+Belo+Horizonte',
-  emergency: { label: 'Em caso de emergência, ligue 192 (SAMU).', tel: 'tel:192' },
+  googleReview:
+    'https://www.google.com/maps/search/?api=1&query=Ouromed+Servi%C3%A7o+M%C3%B3vel+de+Sa%C3%BAde+Belo+Horizonte',
+  emergency: {
+    label: 'Em caso de emergência, ligue 192 (SAMU).',
+    tel: 'tel:192',
+  },
   ads: { id: 'AW-955189289' },
   trust: [
     'Fundada e administrada por médicos de urgência e emergência',
@@ -112,9 +147,21 @@ export const services: Service[] = [
         intro: 'O que muda de uma para a outra é o que o paciente precisa durante o caminho.',
         columns: ['Suporte básico', 'UTI móvel'],
         rows: [
-          { label: 'Para quê', a: 'Transporte de paciente estável: exames, consultas, alta, transferência sem risco.', b: 'Paciente que precisa de suporte avançado durante o trajeto.' },
-          { label: 'Equipe', a: 'Socorrista e motorista com COVE.', b: 'Médico, enfermeiro e socorrista.' },
-          { label: 'Equipamento', a: 'Oxigênio, maca retrátil, pranchas de imobilização.', b: 'Respirador pulmonar, bombas de infusão, cardioversor com ECG digital, oxigênio fixo e portátil, oxímetro, incubadora de transporte de recém-nascidos.' },
+          {
+            label: 'Para quê',
+            a: 'Transporte de paciente estável: exames, consultas, alta, transferência sem risco.',
+            b: 'Paciente que precisa de suporte avançado durante o trajeto.',
+          },
+          {
+            label: 'Equipe',
+            a: 'Socorrista e motorista com COVE.',
+            b: 'Médico, enfermeiro e socorrista.',
+          },
+          {
+            label: 'Equipamento',
+            a: 'Oxigênio, maca retrátil, pranchas de imobilização.',
+            b: 'Respirador pulmonar, bombas de infusão, cardioversor com ECG digital, oxigênio fixo e portátil, oxímetro, incubadora de transporte de recém-nascidos.',
+          },
         ],
       },
       {
@@ -136,22 +183,45 @@ export const services: Service[] = [
         type: 'list',
         heading: 'Quando chamar cada uma',
         items: [
-          { title: 'Suporte básico', text: 'Alta hospitalar de paciente estável, ida a exame, consulta, retorno para casa.' },
-          { title: 'UTI móvel', text: 'Paciente dependente de respirador ou medicação contínua, transferência entre hospitais, neonatal, viagens longas.' },
-          { title: 'Emergência', text: 'Ligue 192 (SAMU) ou para a Central 24 h da Ouromed: a triagem orienta.' },
+          {
+            title: 'Suporte básico',
+            text: 'Alta hospitalar de paciente estável, ida a exame, consulta, retorno para casa.',
+          },
+          {
+            title: 'UTI móvel',
+            text: 'Paciente dependente de respirador ou medicação contínua, transferência entre hospitais, neonatal, viagens longas.',
+          },
+          {
+            title: 'Emergência',
+            text: 'Ligue 192 (SAMU) ou para a Central 24 h da Ouromed: a triagem orienta.',
+          },
         ],
       },
       {
         type: 'prose',
         heading: 'Para quem',
-        paragraphs: ['Famílias, hospitais e clínicas, e empresas de home care que precisam de uma equipe de urgência como parceira.'],
+        paragraphs: [
+          'Famílias, hospitais e clínicas, e empresas de home care que precisam de uma equipe de urgência como parceira.',
+        ],
       },
     ],
     faq: [
-      { q: 'Levam paciente para ressonância?', a: 'Sim. As pranchas de imobilização são de polietileno, adequadas a exames de ressonância magnética.' },
-      { q: 'A UTI móvel tem médico?', a: 'Sim: médico, enfermeiro e socorrista, com equipamento de suporte avançado a bordo.' },
-      { q: 'Atendem bebês?', a: 'Sim. Incubadora de transporte de recém-nascidos e equipe de neonatologia.' },
-      { q: 'Fazem viagem para outro estado?', a: 'Sim, em todo o território nacional mediante agendamento.' },
+      {
+        q: 'Levam paciente para ressonância?',
+        a: 'Sim. As pranchas de imobilização são de polietileno, adequadas a exames de ressonância magnética.',
+      },
+      {
+        q: 'A UTI móvel tem médico?',
+        a: 'Sim: médico, enfermeiro e socorrista, com equipamento de suporte avançado a bordo.',
+      },
+      {
+        q: 'Atendem bebês?',
+        a: 'Sim. Incubadora de transporte de recém-nascidos e equipe de neonatologia.',
+      },
+      {
+        q: 'Fazem viagem para outro estado?',
+        a: 'Sim, em todo o território nacional mediante agendamento.',
+      },
     ],
     cta: [{ label: 'Ligar para a Central 24 h', href: 'tel:+553137861506' }],
   },
@@ -180,19 +250,40 @@ export const services: Service[] = [
         heading: 'O que a equipe faz em casa',
         intro: 'A Ouromed obtém alta resolutividade em casa e baixa taxa de remoção hospitalar.',
         items: [
-          { title: 'Avaliação médica', text: 'Quem chega é médico de urgência, com equipamento de urgência, não só uma bolsa.' },
-          { title: 'Medicação e soroterapia', text: 'Aplicação e acompanhamento no local.' },
-          { title: 'Curativos e sinais', text: 'Curativos e verificação de sinais, com registro do que foi feito.' },
-          { title: 'Encaminhamento', text: 'Quando o caso pede hospital, a mesma equipe transporta, sem quebrar o cuidado.' },
+          {
+            title: 'Avaliação médica',
+            text: 'Quem chega é médico de urgência, com equipamento de urgência, não só uma bolsa.',
+          },
+          {
+            title: 'Medicação e soroterapia',
+            text: 'Aplicação e acompanhamento no local.',
+          },
+          {
+            title: 'Curativos e sinais',
+            text: 'Curativos e verificação de sinais, com registro do que foi feito.',
+          },
+          {
+            title: 'Encaminhamento',
+            text: 'Quando o caso pede hospital, a mesma equipe transporta, sem quebrar o cuidado.',
+          },
         ],
       },
       {
         type: 'steps',
         heading: 'Como funciona',
         steps: [
-          { title: 'Você liga para a Central 24 h', text: 'Uma triagem médica decide o que o caso precisa.' },
-          { title: 'A equipe adequada vai até você', text: 'Com equipamento de urgência, não só uma bolsa.' },
-          { title: 'Se precisar de hospital, a mesma equipe transporta', text: 'Sem quebrar o cuidado.' },
+          {
+            title: 'Você liga para a Central 24 h',
+            text: 'Uma triagem médica decide o que o caso precisa.',
+          },
+          {
+            title: 'A equipe adequada vai até você',
+            text: 'Com equipamento de urgência, não só uma bolsa.',
+          },
+          {
+            title: 'Se precisar de hospital, a mesma equipe transporta',
+            text: 'Sem quebrar o cuidado.',
+          },
         ],
       },
       {
@@ -206,9 +297,18 @@ export const services: Service[] = [
       },
     ],
     faq: [
-      { q: 'Fazem atendimento para empresas de home care?', a: 'Sim, é um dos serviços principais da Ouromed desde a origem.' },
-      { q: 'Atendem idosos acamados?', a: 'Sim. Há equipe de geriatria e gerontologia para o atendimento ao idoso.' },
-      { q: 'A equipe leva equipamento de urgência?', a: 'Sim. O atendimento é feito por uma equipe de urgência, com o equipamento que o caso pede.' },
+      {
+        q: 'Fazem atendimento para empresas de home care?',
+        a: 'Sim, é um dos serviços principais da Ouromed desde a origem.',
+      },
+      {
+        q: 'Atendem idosos acamados?',
+        a: 'Sim. Há equipe de geriatria e gerontologia para o atendimento ao idoso.',
+      },
+      {
+        q: 'A equipe leva equipamento de urgência?',
+        a: 'Sim. O atendimento é feito por uma equipe de urgência, com o equipamento que o caso pede.',
+      },
     ],
     cta: [{ label: 'Ligar para a Central 24 h', href: 'tel:+553137861506' }],
   },
@@ -229,38 +329,79 @@ export const services: Service[] = [
         type: 'list',
         heading: 'Tipos de remoção',
         items: [
-          { title: 'Alta hospitalar', text: 'Do hospital para casa, com o cuidado que o paciente ainda precisa no trajeto.' },
-          { title: 'Transferência entre hospitais', text: 'Suporte básico ou UTI móvel conforme o caso.' },
-          { title: 'Entre cidades e estados', text: 'Em todo o Brasil, mediante agendamento.' },
-          { title: 'Pediátrica e neonatal', text: 'Incubadora de transporte, equipe de pediatria e neonatologia.' },
-          { title: 'Psiquiátrica', text: 'Equipe treinada para o transporte seguro.' },
+          {
+            title: 'Alta hospitalar',
+            text: 'Do hospital para casa, com o cuidado que o paciente ainda precisa no trajeto.',
+          },
+          {
+            title: 'Transferência entre hospitais',
+            text: 'Suporte básico ou UTI móvel conforme o caso.',
+          },
+          {
+            title: 'Entre cidades e estados',
+            text: 'Em todo o Brasil, mediante agendamento.',
+          },
+          {
+            title: 'Pediátrica e neonatal',
+            text: 'Incubadora de transporte, equipe de pediatria e neonatologia.',
+          },
+          {
+            title: 'Psiquiátrica',
+            text: 'Equipe treinada para o transporte seguro.',
+          },
         ],
       },
       {
         type: 'steps',
         heading: 'Como funciona, passo a passo',
         steps: [
-          { title: 'Ligue para a Central 24 h', text: 'Ou escreva para agendamento@ouromedbh.com.br.' },
+          {
+            title: 'Ligue para a Central 24 h',
+            text: 'Ou escreva para agendamento@ouromedbh.com.br.',
+          },
           { title: 'Triagem médica', text: 'Avalia o paciente e o trecho.' },
-          { title: 'Viatura e equipe', text: 'Suporte básico ou UTI móvel; médico, enfermeiro e socorrista quando preciso.' },
-          { title: 'Equipamentos calibrados', text: 'Pranchas adequadas a ressonância, cadeira de resgate tamanho especial.' },
-          { title: 'Destino e entrega', text: 'O cuidado se mantém até o paciente estar onde deveria estar.' },
+          {
+            title: 'Viatura e equipe',
+            text: 'Suporte básico ou UTI móvel; médico, enfermeiro e socorrista quando preciso.',
+          },
+          {
+            title: 'Equipamentos calibrados',
+            text: 'Pranchas adequadas a ressonância, cadeira de resgate tamanho especial.',
+          },
+          {
+            title: 'Destino e entrega',
+            text: 'O cuidado se mantém até o paciente estar onde deveria estar.',
+          },
         ],
       },
       {
         type: 'prose',
         heading: 'Conforto no caminho',
-        paragraphs: ['Macas com colchão, bancos com revestimento macio. Viagens longas não precisam doer.'],
+        paragraphs: [
+          'Macas com colchão, bancos com revestimento macio. Viagens longas não precisam doer.',
+        ],
       },
     ],
     faq: [
-      { q: 'Fazem remoção para outro estado?', a: 'Sim, em todo o território nacional mediante agendamento.' },
-      { q: 'Levam paciente cadeirante ou com obesidade?', a: 'Sim: cadeira de resgate tamanho especial e pranchas adequadas.' },
-      { q: 'Têm incubadora para recém-nascido?', a: 'Sim: incubadora de transporte de recém-nascidos.' },
+      {
+        q: 'Fazem remoção para outro estado?',
+        a: 'Sim, em todo o território nacional mediante agendamento.',
+      },
+      {
+        q: 'Levam paciente cadeirante ou com obesidade?',
+        a: 'Sim: cadeira de resgate tamanho especial e pranchas adequadas.',
+      },
+      {
+        q: 'Têm incubadora para recém-nascido?',
+        a: 'Sim: incubadora de transporte de recém-nascidos.',
+      },
     ],
     cta: [
       { label: 'Ligar para a Central 24 h', href: 'tel:+553137861506' },
-      { label: 'Agendar por e-mail', href: 'mailto:agendamento@ouromedbh.com.br' },
+      {
+        label: 'Agendar por e-mail',
+        href: 'mailto:agendamento@ouromedbh.com.br',
+      },
     ],
   },
   {
@@ -280,26 +421,52 @@ export const services: Service[] = [
         type: 'list',
         heading: 'O que a Ouromed leva',
         items: [
-          { title: 'Ambulância em posição', text: 'Suporte básico ou UTI móvel, conforme o porte e o risco do evento.' },
-          { title: 'Ambulatório médico no local', text: 'Macas, desfibriladores, cadeiras de rodas e os medicamentos necessários para o pronto socorro.' },
-          { title: 'Equipe de suporte básico e avançado', text: 'Médico, enfermeiro e socorristas, com material médico-hospitalar suficiente para qualquer pessoa que precise.' },
-          { title: 'Todo o território nacional', text: 'Eventos em qualquer estado, mediante agendamento.' },
+          {
+            title: 'Ambulância em posição',
+            text: 'Suporte básico ou UTI móvel, conforme o porte e o risco do evento.',
+          },
+          {
+            title: 'Ambulatório médico no local',
+            text: 'Macas, desfibriladores, cadeiras de rodas e os medicamentos necessários para o pronto socorro.',
+          },
+          {
+            title: 'Equipe de suporte básico e avançado',
+            text: 'Médico, enfermeiro e socorristas, com material médico-hospitalar suficiente para qualquer pessoa que precise.',
+          },
+          {
+            title: 'Todo o território nacional',
+            text: 'Eventos em qualquer estado, mediante agendamento.',
+          },
         ],
       },
       {
         type: 'prose',
         heading: 'Para que tipo de evento',
-        paragraphs: ['Congressos, feiras empresariais, shows e festivais, casamentos e formaturas, rodeios, funerais, comboios VIP e competições esportivas.'],
+        paragraphs: [
+          'Congressos, feiras empresariais, shows e festivais, casamentos e formaturas, rodeios, funerais, comboios VIP e competições esportivas.',
+        ],
       },
       { type: 'events', heading: 'Eventos que a Ouromed já cobriu' },
     ],
     faq: [
-      { q: 'Fazem eventos fora de Belo Horizonte?', a: 'Sim, em todo o Brasil mediante agendamento.' },
-      { q: 'Montam ambulatório no local?', a: 'Sim, com macas, desfibriladores, cadeiras de rodas e medicamentos de pronto socorro.' },
-      { q: 'Qual o porte de evento?', a: 'De casamento a congresso e feira. A Ouromed dimensiona a equipe e a viatura para o porte.' },
+      {
+        q: 'Fazem eventos fora de Belo Horizonte?',
+        a: 'Sim, em todo o Brasil mediante agendamento.',
+      },
+      {
+        q: 'Montam ambulatório no local?',
+        a: 'Sim, com macas, desfibriladores, cadeiras de rodas e medicamentos de pronto socorro.',
+      },
+      {
+        q: 'Qual o porte de evento?',
+        a: 'De casamento a congresso e feira. A Ouromed dimensiona a equipe e a viatura para o porte.',
+      },
     ],
     cta: [
-      { label: 'Pedir orçamento', href: 'mailto:luciano@ouromedbh.com.br?subject=Or%C3%A7amento%20de%20cobertura%20m%C3%A9dica%20para%20evento' },
+      {
+        label: 'Pedir orçamento',
+        href: 'mailto:luciano@ouromedbh.com.br?subject=Or%C3%A7amento%20de%20cobertura%20m%C3%A9dica%20para%20evento',
+      },
       { label: 'Ligar para a Central 24 h', href: 'tel:+553137861506' },
     ],
   },
@@ -328,18 +495,36 @@ export const services: Service[] = [
         type: 'list',
         heading: 'Para quem',
         items: [
-          { title: 'Mineradoras e siderúrgicas', text: 'Tração 4×4 para acessar frentes de trabalho.' },
-          { title: 'Construção civil', text: 'Viatura fixa na obra ou itinerante.' },
-          { title: 'Shoppings e empresas', text: 'Ambulância como parte do plano de segurança do local.' },
+          {
+            title: 'Mineradoras e siderúrgicas',
+            text: 'Tração 4×4 para acessar frentes de trabalho.',
+          },
+          {
+            title: 'Construção civil',
+            text: 'Viatura fixa na obra ou itinerante.',
+          },
+          {
+            title: 'Shoppings e empresas',
+            text: 'Ambulância como parte do plano de segurança do local.',
+          },
         ],
       },
     ],
     faq: [
-      { q: 'Locam para fora de Belo Horizonte?', a: 'Sim. Fale com a equipe de locação pelo e-mail luciano@ouromedbh.com.br ou pelo telefone (31) 3786-1506.' },
-      { q: 'A viatura vem equipada?', a: 'Sim: os equipamentos médicos são definidos conforme a necessidade da operação.' },
+      {
+        q: 'Locam para fora de Belo Horizonte?',
+        a: 'Sim. Fale com a equipe de locação pelo e-mail luciano@ouromedbh.com.br ou pelo telefone (31) 3786-1506.',
+      },
+      {
+        q: 'A viatura vem equipada?',
+        a: 'Sim: os equipamentos médicos são definidos conforme a necessidade da operação.',
+      },
     ],
     cta: [
-      { label: 'Falar sobre locação', href: 'mailto:luciano@ouromedbh.com.br?subject=Loca%C3%A7%C3%A3o%20de%20ambul%C3%A2ncia' },
+      {
+        label: 'Falar sobre locação',
+        href: 'mailto:luciano@ouromedbh.com.br?subject=Loca%C3%A7%C3%A3o%20de%20ambul%C3%A2ncia',
+      },
       { label: 'Ligar para a Central 24 h', href: 'tel:+553137861506' },
     ],
   },
@@ -360,9 +545,18 @@ export const services: Service[] = [
         type: 'steps',
         heading: 'Como funciona',
         steps: [
-          { title: 'Contrato de área protegida', text: 'Sua empresa, shopping, escola ou condomínio passa a ter a Ouromed de plantão.' },
-          { title: 'Você aciona a Central 24 h', text: 'Triagem médica avalia a urgência pelo telefone.' },
-          { title: 'Uma equipe se desloca imediatamente', text: 'Atendimento no local, com médico, enfermeiro e socorristas quando o caso pede.' },
+          {
+            title: 'Contrato de área protegida',
+            text: 'Sua empresa, shopping, escola ou condomínio passa a ter a Ouromed de plantão.',
+          },
+          {
+            title: 'Você aciona a Central 24 h',
+            text: 'Triagem médica avalia a urgência pelo telefone.',
+          },
+          {
+            title: 'Uma equipe se desloca imediatamente',
+            text: 'Atendimento no local, com médico, enfermeiro e socorristas quando o caso pede.',
+          },
         ],
       },
       {
@@ -384,11 +578,20 @@ export const services: Service[] = [
       },
     ],
     faq: [
-      { q: 'Como funciona o acionamento?', a: 'Pela Central 24 h. A triagem médica avalia a urgência e desloca uma equipe até o local.' },
-      { q: 'Serve para condomínios residenciais?', a: 'Sim. Condomínios estão entre os que já aderiram ao serviço.' },
+      {
+        q: 'Como funciona o acionamento?',
+        a: 'Pela Central 24 h. A triagem médica avalia a urgência e desloca uma equipe até o local.',
+      },
+      {
+        q: 'Serve para condomínios residenciais?',
+        a: 'Sim. Condomínios estão entre os que já aderiram ao serviço.',
+      },
     ],
     cta: [
-      { label: 'Falar com a diretoria', href: 'mailto:diretoria@ouromedbh.com.br?subject=%C3%81rea%20protegida' },
+      {
+        label: 'Falar com a diretoria',
+        href: 'mailto:diretoria@ouromedbh.com.br?subject=%C3%81rea%20protegida',
+      },
       { label: 'Ligar para a Central 24 h', href: 'tel:+553137861506' },
     ],
   },
@@ -417,18 +620,36 @@ export const services: Service[] = [
         type: 'list',
         heading: 'Onde',
         items: [
-          { title: 'Obras', text: 'Posto médico itinerante que acompanha a frente de trabalho.' },
-          { title: 'Empresas', text: 'Ambulatório dentro da operação, com equipe da Ouromed.' },
-          { title: 'Hotéis e shoppings', text: 'Atendimento de pronto socorro para clientes e colaboradores.' },
+          {
+            title: 'Obras',
+            text: 'Posto médico itinerante que acompanha a frente de trabalho.',
+          },
+          {
+            title: 'Empresas',
+            text: 'Ambulatório dentro da operação, com equipe da Ouromed.',
+          },
+          {
+            title: 'Hotéis e shoppings',
+            text: 'Atendimento de pronto socorro para clientes e colaboradores.',
+          },
         ],
       },
     ],
     faq: [
-      { q: 'A equipe é da Ouromed?', a: 'Sim. A Ouromed monta o ambulatório e coloca a equipe, com pessoal capacitado.' },
-      { q: 'O posto médico acompanha a obra?', a: 'Sim, é itinerante: vai para onde a frente de trabalho está.' },
+      {
+        q: 'A equipe é da Ouromed?',
+        a: 'Sim. A Ouromed monta o ambulatório e coloca a equipe, com pessoal capacitado.',
+      },
+      {
+        q: 'O posto médico acompanha a obra?',
+        a: 'Sim, é itinerante: vai para onde a frente de trabalho está.',
+      },
     ],
     cta: [
-      { label: 'Falar com a diretoria', href: 'mailto:diretoria@ouromedbh.com.br?subject=Ambulat%C3%B3rios' },
+      {
+        label: 'Falar com a diretoria',
+        href: 'mailto:diretoria@ouromedbh.com.br?subject=Ambulat%C3%B3rios',
+      },
       { label: 'Ligar para a Central 24 h', href: 'tel:+553137861506' },
     ],
   },
@@ -438,10 +659,26 @@ export const howItWorks = {
   heading: 'Como funciona, do telefonema ao destino',
   lede: 'Todo atendimento começa igual: uma ligação, uma triagem médica, uma viatura. O que muda é o que o paciente precisa no caminho.',
   steps: [
-    { title: 'Você liga para a Central 24 h', text: 'Atendente identifica o caso e passa para a triagem médica.', illustration: 'telefone' as IllustrationKey },
-    { title: 'A triagem define a viatura e a equipe', text: 'Suporte básico ou UTI móvel; com médico, enfermeiro e socorrista quando o caso pede.', illustration: 'triagem' as IllustrationKey },
-    { title: 'A equipe chega, estabiliza e transporta', text: 'Equipamentos calibrados, motorista com COVE.', illustration: 'uti' as IllustrationKey },
-    { title: 'Você acompanha até o destino', text: 'Alta em casa, transferência entre hospitais ou entre estados.', illustration: 'destino' as IllustrationKey },
+    {
+      title: 'Você liga para a Central 24 h',
+      text: 'Atendente identifica o caso e passa para a triagem médica.',
+      illustration: 'telefone' as IllustrationKey,
+    },
+    {
+      title: 'A triagem define a viatura e a equipe',
+      text: 'Suporte básico ou UTI móvel; com médico, enfermeiro e socorrista quando o caso pede.',
+      illustration: 'triagem' as IllustrationKey,
+    },
+    {
+      title: 'A equipe chega, estabiliza e transporta',
+      text: 'Equipamentos calibrados, motorista com COVE.',
+      illustration: 'uti' as IllustrationKey,
+    },
+    {
+      title: 'Você acompanha até o destino',
+      text: 'Alta em casa, transferência entre hospitais ou entre estados.',
+      illustration: 'destino' as IllustrationKey,
+    },
   ],
 };
 
@@ -451,7 +688,10 @@ export const coverage = {
   facts: [
     { value: '24 h', label: 'Central com triagem médica, todos os dias' },
     { value: '7', label: 'frentes de serviço, uma só equipe' },
-    { value: 'COVE', label: 'capacitação de todos os motoristas, exigida pelo CONTRAN' },
+    {
+      value: 'COVE',
+      label: 'capacitação de todos os motoristas, exigida pelo CONTRAN',
+    },
     { value: '2010', label: 'primeiro evento coberto no portfólio da Ouromed' },
   ],
 };
@@ -460,12 +700,30 @@ export const conduct = {
   heading: 'Segurança começa antes do atendimento',
   lede: 'O que a Ouromed faz de verdade, e não o que ela promete. Cada item é uma regra da casa, checável.',
   items: [
-    { reading: 'COVE', text: 'Todo motorista tem a capacitação COVE, Condutor de Veículo de Emergência exigida pelo CONTRAN, além de treinamento de socorrista.' },
-    { reading: 'Equipe', text: 'Equipe uniformizada e identificada em todo atendimento.' },
-    { reading: 'Sirene', text: 'Sirene e prioridade de passagem só em emergência real, conforme o Código de Trânsito.' },
-    { reading: 'Médicos', text: 'Médicos, enfermeiros e socorristas próprios, com equipes de geriatria, pediatria e neonatologia.' },
-    { reading: 'Calibração', text: 'Equipamentos com aferição e calibração periódicas.' },
-    { reading: 'Norma', text: 'Viaturas dentro das especificações da ABNT e da norma federal norte-americana para veículos de emergência (Star of Life).' },
+    {
+      reading: 'COVE',
+      text: 'Todo motorista tem a capacitação COVE, Condutor de Veículo de Emergência exigida pelo CONTRAN, além de treinamento de socorrista.',
+    },
+    {
+      reading: 'Equipe',
+      text: 'Equipe uniformizada e identificada em todo atendimento.',
+    },
+    {
+      reading: 'Sirene',
+      text: 'Sirene e prioridade de passagem só em emergência real, conforme o Código de Trânsito.',
+    },
+    {
+      reading: 'Médicos',
+      text: 'Médicos, enfermeiros e socorristas próprios, com equipes de geriatria, pediatria e neonatologia.',
+    },
+    {
+      reading: 'Calibração',
+      text: 'Equipamentos com aferição e calibração periódicas.',
+    },
+    {
+      reading: 'Norma',
+      text: 'Viaturas dentro das especificações da ABNT e da norma federal norte-americana para veículos de emergência (Star of Life).',
+    },
   ],
 };
 
@@ -491,21 +749,41 @@ export const testimonials = [
 ];
 
 export const events = [
-  { name: 'Pedro Leopoldo Rodeio Show', what: 'Cobertura médica', year: '2010 a 2013' },
+  {
+    name: 'Pedro Leopoldo Rodeio Show',
+    what: 'Cobertura médica',
+    year: '2010 a 2013',
+  },
   { name: 'Minas Trend Preview', what: 'Cobertura médica', year: '2014' },
   { name: 'Mostra das Profissões, UFMG', what: 'Cobertura médica', year: '' },
   { name: 'Balanço Geral, Rede Record', what: 'Cobertura médica', year: '' },
   { name: 'Jogos em Sete Lagoas', what: 'Cobertura', year: '' },
   { name: 'Equipo Mining', what: 'Feira de mineração', year: '' },
   { name: 'AgroZ, leilão de Nelore em Uberaba', what: 'Cobertura', year: '' },
-  { name: 'Pedalando no Topo', what: 'Ciclismo indoor nas montanhas de Minas', year: '' },
+  {
+    name: 'Pedalando no Topo',
+    what: 'Ciclismo indoor nas montanhas de Minas',
+    year: '',
+  },
 ];
 
 export const homeFaq: Faq[] = [
-  { q: 'A Ouromed atende 24 horas?', a: 'Sim. A Central funciona 24 horas, todos os dias, com triagem médica.' },
-  { q: 'Faz remoção para outra cidade ou estado?', a: 'Sim. Remoções em todo o território nacional mediante agendamento.' },
-  { q: 'Tem ambulância UTI?', a: 'Sim, UTI móvel com médico, enfermeiro e socorrista, equipada com respirador, bombas de infusão, cardioversor e incubadora de transporte para recém-nascidos.' },
-  { q: 'Quanto custa?', a: 'Depende do tipo de viatura, da equipe e da distância. Ligue para a Central 24 h ou peça orçamento pelo WhatsApp.' },
+  {
+    q: 'A Ouromed atende 24 horas?',
+    a: 'Sim. A Central funciona 24 horas, todos os dias, com triagem médica.',
+  },
+  {
+    q: 'Faz remoção para outra cidade ou estado?',
+    a: 'Sim. Remoções em todo o território nacional mediante agendamento.',
+  },
+  {
+    q: 'Tem ambulância UTI?',
+    a: 'Sim, UTI móvel com médico, enfermeiro e socorrista, equipada com respirador, bombas de infusão, cardioversor e incubadora de transporte para recém-nascidos.',
+  },
+  {
+    q: 'Quanto custa?',
+    a: 'Depende do tipo de viatura, da equipe e da distância. Ligue para a Central 24 h ou peça orçamento pelo WhatsApp.',
+  },
 ];
 
 export const about = {
@@ -551,11 +829,31 @@ export const contact = {
   channels: {
     heading: 'Por onde falar',
     rows: [
-      { label: 'Urgência e remoção', value: '(31) 3786-1506 · (31) 4103-5452 · (31) 3786-7112', href: 'tel:+553137861506' },
-      { label: 'Agendar remoção', value: 'agendamento@ouromedbh.com.br', href: 'mailto:agendamento@ouromedbh.com.br' },
-      { label: 'Locação de veículos e eventos', value: 'luciano@ouromedbh.com.br', href: 'mailto:luciano@ouromedbh.com.br' },
-      { label: 'Diretoria', value: 'diretoria@ouromedbh.com.br', href: 'mailto:diretoria@ouromedbh.com.br' },
-      { label: 'WhatsApp', value: '(31) 7818-7838', href: 'https://wa.me/553178187838' },
+      {
+        label: 'Urgência e remoção',
+        value: '(31) 3786-1506 · (31) 4103-5452 · (31) 3786-7112',
+        href: 'tel:+553137861506',
+      },
+      {
+        label: 'Agendar remoção',
+        value: 'agendamento@ouromedbh.com.br',
+        href: 'mailto:agendamento@ouromedbh.com.br',
+      },
+      {
+        label: 'Locação de veículos e eventos',
+        value: 'luciano@ouromedbh.com.br',
+        href: 'mailto:luciano@ouromedbh.com.br',
+      },
+      {
+        label: 'Diretoria',
+        value: 'diretoria@ouromedbh.com.br',
+        href: 'mailto:diretoria@ouromedbh.com.br',
+      },
+      {
+        label: 'WhatsApp',
+        value: '(31) 7818-7838',
+        href: 'https://wa.me/553178187838',
+      },
     ],
   },
   form: {
@@ -563,7 +861,14 @@ export const contact = {
     intro:
       'Para eventos, locação, área protegida e ambulatórios. Para urgências, ligue: o formulário não é monitorado em tempo real.',
     note: 'Ao enviar, o seu aplicativo de e-mail abre com a mensagem pronta. Nada fica guardado neste site.',
-    services: ['Cobertura de eventos', 'Locação de ambulâncias', 'Área protegida', 'Ambulatórios', 'Remoção de pacientes', 'Outro'],
+    services: [
+      'Cobertura de eventos',
+      'Locação de ambulâncias',
+      'Área protegida',
+      'Ambulatórios',
+      'Remoção de pacientes',
+      'Outro',
+    ],
   },
 };
 

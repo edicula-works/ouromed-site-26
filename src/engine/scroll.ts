@@ -18,7 +18,9 @@ function tick() {
   state.velocity = y - state.y;
   state.y = y;
   state.progress = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
-  listeners.forEach((fn) => fn(state));
+  listeners.forEach((fn) => {
+    fn(state);
+  });
 }
 
 export function initScroll() {

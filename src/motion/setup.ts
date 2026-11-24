@@ -50,7 +50,8 @@ function header() {
   onScroll(({ y }) => {
     if (Math.abs(y - last) < 6) return;
     const h = document.documentElement;
-    if (!h.classList.contains('menu-open')) h.classList.toggle('header-away', isMobile() && y > 140 && y > last);
+    if (!h.classList.contains('menu-open'))
+      h.classList.toggle('header-away', isMobile() && y > 140 && y > last);
     last = y;
   });
 }
@@ -69,12 +70,17 @@ function howItWorks() {
         onToggle: (self) => {
           if (self.isActive) {
             stage.setAttribute('data-state', String(i));
-            chapters.forEach((c, j) => c.setAttribute('aria-current', j === i ? 'step' : 'false'));
+            chapters.forEach((c, j) => {
+              c.setAttribute('aria-current', j === i ? 'step' : 'false');
+            });
           }
         },
       }),
     );
-    return () => triggers.forEach((t) => t.kill());
+    return () =>
+      triggers.forEach((t) => {
+        t.kill();
+      });
   });
 }
 
@@ -87,9 +93,19 @@ function drive() {
     if (!hero) return;
     const wheels = hero.querySelectorAll('[data-wheel]');
     const dashes = hero.querySelectorAll('[data-dash]');
-    const spins = gsap.to(wheels, { rotate: 360, duration: 9, ease: 'none', repeat: -1 });
+    const spins = gsap.to(wheels, {
+      rotate: 360,
+      duration: 9,
+      ease: 'none',
+      repeat: -1,
+    });
     const road = dashes.length
-      ? gsap.to(dashes, { strokeDashoffset: -38, duration: 1.4, ease: 'none', repeat: -1 })
+      ? gsap.to(dashes, {
+          strokeDashoffset: -38,
+          duration: 1.4,
+          ease: 'none',
+          repeat: -1,
+        })
       : null;
     const off = onScroll(({ velocity }) => {
       const k = 1 + Math.min(Math.abs(velocity) / 5, 7);

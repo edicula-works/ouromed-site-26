@@ -1,11 +1,11 @@
 'use client';
 
+import { usePathname, useRouter } from 'next/navigation';
 // Adaptador Next.js (App Router). Renderize <Engine setup={…} /> uma vez, como ÚLTIMO filho de
 // <body> (React roda os efeitos dos filhos primeiro, então os componentes registram antes do boot).
 // Links internos (<a> ou next/link) recebem a transição leave → push → enter automaticamente.
 // Desative num link com data-no-transition. Voltar/avançar pula a cortina.
 import { useEffect, useRef } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
 import { boot, cleanup, enter, leave, onPage, type PageFn } from './index';
 
 export function Engine({ setup }: { setup?: () => void }) {
@@ -21,9 +21,16 @@ export function Engine({ setup }: { setup?: () => void }) {
 
   useEffect(() => {
     const onClick = async (e: MouseEvent) => {
-      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
+        return;
       const a = (e.target as Element).closest('a');
-      if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download') || a.hasAttribute('data-no-transition')) return;
+      if (
+        !a ||
+        (a.target && a.target !== '_self') ||
+        a.hasAttribute('download') ||
+        a.hasAttribute('data-no-transition')
+      )
+        return;
       const url = new URL(a.href, location.href);
       if (url.origin !== location.origin || url.pathname === location.pathname) return; // externo, hash ou mesma página
       e.preventDefault(); // next/link vê defaultPrevented e não navega
@@ -47,6 +54,7 @@ export function Engine({ setup }: { setup?: () => void }) {
     };
   }, [router]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: roda a cada troca de rota; pathname é o gatilho
   useEffect(() => {
     if (first.current) {
       first.current = false;

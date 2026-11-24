@@ -21,12 +21,20 @@ let current: Transition = {
   enter: (c) =>
     gsap
       .timeline()
-      .to(c.querySelector('.curtain__panel'), { yPercent: -100, duration: 0.8, ease: ease.inOut })
+      .to(c.querySelector('.curtain__panel'), {
+        yPercent: -100,
+        duration: 0.8,
+        ease: ease.inOut,
+      })
       .set(c, { autoAlpha: 0 }),
 };
 
 const reduced: Transition = {
-  leave: (c) => gsap.timeline().set(c, { autoAlpha: 1 }).fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.2 }),
+  leave: (c) =>
+    gsap
+      .timeline()
+      .set(c, { autoAlpha: 1 })
+      .fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.2 }),
   enter: (c) => gsap.to(c, { autoAlpha: 0, duration: 0.2 }),
 };
 

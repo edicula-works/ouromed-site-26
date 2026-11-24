@@ -7,18 +7,21 @@
 // tweens e ScrollTriggers são revertidos sozinhos. Devolva uma limpeza para o resto.
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { initScroll, resetScroll } from './scroll';
-import { initReveals } from './reveal';
-import { playEnter, playLeave } from './transition';
 import { prefersReducedMotion } from './env';
+import { initReveals } from './reveal';
+import { initScroll, resetScroll } from './scroll';
+import { playEnter, playLeave } from './transition';
 
 gsap.registerPlugin(ScrollTrigger);
 
+export { ease, isMobile, isTouch, prefersReducedMotion } from './env';
 export { onScroll, scrollState, scrollToTarget } from './scroll';
 export { setTransition } from './transition';
-export { ease, isTouch, isMobile, prefersReducedMotion } from './env';
 
-export type PageFn = (page: { intro: gsap.core.Timeline; path: string }) => void | (() => void);
+export type PageFn = (page: {
+  intro: gsap.core.Timeline;
+  path: string;
+}) => undefined | (() => void);
 const pageFns = new Set<PageFn>();
 const cleanups: (() => void)[] = [];
 let ctx: gsap.Context | null = null;
@@ -37,7 +40,10 @@ export function onPage(fn: PageFn) {
 
 function runPageFn(fn: PageFn) {
   ctx?.add(() => {
-    const c = fn({ intro: intro as gsap.core.Timeline, path: location.pathname });
+    const c = fn({
+      intro: intro as gsap.core.Timeline,
+      path: location.pathname,
+    });
     if (typeof c === 'function') cleanups.push(c);
   });
 }
@@ -79,7 +85,9 @@ export async function leave() {
 export function cleanup() {
   if (!ready) return;
   ready = false;
-  cleanups.splice(0).forEach((c) => c());
+  cleanups.splice(0).forEach((c) => {
+    c();
+  });
   ctx?.revert();
   ctx = null;
 }

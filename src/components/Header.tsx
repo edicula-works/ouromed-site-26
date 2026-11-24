@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { services, site } from '@/data/site';
-import { Wordmark } from './Illustrations';
 import { Phone, Roll, Whats } from './Icons';
+import { Wordmark } from './Illustrations';
 
 export function Header() {
   const path = usePathname();
@@ -30,11 +30,17 @@ export function Header() {
   return (
     <header className="hdr">
       <div className="wrap hdr__row">
-        <Link href="/" className="hdr__brand" aria-label="Ouromed, página inicial" aria-current={current('/')}>
+        <Link
+          href="/"
+          className="hdr__brand"
+          aria-label="Ouromed, página inicial"
+          aria-current={current('/')}
+        >
           <Wordmark />
         </Link>
 
         <nav className="hdr__nav" aria-label="Principal">
+          {/* biome-ignore lint/a11y/noStaticElementInteractions: abrir por hover é conveniência de mouse; o teclado usa o botão */}
           <div
             className="hdr__drop"
             ref={dropRef}
@@ -42,13 +48,23 @@ export function Header() {
             onPointerEnter={(e) => e.pointerType === 'mouse' && setDrop(true)}
             onPointerLeave={(e) => e.pointerType === 'mouse' && setDrop(false)}
           >
-            <button type="button" className="hdr__link" aria-expanded={drop} aria-controls="menu-servicos" onClick={() => setDrop((v) => !v)}>
+            <button
+              type="button"
+              className="hdr__link"
+              aria-expanded={drop}
+              aria-controls="menu-servicos"
+              onClick={() => setDrop((v) => !v)}
+            >
               <Roll>Serviços</Roll>
             </button>
             <ul id="menu-servicos" className="hdr__panel" hidden={!drop}>
               {services.map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/${s.slug}`} onClick={() => setDrop(false)} aria-current={current(`/${s.slug}`)}>
+                  <Link
+                    href={`/${s.slug}`}
+                    onClick={() => setDrop(false)}
+                    aria-current={current(`/${s.slug}`)}
+                  >
                     <span className="hdr__panel-lede">{s.nav}</span>
                     <span className="hdr__panel-sub">{s.lede}</span>
                   </Link>
@@ -69,7 +85,13 @@ export function Header() {
           <Roll>Ligar {site.phones.display}</Roll>
         </a>
 
-        <button type="button" className="hdr__burger" aria-expanded={menu} aria-controls="menu" onClick={() => setMenu(true)}>
+        <button
+          type="button"
+          className="hdr__burger"
+          aria-expanded={menu}
+          aria-controls="menu"
+          onClick={() => setMenu(true)}
+        >
           <span className="hdr__burger-line" aria-hidden="true" />
           <span className="hdr__burger-line" aria-hidden="true" />
           <span className="sr-only">Abrir menu</span>
@@ -81,7 +103,15 @@ export function Header() {
   );
 }
 
-function Menu({ open, onClose, current }: { open: boolean; onClose: () => void; current: (h: string) => 'page' | undefined }) {
+function Menu({
+  open,
+  onClose,
+  current,
+}: {
+  open: boolean;
+  onClose: () => void;
+  current: (h: string) => 'page' | undefined;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
@@ -91,7 +121,9 @@ function Menu({ open, onClose, current }: { open: boolean; onClose: () => void; 
     if (!open) return;
     const panel = ref.current;
     const opener = document.activeElement as HTMLElement | null;
-    const focusables = () => [...(panel?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') ?? [])];
+    const focusables = () => [
+      ...(panel?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') ?? []),
+    ];
     focusables()[0]?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -119,7 +151,15 @@ function Menu({ open, onClose, current }: { open: boolean; onClose: () => void; 
   }, [open]);
 
   return (
-    <div id="menu" className="menu" hidden={!open} ref={ref} role="dialog" aria-modal="true" aria-label="Menu">
+    <div
+      id="menu"
+      className="menu"
+      hidden={!open}
+      ref={ref}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
+    >
       <nav className="menu__nav" aria-label="Menu completo">
         <p className="menu__label">Serviços</p>
         <ul className="menu__list">
@@ -149,7 +189,12 @@ function Menu({ open, onClose, current }: { open: boolean; onClose: () => void; 
           <Phone className="ico" />
           <Roll>Ligar {site.phones.display}</Roll>
         </a>
-        <a href={site.whatsapp.href} className="btn btn--ghost btn--onink" rel="noopener noreferrer" target="_blank">
+        <a
+          href={site.whatsapp.href}
+          className="btn btn--ghost btn--onink"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <Whats className="ico" />
           <Roll>WhatsApp {site.whatsapp.display}</Roll>
         </a>

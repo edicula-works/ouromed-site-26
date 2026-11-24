@@ -110,15 +110,20 @@ export function Footer() {
 /** Barra fixa no celular: telefone e WhatsApp em toda página (a conversão é ligar). */
 export function CtaBar() {
   return (
-    <div className="ctabar" aria-label="Contato rápido">
+    <nav className="ctabar" aria-label="Contato rápido">
       <a href={`tel:${site.phones.tel}`} className="btn btn--gold ctabar__btn">
         <Phone className="ico" />
         <Roll>Ligar {site.phones.display}</Roll>
       </a>
-      <a href={site.whatsapp.href} className="btn btn--ghost ctabar__btn" target="_blank" rel="noopener noreferrer">
+      <a
+        href={site.whatsapp.href}
+        className="btn btn--ghost ctabar__btn"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Whats className="ico" />
         <Roll>WhatsApp</Roll>
       </a>
-    </div>
+    </nav>
   );
 }

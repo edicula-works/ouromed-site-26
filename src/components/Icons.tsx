@@ -33,7 +33,11 @@ export function Whats({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true" focusable="false">
       <path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" {...base} />
-      <path d="M9 8.5c0 4 2.5 6.5 6.5 6.5l.5-2-2-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2z" {...base} strokeWidth={1.6} />
+      <path
+        d="M9 8.5c0 4 2.5 6.5 6.5 6.5l.5-2-2-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2z"
+        {...base}
+        strokeWidth={1.6}
+      />
     </svg>
   );
 }
@@ -60,14 +64,18 @@ export function Roll({ children }: { children: ReactNode }) {
   return (
     <span className="roll">
       <span>{children}</span>
-      <span aria-hidden="true">
-        {children}
-      </span>
+      <span aria-hidden="true">{children}</span>
     </span>
   );
 }
 
-export function Tel({ className, children = 'Ligar (31) 3786-1506' }: { className?: string; children?: ReactNode }) {
+export function Tel({
+  className,
+  children = 'Ligar (31) 3786-1506',
+}: {
+  className?: string;
+  children?: ReactNode;
+}) {
   return (
     <a href="tel:+553137861506" className={className}>
       <Phone className="ico" />

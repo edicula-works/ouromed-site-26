@@ -19,7 +19,11 @@ const staggers = { lines: 0.08, words: 0.035, chars: 0.018 } as const;
 function splitTween(el: HTMLElement, isIntro: boolean) {
   const type = (el.dataset.split || 'lines') as keyof typeof durations;
   const delay = parseFloat(el.dataset.delay || '0');
-  const s = { tween: undefined as gsap.core.Tween | undefined, done: false, requested: false };
+  const s = {
+    tween: undefined as gsap.core.Tween | undefined,
+    done: false,
+    requested: false,
+  };
   SplitText.create(el, {
     type: type === 'lines' ? 'lines' : `lines,${type}`,
     mask: 'lines',
@@ -55,9 +59,11 @@ function blockTween(el: HTMLElement, paused: boolean) {
   const kind = el.dataset.reveal || 'up';
   const delay = parseFloat(el.dataset.delay || '0');
   const from: gsap.TweenVars =
-    kind === 'fade' ? { autoAlpha: 0 }
-    : kind === 'clip' ? { clipPath: 'inset(0% 100% 0% 0%)', autoAlpha: 1 }
-    : { y: 32, autoAlpha: 0 };
+    kind === 'fade'
+      ? { autoAlpha: 0 }
+      : kind === 'clip'
+        ? { clipPath: 'inset(0% 100% 0% 0%)', autoAlpha: 1 }
+        : { y: 32, autoAlpha: 0 };
   const to: gsap.TweenVars = kind === 'clip' ? { clipPath: 'inset(0% 0% 0% 0%)' } : {};
   gsap.set(el, { visibility: 'visible' });
   return gsap.fromTo(el, from, {
@@ -89,11 +95,20 @@ export function initReveals(root: ParentNode = document) {
   });
   root.querySelectorAll<HTMLElement>('[data-parallax]').forEach((el) => {
     const amount = parseFloat(el.dataset.parallax || '0.15');
-    gsap.fromTo(el, { yPercent: -amount * 100 }, {
-      yPercent: amount * 100,
-      ease: 'none',
-      scrollTrigger: { trigger: el.parentElement || el, start: 'top bottom', end: 'bottom top', scrub: true },
-    });
+    gsap.fromTo(
+      el,
+      { yPercent: -amount * 100 },
+      {
+        yPercent: amount * 100,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: el.parentElement || el,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        },
+      },
+    );
   });
   return intro;
 }
