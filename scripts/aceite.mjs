@@ -84,6 +84,16 @@ for (const path of pages) {
         );
       });
       add(`1.2 ${path}`, bar, bar ? 'barra fixa com Ligar' : 'sem barra fixa');
+      const over = await p.evaluate(() =>
+        [...document.querySelectorAll('h1, h2')]
+          .filter((h) => h.getBoundingClientRect().right > innerWidth + 1)
+          .map((h) => h.textContent.trim().slice(0, 30)),
+      );
+      add(
+        `7.5 ${path} celular`,
+        over.length === 0,
+        over.length ? `passa da tela: ${over.join(' | ')}` : 'títulos cabem na largura',
+      );
     } else if (path === '/') {
       add('1.3 / desktop', f.btns <= 3, `${f.btns} ações na 1ª tela`);
     }
