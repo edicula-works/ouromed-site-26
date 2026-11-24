@@ -509,14 +509,23 @@ export function StageVan({ className }: { className?: string }) {
 }
 
 export function Wordmark({ className }: { className?: string }) {
-  // Sem logotipo vetorial (⚠️ pendência 7): marca tipográfica com a linha ouro por baixo do "Ouro".
+  // Sem logotipo vetorial (⚠️ pendência 7): marca tipográfica nas cores do logotipo — "Ouro" em ouro,
+  // "med" em azul-marinho — e o "o" com a cruz como símbolo.
   return (
     <span className={`wordmark ${className ?? ''}`}>
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className="wordmark__mark">
-        <circle cx={12} cy={12} r={10} fill="none" stroke="var(--c-gold)" strokeWidth={2.5} />
-        <path d="M12 6v12M6 12h12" stroke="var(--c-ink)" strokeWidth={2.5} strokeLinecap="round" />
+        <circle cx={12} cy={12} r={11} fill="var(--c-gold)" />
+        <path
+          d="M12 6.5v11M6.5 12h11"
+          stroke="var(--c-white)"
+          strokeWidth={3}
+          strokeLinecap="round"
+        />
       </svg>
-      <span className="wordmark__text">Ouromed</span>
+      <span className="wordmark__text">
+        <span className="wordmark__ouro">Ouro</span>
+        <span className="wordmark__med">med</span>
+      </span>
     </span>
   );
 }

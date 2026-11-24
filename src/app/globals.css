@@ -13,8 +13,10 @@
   --color-ink: #1e1b17;
   --color-muted: #6a6258;
   --color-dust: #b5ac9f;
-  --color-gold: #c9952b;
-  --color-gold-deep: #a87a1e;
+  --color-gold: #d4ad2a;
+  --color-gold-deep: #b48f17;
+  --color-navy: #034487;
+  --color-night: #0b2545;
   --color-steel: #4f5b66;
   --color-red: #b3261e;
   --color-white: #fffdf9;
@@ -23,7 +25,10 @@
 }
 
 :root {
-  /* Cor por papel. Ouro nunca é texto pequeno sobre papel (2,4:1); sobre tinta, 6,4:1. */
+  /* Cor por papel. As duas cores da marca vêm do logotipo: ouro #D4AD2A ("Ouro") e azul-marinho
+     #034487 ("med"). Ouro nunca é texto pequeno sobre papel (2,1:1); sobre o azul-noite, 7,6:1.
+     O azul-marinho é a cor dos títulos (8,6:1 sobre papel); o azul-noite é a superfície escura
+     (bandas, depoimentos, menu, rodapé, cortina). A tinta fica para o texto corrido. */
   --c-paper: var(--color-paper);
   --c-bone: var(--color-bone);
   --c-ink: var(--color-ink);
@@ -34,12 +39,15 @@
   --c-steel: var(--color-steel);
   --c-red: var(--color-red);
   --c-white: var(--color-white);
+  --c-navy: var(--color-navy);
+  --c-night: var(--color-night);
+  --c-heading: var(--c-navy);
   --c-line: rgb(30 27 23 / 0.14);
   --c-line-ink: rgb(245 240 232 / 0.18);
   --c-bg: var(--c-paper);
   --c-fg: var(--c-ink);
   --c-accent: var(--c-gold);
-  --c-curtain: var(--c-ink);
+  --c-curtain: var(--c-night);
 
   /* Tipo: grotesca quente para tudo, mono só para leituras (telefone, horas, siglas, anos). */
   --f-display: var(--font-sans);
@@ -149,11 +157,22 @@ h4 {
   line-height: inherit;
   text-wrap: balance;
 }
+h1,
+h2 {
+  color: var(--c-heading);
+}
+/* Sobre o azul-noite, o título herda a cor clara do bloco. */
+.onink,
+.menu,
+.footer,
+.quote__item {
+  --c-heading: currentColor;
+}
 p {
   text-wrap: pretty;
 }
 ::selection {
-  background: var(--c-ink);
+  background: var(--c-navy);
   color: var(--c-paper);
 }
 #main:focus {
@@ -185,7 +204,7 @@ p {
   top: var(--gutter);
   z-index: calc(var(--z-curtain) + 11);
   padding: 0.7em 1.1em;
-  background: var(--c-ink);
+  background: var(--c-night);
   color: var(--c-paper);
   font-weight: 500;
   translate: 0 -200%;
@@ -541,6 +560,7 @@ p {
   letter-spacing: -0.02em;
   line-height: 1;
   padding-bottom: 0.14em;
+  font-style: italic;
   background: linear-gradient(var(--c-gold), var(--c-gold)) 0 100% / 2.05em 0.11em no-repeat;
   transition: background-size 0.5s var(--ease-out);
 }
@@ -552,6 +572,12 @@ p {
 }
 .hdr__brand:focus-visible .wordmark__text {
   background-size: 100% 0.11em;
+}
+.wordmark__ouro {
+  color: var(--c-gold);
+}
+.wordmark__med {
+  color: var(--c-navy);
 }
 .hdr__nav {
   display: none;
@@ -630,7 +656,7 @@ p {
   grid-template-rows: auto 1fr auto;
   gap: calc(var(--u) * 3);
   padding: calc(var(--u) * 1.5) var(--gutter) calc(var(--u) * 4);
-  background: var(--c-ink);
+  background: var(--c-night);
   color: var(--c-paper);
   overflow-y: auto;
 }
@@ -647,7 +673,8 @@ p {
   height: var(--hdr-h);
   margin: calc(var(--u) * -1.5) 0 0;
 }
-.menu__top .wordmark__text {
+.menu__top .wordmark__med,
+.footer .wordmark__med {
   color: var(--c-paper);
 }
 .menu__close {
@@ -937,7 +964,7 @@ p {
   border-top-color: var(--c-line-ink);
 }
 .onink .sec__read {
-  background: var(--c-ink);
+  background: var(--c-night);
   color: var(--c-gold);
 }
 
@@ -1169,7 +1196,7 @@ p {
 
 /* ── Banda de cobertura: tinta, leituras grandes em ouro. ── */
 .facts {
-  background: var(--c-ink);
+  background: var(--c-night);
   color: var(--c-paper);
   padding-block: calc(var(--u) * 7) calc(var(--u) * 8);
 }
@@ -1281,7 +1308,7 @@ p {
 .quote__item {
   position: relative;
   z-index: var(--z-cover);
-  background: var(--c-ink);
+  background: var(--c-night);
   color: var(--c-paper);
   padding: calc(var(--u) * 3) calc(var(--u) * 2.5) calc(var(--u) * 2.5);
 }
@@ -1649,7 +1676,7 @@ p {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background: var(--c-ink);
+  background: var(--c-night);
   color: var(--c-paper);
   font-family: var(--f-mono);
   font-size: var(--t-xs);
@@ -1772,7 +1799,7 @@ p {
 }
 /* As duas fichas de tração são o título do serviço (4×2 e 4×4): em tinta. */
 .chips li:nth-child(-n + 2) {
-  background: var(--c-ink);
+  background: var(--c-night);
   color: var(--c-paper);
 }
 @media (min-width: 768px) {
@@ -1996,7 +2023,7 @@ p {
 
 .footer {
   position: relative;
-  background: var(--c-ink);
+  background: var(--c-night);
   color: var(--c-paper);
   padding-top: calc(var(--u) * 7);
 }
@@ -2049,7 +2076,7 @@ p {
   gap: calc(var(--u) * 4) var(--gutter);
   padding-block: calc(var(--u) * 4);
   border-top: 1px solid var(--c-line-ink);
-  background: var(--c-ink);
+  background: var(--c-night);
 }
 .footer__h {
   font-family: var(--f-mono);
@@ -2109,7 +2136,7 @@ p {
   gap: calc(var(--u) * 1.5);
   padding-block: calc(var(--u) * 2.5) calc(var(--u) * 3);
   border-top: 1px solid var(--c-line-ink);
-  background: var(--c-ink);
+  background: var(--c-night);
   font-size: var(--t-s);
   color: var(--c-dust);
 }
