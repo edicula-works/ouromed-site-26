@@ -11,7 +11,6 @@ export function Footer() {
   const y = new Date().getFullYear();
   return (
     <footer className="footer">
-      <Texture className="tex--footer" />
       <div className="wrap footer__inner">
         <div className="footer__top">
           <p className="footer__lede">Central 24 horas com triagem médica.</p>
@@ -73,6 +72,9 @@ export function Footer() {
           </div>
         </div>
 
+        <div className="footer__ridge" aria-hidden="true">
+          <Texture className="tex--serra tex--footer" />
+        </div>
         <div className="footer__bottom">
           <p>
             {site.legalName}
@@ -84,6 +86,11 @@ export function Footer() {
           </p>
           <p>
             © {y} {site.name} · Site por <a href="https://edicula.works">Edícula Works</a>
+          </p>
+          <p>
+            Desenhos de BH a partir de fotos de Eduardo Elias Camponez (
+            <a href="https://creativecommons.org/licenses/by/2.0/deed.pt-br">CC BY 2.0</a>) e de
+            domínio público (Wikimedia Commons)
           </p>
         </div>
       </div>

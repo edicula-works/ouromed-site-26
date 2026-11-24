@@ -22,9 +22,17 @@ import { Arrow, Phone, Plus, Whats } from './Icons';
 import { Media } from './Media';
 import { ServiceIcon } from './ServiceIcon';
 
-/** Textura da marca: curvas de nível reais da Serra do Curral (scripts/curvas.py). */
-export function Texture({ className }: { className: string }) {
-  return <span className={`tex ${className}`} aria-hidden="true" data-parallax="0.06" />;
+/** Textura da marca: desenhos em traço de BH (vista da cidade, Serra do Curral; ver
+ *  docs/brief/desenhos/CREDITOS.md) e, secundárias, as curvas de nível reais (scripts/curvas.py).
+ *  `drift` liga a deriva lenta com a rolagem (só nas curvas; os desenhos ficam ancorados). */
+export function Texture({ className, drift = false }: { className: string; drift?: boolean }) {
+  return (
+    <span
+      className={`tex ${className}`}
+      aria-hidden="true"
+      data-parallax={drift ? '0.06' : undefined}
+    />
+  );
 }
 
 /** Ligar (ouro) e WhatsApp (contorno). */
@@ -76,7 +84,7 @@ export function Hero() {
         />
       </div>
       <div className="hero__veil" aria-hidden="true" />
-      <Texture className="tex--hero" />
+      <Texture className="tex--cidade tex--hero" />
       <div className="wrap hero__content">
         <h1 id="hero-h" className="hero__title">
           <span className="hl">
@@ -111,7 +119,7 @@ export function Presentation() {
         </p>
       </div>
       <div className="about__facts">
-        <Texture className="tex--facts" />
+        <Texture className="tex--facts" drift />
         <dl className="wrap facts">
           {presentation.facts.map((f) => (
             <div key={f.value} className="fact" data-reveal="fade">

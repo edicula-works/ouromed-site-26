@@ -342,6 +342,28 @@ a {
   -webkit-mask: url("/textura/serra-do-curral.svg") center / cover no-repeat;
   mask: url("/textura/serra-do-curral.svg") center / cover no-repeat;
 }
+.tex--cidade,
+.tex--serra {
+  inset: auto 0 0 0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+}
+.tex--cidade {
+  height: clamp(7rem, 20vw, 19rem);
+  -webkit-mask-image: url("/textura/bh-cidade.png");
+  mask-image: url("/textura/bh-cidade.png");
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+}
+.tex--serra {
+  height: 100%;
+  -webkit-mask-image: url("/textura/bh-serra.png");
+  mask-image: url("/textura/bh-serra.png");
+  -webkit-mask-position: center 30%;
+  mask-position: center 30%;
+}
 .tex--hero {
   z-index: 1;
   --tex-c: rgb(212 173 42 / 0.15);
@@ -749,7 +771,8 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   align-content: end;
   gap: calc(var(--u) * 2.5);
   padding-top: calc(var(--hdr-h) + var(--u) * 4);
-  padding-bottom: calc(var(--u) * 7);
+  /* O texto fica acima do desenho da cidade, nunca sobre as linhas. */
+  padding-bottom: calc(clamp(7rem, 20vw, 19rem) + var(--u) * 2);
 }
 .hero__title {
   max-width: 13em;
@@ -1460,6 +1483,12 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 .footer__address {
   font-style: normal;
   color: rgb(247 248 249 / 0.82);
+}
+.footer__ridge {
+  position: relative;
+  height: clamp(9rem, 20vw, 17rem);
+  margin-inline: calc(var(--gutter) * -1);
+  overflow: hidden;
 }
 .footer__bottom {
   font-family: var(--f-mono);
