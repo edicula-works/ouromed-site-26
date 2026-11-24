@@ -31,7 +31,7 @@ escrito.
 | 3.1 | Home com **≤ 10 telas** de altura no desktop | medianas: 9,7 e 8,5 | Auto |
 | 3.2 | **≥ 1,2 imagens por tela** na home | medianas: 1,4 e 1,7 | Auto · **BLOQUEADO** até chegar a imagem |
 | 3.3 | **≤ 120 palavras por tela** | entre 85 e 146 | Auto |
-| 3.4 | **No máximo 2 famílias e 3 pesos de fonte** | 1–2 famílias, 2–3 pesos | Auto |
+| 3.4 | **No máximo 2 famílias e 3 pesos de fonte**: Archivo (títulos e texto) e Martian Mono (só dados e legendas) | 1–2 famílias, 2–3 pesos; segunda voz a pedido da pessoa | Auto |
 | 3.5 | Uma ideia por tela: nenhuma tela do desktop com mais de 2 blocos de assunto diferentes | Awwwards | Manual |
 | 3.6 | Sem os tells de IA nº 1 (creme quente + acento), nº 3 (fios em tudo, raio zero) e nº 5 (eyebrow em todo título, mono em todo rótulo, seta em todo link) | `.agents/skills/awwwards/references/art-direction.md` | Manual + Auto (cor de fundo, fontes mono) |
 | 3.7 | **No máximo 5 páginas**: home, Para você, Para empresas, Sobre, Contato | decisão da pessoa, 24/11 | Auto (sitemap) |
@@ -60,6 +60,7 @@ escrito.
 |---|---|---|---|
 | 6.1 | Gerada de dados reais de relevo, com o script no repositório | escolha da pessoa | Manual |
 | 6.2 | Em **≤ 3 lugares**, opacidade **≤ 15 %**, arquivo **≤ 60 KB**, nunca sob texto corrido | — | Auto |
+| 6.4 | O horizonte da Serra do Curral (`scripts/serra.py`) é o acento principal; as curvas de nível ficam secundárias (só atrás dos números) | decisão da pessoa, 24/11 | Manual |
 | 6.3 | Um crítico novo identifica "relevo" ou "linhas topográficas" sem ser avisado | — | Manual (júri) |
 
 ## 7. Técnica e acessibilidade

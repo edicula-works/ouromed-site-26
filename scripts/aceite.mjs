@@ -156,7 +156,9 @@ for (const path of pages) {
     const words = (document.body.innerText || '').split(/\s+/).filter((w) => w.length > 1).length;
     const fams = new Set();
     const weights = new Set();
-    let mono = false;
+    let mono = 0;
+    let texts = 0;
+    let monoWrong = false;
     for (const el of document.querySelectorAll('body *')) {
       if (
         !el.childNodes.length ||
@@ -167,7 +169,11 @@ for (const path of pages) {
       if (cs.display === 'none' || cs.visibility === 'hidden') continue;
       fams.add(cs.fontFamily.split(',')[0].replace(/["']/g, '').trim());
       weights.add(cs.fontWeight);
-      if (/mono/i.test(cs.fontFamily)) mono = true;
+      texts++;
+      if (/mono/i.test(cs.fontFamily)) {
+        mono++;
+        if (el.closest('h1, h2, h3, nav, .btn')) monoWrong = true;
+      }
     }
     const tex = [...document.querySelectorAll('.tex')].map(
       (t) => getComputedStyle(t).backgroundColor,
@@ -188,7 +194,8 @@ for (const path of pages) {
       wordsPerScreen: Math.round(words / screens),
       fams: [...fams],
       weights: [...weights],
-      mono,
+      monoShare: texts ? Math.round((mono / texts) * 100) : 0,
+      monoWrong,
       bg:
         getComputedStyle(document.body).backgroundColor ||
         getComputedStyle(document.documentElement).backgroundColor,
@@ -226,9 +233,9 @@ for (const path of pages) {
   const cream = /245, 240, 232|244, 241, 234/.test(m.htmlBg);
   add(
     '3.6 tells (auto)',
-    !cream && !m.mono,
-    `fundo ${m.htmlBg} · mono ${m.mono ? 'sim' : 'não'}`,
-    'fios e eyebrows: manual',
+    !cream && !m.monoWrong && m.monoShare <= 30,
+    `fundo ${m.htmlBg} · mono em ${m.monoShare} % dos textos${m.monoWrong ? ', inclusive em título/nav/botão' : ''}`,
+    'mono só para dados e legendas; fios e eyebrows: manual',
   );
   const alphas = m.tex.map((c) => Number((/rgba?\([^)]*,\s*([\d.]+)\)/.exec(c) || [])[1] ?? 1));
   add(
