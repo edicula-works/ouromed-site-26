@@ -66,6 +66,21 @@ function blockTween(el: HTMLElement, paused: boolean) {
         : { y: 32, autoAlpha: 0 };
   const to: gsap.TweenVars = kind === 'clip' ? { clipPath: 'inset(0% 0% 0% 0%)' } : {};
   gsap.set(el, { visibility: 'visible' });
+  // Imagem que se revela: o conteúdo de dentro assenta de 1,06 para 1 junto com a máscara.
+  const inner = kind === 'clip' ? el.querySelector<HTMLElement>('[data-reveal-scale]') : null;
+  if (inner)
+    gsap.fromTo(
+      inner,
+      { scale: 1.06 },
+      {
+        scale: 1,
+        duration: 1.4,
+        ease: ease.out,
+        delay,
+        paused,
+        scrollTrigger: paused ? undefined : { trigger: el, start: 'top 90%', once: true },
+      },
+    );
   return gsap.fromTo(el, from, {
     ...to,
     y: 0,

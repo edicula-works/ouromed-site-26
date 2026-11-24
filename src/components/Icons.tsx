@@ -89,13 +89,9 @@ export function House({ className }: IconProps) {
   );
 }
 
-/** Rótulo que rola no hover (um tratamento por papel: botões primários e navegação). */
+/** Rótulo de botão. O "letter roll" saiu na rodada 6 (inventário de motion fechado). */
 export function Roll({ children }: { children: ReactNode }) {
-  return (
-    <span className="roll">
-      <span>{children}</span> <span aria-hidden="true">{children}</span>
-    </span>
-  );
+  return <span>{children}</span>;
 }
 
 export function Tel({

@@ -4,7 +4,7 @@ import { CtaBar, Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Motion } from '@/components/Motion';
 import { site } from '@/data/site';
-import { grotesk, mono } from './fonts';
+import { archivo } from './fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
 
 // Antes da primeira tinta: estilos "escondido até revelar" só valem com JS e com motion permitidos.
 // A intro da marca roda só na primeira visita da sessão e só com motion permitido. O próprio
-// script tira a classe ao fim (1,7 s), então o hero nunca fica preso esperando o bundle.
-const flags = `(function(){var h=document.documentElement;h.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;h.classList.add('motion');try{if(!sessionStorage.getItem('om-intro')){sessionStorage.setItem('om-intro','1');h.classList.add('intro-on');setTimeout(function(){h.classList.remove('intro-on')},1700)}}catch(e){}})()`;
+// script tira a classe ao fim (1,3 s), então o hero nunca fica preso esperando o bundle.
+const flags = `(function(){var h=document.documentElement;h.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;h.classList.add('motion');try{if(!sessionStorage.getItem('om-intro')){sessionStorage.setItem('om-intro','1');h.classList.add('intro-on');setTimeout(function(){h.classList.remove('intro-on')},1300)}}catch(e){}})()`;
 
 // VLibras (tradução para Libras, do governo federal), carregado quando a página está ociosa.
 const vlibras = `(function(){var s=document.createElement('script');s.src='https://vlibras.gov.br/app/vlibras-plugin.js';s.async=true;s.onload=function(){try{new window.VLibras.Widget('https://vlibras.gov.br/app')}catch(e){}};document.body.appendChild(s)})()`;
@@ -76,7 +76,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${grotesk.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="pt-BR" className={archivo.variable} suppressHydrationWarning>
       <head>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: script de flags constante, antes da primeira tinta; sem input */}
         <script dangerouslySetInnerHTML={{ __html: flags }} />
@@ -99,15 +99,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <span className="intro__med">med</span>
             </span>
           </div>
-          <span className="intro__line" />
         </div>
         <a className="skip-link" href="#main">
           Pular para o conteúdo
         </a>
         <div id="curtain" aria-hidden="true">
-          <div className="curtain__panel">
-            <span className="curtain__label" data-curtain-label />
-          </div>
+          <div className="curtain__panel" />
         </div>
 
         <Header />
@@ -117,12 +114,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
           <Footer />
-          {/* A espinha: a linha ouro que nasce no telefone do cabeçalho e termina no número do rodapé. */}
-          <div className="spine" data-spine aria-hidden="true">
-            <span className="spine__track" />
-            <span className="spine__draw" data-spine-draw />
-            <span className="spine__tip" data-spine-tip />
-          </div>
         </div>
 
         <CtaBar />

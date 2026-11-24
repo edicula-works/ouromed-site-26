@@ -147,7 +147,7 @@ const measure = () => {
     .slice(0, 4000)
     .filter((el) => {
       const t = getComputedStyle(el).transitionDuration;
-      return t && t.split(',').some((x) => parseFloat(x) > 0);
+      return t?.split(',').some((x) => parseFloat(x) > 0);
     }).length;
   const lenis =
     document.documentElement.classList.contains('lenis') || !!document.querySelector('.lenis');

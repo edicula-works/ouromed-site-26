@@ -1,36 +1,65 @@
 'use client';
 
+// Cabeçalho (rodada 6). Desktop: marca · Para você ▾ · Para empresas ▾ · Sobre · Contato · Ligar.
+// Transparente sobre o topo escuro da home; vidro claro depois de rolar; sai ao descer e volta
+// ao subir (src/motion/setup.ts → header()). Os painéis abrem por clip-path com os itens em cascata
+// (CSS, por [data-open]). Celular: botão "Menu" abre um overlay azul-noite de tela cheia.
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
-import { services, site } from '@/data/site';
-import { Phone, Roll, Whats } from './Icons';
-import { stagger } from './stagger';
+import { type CSSProperties, useEffect, useRef, useState } from 'react';
+import { audiencePages, type Publico, serviceHref, servicesFor, site } from '@/data/site';
+import { Phone, Whats } from './Icons';
+import { ServiceIcon } from './ServiceIcon';
 import { useWaHref } from './WaLink';
 import { Wordmark } from './Wordmark';
 
+const groups: Publico[] = ['voce', 'empresa'];
+const step = (i: number) => ({ '--i': i }) as CSSProperties;
+
 export function Header() {
   const path = usePathname();
-  const [drop, setDrop] = useState(false);
+  const [open, setOpen] = useState<Publico | null>(null);
   const [menu, setMenu] = useState(false);
-  const dropRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
 
-  // Cabeçalho marca a rolagem (fio no rodapé do header) e sincroniza a classe do menu.
+  // Classe do menu no <html> (a barra fixa some e o cabeçalho não sai de cena com o menu aberto).
   useEffect(() => {
     const h = document.documentElement;
-    h.classList.toggle('menu-open', menu);
-    if (!menu) h.classList.remove('header-away');
+    h.classList.toggle('menu-open', menu || open !== null);
+    if (menu || open) h.classList.remove('header-away');
     return () => h.classList.remove('menu-open');
-  }, [menu]);
+  }, [menu, open]);
 
-  const closeOnBlur = (e: React.FocusEvent<HTMLDivElement>) => {
-    if (!dropRef.current?.contains(e.relatedTarget as Node)) setDrop(false);
-  };
+  // Painel fecha com Escape, com clique fora e na troca de rota.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      const btn = navRef.current?.querySelector<HTMLButtonElement>(`[data-drop="${open}"]`);
+      setOpen(null);
+      btn?.focus();
+    };
+    const onDown = (e: PointerEvent) => {
+      if (!navRef.current?.contains(e.target as Node)) setOpen(null);
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onDown);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onDown);
+    };
+  }, [open]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: fecha tudo a cada troca de rota
+  useEffect(() => {
+    setOpen(null);
+    setMenu(false);
+  }, [path]);
 
   const current = (href: string) => (path === href ? 'page' : undefined);
 
   return (
-    <header className="hdr">
+    <header className="hdr" data-home={path === '/' ? '' : undefined}>
       <div className="wrap hdr__row">
         <Link
           href="/"
@@ -41,64 +70,74 @@ export function Header() {
           <Wordmark />
         </Link>
 
-        <nav className="hdr__nav" aria-label="Principal">
-          {/* biome-ignore lint/a11y/noStaticElementInteractions: abrir por hover é conveniência de mouse; o teclado usa o botão */}
-          <div
-            className="hdr__drop"
-            ref={dropRef}
-            onBlur={closeOnBlur}
-            onPointerEnter={(e) => e.pointerType === 'mouse' && setDrop(true)}
-            onPointerLeave={(e) => e.pointerType === 'mouse' && setDrop(false)}
-          >
-            <button
-              type="button"
-              className="hdr__link draw"
-              aria-expanded={drop}
-              aria-controls={drop ? 'menu-servicos' : undefined}
-              onClick={() => setDrop((v) => !v)}
-            >
-              Serviços
-            </button>
-            {drop && (
-              <ul id="menu-servicos" className="hdr__panel">
-                {services.map((s) => (
-                  <li key={s.slug}>
-                    <Link
-                      href={`/${s.slug}`}
-                      onClick={() => setDrop(false)}
-                      aria-current={current(`/${s.slug}`)}
-                    >
-                      <span className="hdr__panel-lede">{s.nav}</span>
-                      <span className="hdr__panel-sub">{s.lede}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <Link href="/sobre" className="hdr__link draw" aria-current={current('/sobre')}>
+        <nav className="hdr__nav" aria-label="Principal" ref={navRef}>
+          {groups.map((g) => {
+            const page = audiencePages[g];
+            const isOpen = open === g;
+            return (
+              <div key={g} className="hdr__drop" data-open={isOpen ? '' : undefined}>
+                <button
+                  type="button"
+                  className="hdr__link"
+                  data-drop={g}
+                  aria-expanded={isOpen}
+                  aria-controls={`drop-${g}`}
+                  aria-current={path === page.path ? 'page' : undefined}
+                  onClick={() => setOpen(isOpen ? null : g)}
+                >
+                  {page.nav}
+                  <span className="hdr__caret" aria-hidden="true" />
+                </button>
+                <div id={`drop-${g}`} className="drop">
+                  <ul className="drop__list">
+                    {servicesFor(g).map((s, i) => (
+                      <li key={s.slug} style={step(i)}>
+                        <Link
+                          href={serviceHref(s)}
+                          className="drop__item"
+                          tabIndex={isOpen ? undefined : -1}
+                          onClick={() => setOpen(null)}
+                        >
+                          <ServiceIcon k={s.icon} className="drop__icon" />
+                          <span className="drop__name">{s.nav}</span>
+                          <span className="drop__lede">{s.lede}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href={page.path}
+                    className="drop__all"
+                    tabIndex={isOpen ? undefined : -1}
+                    onClick={() => setOpen(null)}
+                  >
+                    Tudo {page.nav.toLowerCase()}
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+          <Link href="/sobre" className="hdr__link" aria-current={current('/sobre')}>
             Sobre
           </Link>
-          <Link href="/contato" className="hdr__link draw" aria-current={current('/contato')}>
+          <Link href="/contato" className="hdr__link" aria-current={current('/contato')}>
             Contato
           </Link>
         </nav>
 
         <a href={`tel:${site.phones.tel}`} className="btn btn--gold hdr__cta">
           <Phone className="ico" />
-          <Roll>Ligar {site.phones.display}</Roll>
+          Ligar {site.phones.display}
         </a>
 
         <button
           type="button"
-          className="hdr__burger"
+          className="hdr__menu"
           aria-expanded={menu}
           aria-controls={menu ? 'menu' : undefined}
           onClick={() => setMenu(true)}
         >
-          <span className="hdr__burger-line" aria-hidden="true" />
-          <span className="hdr__burger-line" aria-hidden="true" />
-          <span className="sr-only">Abrir menu</span>
+          Menu
         </button>
       </div>
 
@@ -152,6 +191,7 @@ function Menu({
     };
   }, []);
 
+  let i = 0;
   return (
     <div id="menu" className="menu" ref={ref} role="dialog" aria-modal="true" aria-label="Menu">
       <div className="menu__top">
@@ -163,29 +203,34 @@ function Menu({
         >
           <Wordmark />
         </Link>
-        <button type="button" className="menu__close" onClick={onClose}>
-          <span className="menu__close-x" aria-hidden="true" />
-          <span className="sr-only">Fechar menu</span>
+        <button type="button" className="hdr__menu" onClick={onClose}>
+          Fechar
         </button>
       </div>
       <nav className="menu__nav" aria-label="Menu completo">
-        <p className="menu__label">Serviços</p>
-        <ul className="menu__list">
-          {services.map((s, i) => (
-            <li key={s.slug} style={stagger(i)}>
-              <Link href={`/${s.slug}`} onClick={onClose} aria-current={current(`/${s.slug}`)}>
-                {s.nav}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {groups.map((g) => (
+          <div key={g} className="menu__group">
+            <p className="menu__label" style={step(i++)}>
+              {audiencePages[g].nav}
+            </p>
+            <ul className="menu__list">
+              {servicesFor(g).map((s) => (
+                <li key={s.slug} style={step(i++)}>
+                  <Link href={serviceHref(s)} onClick={onClose}>
+                    {s.nav}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
         <ul className="menu__list menu__list--alt">
-          <li style={stagger(services.length)}>
+          <li style={step(i++)}>
             <Link href="/sobre" onClick={onClose} aria-current={current('/sobre')}>
               Sobre a Ouromed
             </Link>
           </li>
-          <li style={stagger(services.length + 1)}>
+          <li style={step(i++)}>
             <Link href="/contato" onClick={onClose} aria-current={current('/contato')}>
               Contato e orçamento
             </Link>
@@ -193,20 +238,19 @@ function Menu({
         </ul>
       </nav>
       <div className="menu__cta">
-        <a href={`tel:${site.phones.tel}`} className="btn btn--gold">
+        <a href={`tel:${site.phones.tel}`} className="btn btn--gold btn--lg">
           <Phone className="ico" />
-          <Roll>Ligar {site.phones.display}</Roll>
+          Ligar {site.phones.display}
         </a>
         <a
           href={waHref}
-          className="btn btn--ghost btn--onink"
+          className="btn btn--ghost btn--onink btn--lg"
           rel="noopener noreferrer"
           target="_blank"
         >
           <Whats className="ico" />
-          <Roll>WhatsApp {site.whatsapp.display}</Roll>
+          WhatsApp
         </a>
-        <p className="menu__note">{site.emergency.label.replace(' (SAMU)', '')}</p>
       </div>
     </div>
   );

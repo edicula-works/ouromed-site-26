@@ -1,0 +1,128 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/index.php",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/empresa.php",
+      "destination": "/sobre",
+      "permanent": true
+    },
+    {
+      "source": "/servicos-de-aph.php",
+      "destination": "/para-voce#atendimento-domiciliar",
+      "permanent": true
+    },
+    {
+      "source": "/cobertura-de-festas-e-eventos.php",
+      "destination": "/para-empresas#eventos",
+      "permanent": true
+    },
+    {
+      "source": "/transportes-e-remocoes.php",
+      "destination": "/para-voce#remocao",
+      "permanent": true
+    },
+    {
+      "source": "/locacoes-de-ambulancias.php",
+      "destination": "/para-empresas#locacao-de-ambulancias",
+      "permanent": true
+    },
+    {
+      "source": "/area-protegida.php",
+      "destination": "/para-empresas#area-protegida",
+      "permanent": true
+    },
+    {
+      "source": "/ambulatorios.php",
+      "destination": "/para-empresas#ambulatorios",
+      "permanent": true
+    },
+    {
+      "source": "/portfolio.php",
+      "destination": "/para-empresas#eventos",
+      "permanent": true
+    },
+    {
+      "source": "/clientes.php",
+      "destination": "/sobre",
+      "permanent": true
+    },
+    {
+      "source": "/contato.php",
+      "destination": "/contato",
+      "permanent": true
+    },
+    {
+      "source": "/ambulancia",
+      "destination": "/para-voce#ambulancia",
+      "permanent": true
+    },
+    {
+      "source": "/atendimento-domiciliar",
+      "destination": "/para-voce#atendimento-domiciliar",
+      "permanent": true
+    },
+    {
+      "source": "/remocao",
+      "destination": "/para-voce#remocao",
+      "permanent": true
+    },
+    {
+      "source": "/eventos",
+      "destination": "/para-empresas#eventos",
+      "permanent": true
+    },
+    {
+      "source": "/locacao-de-ambulancias",
+      "destination": "/para-empresas#locacao-de-ambulancias",
+      "permanent": true
+    },
+    {
+      "source": "/area-protegida",
+      "destination": "/para-empresas#area-protegida",
+      "permanent": true
+    },
+    {
+      "source": "/ambulatorios",
+      "destination": "/para-empresas#ambulatorios",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/_next/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
+      ]
+    }
+  ]
+}

@@ -41,6 +41,7 @@ export function Media({
           preload="metadata"
           aria-label={m.alt}
           data-media-video
+          data-reveal-scale
         />
       ) : m.src ? (
         <Image
@@ -50,9 +51,10 @@ export function Media({
           fill
           sizes={sizes}
           priority={priority}
+          data-reveal-scale
         />
       ) : (
-        <div className="media__ph" role="img" aria-label={m.alt}>
+        <div className="media__ph" role="img" aria-label={m.alt} data-reveal-scale>
           <span className="media__ph-label">{m.label}</span>
         </div>
       )}

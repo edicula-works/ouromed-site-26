@@ -1,16 +1,14 @@
 import type { Metadata } from 'next';
 import {
-  Conduct,
-  Facts,
+  AmbulanceTypes,
   Faq,
   faqJsonLd,
   Hero,
-  Honesty,
-  HowItWorks,
   JsonLd,
-  Proof,
-  ServiceIndex,
+  Presentation,
+  ServiceCards,
   Testimonials,
+  WhenToCall,
 } from '@/components/Sections';
 import { homeFaq, site } from '@/data/site';
 
@@ -26,14 +24,23 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <ServiceIndex />
-      <Honesty />
-      <HowItWorks />
-      <Facts />
-      <Conduct />
+      <Presentation />
+      <ServiceCards
+        id="para-voce"
+        publico="voce"
+        heading="Para você"
+        lede="Para a sua família: da UTI móvel ao médico em casa."
+      />
+      <ServiceCards
+        id="para-empresas"
+        publico="empresa"
+        heading="Para empresas"
+        lede="Para quem tem gente sob a sua responsabilidade: clientes, funcionários, público."
+      />
+      <AmbulanceTypes />
+      <WhenToCall />
       <Testimonials />
-      <Proof />
-      <Faq cta />
+      <Faq />
       <JsonLd data={faqJsonLd(homeFaq)} />
     </>
   );

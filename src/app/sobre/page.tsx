@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { BlockView, Clients, Conduct, CtaBlock, PageHero } from '@/components/Sections';
-import { about, site } from '@/data/site';
+import { CallButtons, CtaBlock, PageHero, Prose } from '@/components/Sections';
+import { about, conduct } from '@/data/site';
 
 export const metadata: Metadata = {
   title: about.seoTitle,
@@ -11,40 +11,21 @@ export const metadata: Metadata = {
 export default function Sobre() {
   return (
     <>
-      <PageHero
-        read={about.read}
-        title={about.h1}
-        intro={about.intro}
-        media="equipe"
-        ctas={[{ label: 'Ligar para a Central 24 h', href: `tel:${site.phones.tel}` }]}
+      <PageHero title={about.h1} intro={about.intro} media="equipe">
+        <CallButtons />
+      </PageHero>
+      <Prose id="o-que-e" block={about.what} />
+      <Prose id="equipe" block={{ heading: about.team.heading, list: about.team.items }} />
+      <Prose
+        id="conduta"
+        block={{ heading: conduct.heading, list: conduct.items.map((it) => it.text) }}
       />
-      <BlockView
-        block={{ type: 'prose', heading: about.what.heading, paragraphs: about.what.paragraphs }}
+      <Prose id="frota" block={about.fleet} />
+      <Prose
+        id="pqo"
+        block={{ heading: about.pqo.heading, paragraphs: [about.pqo.lede], list: about.pqo.items }}
       />
-      <BlockView block={{ type: 'prose', heading: about.team.heading, list: about.team.items }} />
-      <BlockView
-        block={{
-          type: 'prose',
-          heading: about.fleet.heading,
-          paragraphs: about.fleet.paragraphs,
-          note: about.fleet.note,
-        }}
-      />
-      <BlockView
-        block={{
-          type: 'prose',
-          heading: about.pqo.heading,
-          paragraphs: [about.pqo.lede],
-          list: about.pqo.items,
-        }}
-      />
-      <Conduct />
-      <section className="sec sec--tight" aria-label="Clientes">
-        <div className="wrap">
-          <Clients />
-        </div>
-      </section>
-      <section className="sec sec--tight">
+      <section className="sec">
         <div className="wrap">
           <CtaBlock />
         </div>

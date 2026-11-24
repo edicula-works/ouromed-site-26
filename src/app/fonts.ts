@@ -1,16 +1,11 @@
-import { IBM_Plex_Mono, Schibsted_Grotesk } from 'next/font/google';
+import { Archivo } from 'next/font/google';
 
-// Schibsted Grotesk: voz (display e texto). IBM Plex Mono: leituras (telefone, horas, siglas).
-// next/font/google baixa e hospeda os arquivos no build; subsets latin cobrem o português.
-export const grotesk = Schibsted_Grotesk({
+// Archivo variável (peso e largura): títulos expandidos (eixo wdth 125, ecoa as letras largas do
+// logotipo) e texto na largura normal. Uma família só; números com tabular-nums.
+export const archivo = Archivo({
   subsets: ['latin'],
-  variable: '--font-grotesk',
-  display: 'swap',
-});
-
-export const mono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-mono',
+  axes: ['wdth'],
+  style: ['normal', 'italic'],
+  variable: '--font-archivo',
   display: 'swap',
 });
