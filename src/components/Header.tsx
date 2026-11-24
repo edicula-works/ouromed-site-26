@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { services, site } from '@/data/site';
 import { Phone, Roll, Whats } from './Icons';
 import { Wordmark } from './Illustrations';
+import { stagger } from './stagger';
 
 export function Header() {
   const path = usePathname();
@@ -50,12 +51,12 @@ export function Header() {
           >
             <button
               type="button"
-              className="hdr__link"
+              className="hdr__link draw"
               aria-expanded={drop}
               aria-controls="menu-servicos"
               onClick={() => setDrop((v) => !v)}
             >
-              <Roll>Serviços</Roll>
+              Serviços
             </button>
             <ul id="menu-servicos" className="hdr__panel" hidden={!drop}>
               {services.map((s) => (
@@ -72,11 +73,11 @@ export function Header() {
               ))}
             </ul>
           </div>
-          <Link href="/sobre" className="hdr__link" aria-current={current('/sobre')}>
-            <Roll>Sobre</Roll>
+          <Link href="/sobre" className="hdr__link draw" aria-current={current('/sobre')}>
+            Sobre
           </Link>
-          <Link href="/contato" className="hdr__link" aria-current={current('/contato')}>
-            <Roll>Contato</Roll>
+          <Link href="/contato" className="hdr__link draw" aria-current={current('/contato')}>
+            Contato
           </Link>
         </nav>
 
@@ -160,11 +161,25 @@ function Menu({
       aria-modal="true"
       aria-label="Menu"
     >
+      <div className="menu__top">
+        <Link
+          href="/"
+          onClick={onClose}
+          className="hdr__brand"
+          aria-label="Ouromed, página inicial"
+        >
+          <Wordmark />
+        </Link>
+        <button type="button" className="menu__close" onClick={onClose}>
+          <span className="menu__close-x" aria-hidden="true" />
+          <span className="sr-only">Fechar menu</span>
+        </button>
+      </div>
       <nav className="menu__nav" aria-label="Menu completo">
         <p className="menu__label">Serviços</p>
         <ul className="menu__list">
-          {services.map((s) => (
-            <li key={s.slug}>
+          {services.map((s, i) => (
+            <li key={s.slug} style={stagger(i)}>
               <Link href={`/${s.slug}`} onClick={onClose} aria-current={current(`/${s.slug}`)}>
                 {s.nav}
               </Link>
@@ -172,12 +187,12 @@ function Menu({
           ))}
         </ul>
         <ul className="menu__list menu__list--alt">
-          <li>
+          <li style={stagger(services.length)}>
             <Link href="/sobre" onClick={onClose} aria-current={current('/sobre')}>
               Sobre a Ouromed
             </Link>
           </li>
-          <li>
+          <li style={stagger(services.length + 1)}>
             <Link href="/contato" onClick={onClose} aria-current={current('/contato')}>
               Contato e orçamento
             </Link>

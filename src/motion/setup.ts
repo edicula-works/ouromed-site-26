@@ -44,14 +44,16 @@ function spine() {
   return off;
 }
 
-/** No celular, o header sai de cena ao descer e volta ao subir. A barra de CTA fica. */
+/** No celular, o header sai de cena ao descer e volta ao subir. A barra de CTA fica. Em qualquer
+ *  tamanho, o header ganha fundo e fio depois da primeira rolagem (a espinha passa por baixo). */
 function header() {
   let last = 0;
   onScroll(({ y }) => {
+    const root = document.documentElement;
+    root.classList.toggle('is-scrolled', y > 8);
     if (Math.abs(y - last) < 6) return;
-    const h = document.documentElement;
-    if (!h.classList.contains('menu-open'))
-      h.classList.toggle('header-away', isMobile() && y > 140 && y > last);
+    if (!root.classList.contains('menu-open'))
+      root.classList.toggle('header-away', isMobile() && y > 140 && y > last);
     last = y;
   });
 }
