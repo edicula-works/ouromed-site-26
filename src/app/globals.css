@@ -578,7 +578,8 @@ p {
 .intro__word {
   display: inline-flex;
   overflow: clip;
-  padding-bottom: 0.08em;
+  /* Folga para o itálico não perder a ponta do "d". */
+  padding: 0 0.12em 0.08em 0;
 }
 .intro__word > span {
   display: block;
