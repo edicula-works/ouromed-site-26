@@ -13,9 +13,12 @@ resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
   desenhada. As sete rotas da primeira versão (`/ambulancia`, `/remocao`, …) e os endereços do site
   de 2011 (`empresa.php`, `clientes.php`, …) têm redirecionamento permanente para as âncoras
   correspondentes (`vercel.json`).
-- **Nenhuma foto ainda.** O site tem 13 espaços de mídia (`media` em `src/data/site.ts`), 12 deles
-  renderizados — 11 só na home; sem arquivo, cada espaço mostra em mono o que vai ali. As fotos chegam
-  pelo Instagram da Ouromed e entram com `scripts/fotos.mjs` (§3).
+- **Doze espaços com foto, um reservado** (`media` em `src/data/site.ts`): onze são **cenas
+  ilustrativas geradas por IA** — sem texto, sem logo de terceiros, sem rosto em close — e uma é a
+  única foto real, `locacao`, recortada de um post do Instagram da própria Ouromed. Os arquivos
+  (AVIF e WebP em duas ou três larguras) estão em `public/midia/`, gerados por `scripts/fotos.mjs`;
+  `hero` segue sem foto. Trocar as ilustrações pelas fotos reais da frota, da equipe, do interior e
+  da Central é pendência com a Ouromed (§3).
 - **Desenhos de BH em traço** no lugar de foto de banco: a vista da cidade no topo da home e na
   404 (foto de origem CC0) e a Serra do Curral no rodapé (foto de origem CC BY 2.0, crédito no
   rodapé). As curvas de nível da serra, geradas de dados de relevo (`scripts/curvas.py`), ficam só
@@ -32,6 +35,7 @@ resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
 
 | Item | O que está no site | Onde | O que falta |
 |---|---|---|---|
+| Fotos | Doze espaços com arquivo: 11 cenas ilustrativas geradas por IA e o recorte real de `locacao`; sem texto, logo de terceiros ou rosto em close | home e as quatro páginas | As fotos reais da Ouromed, com autorização de imagem; até lá, as ilustrativas ficam no lugar |
 | Telefones da Central 24 h | (31) 3786-1506 no botão "Ligar"; (31) 4103-5452 e (31) 3786-7112 ao lado — os três fixos do site de 2011 | barra fixa do celular, cabeçalho, botões, rodapé, contato | Confirmar os três e qual é o principal. O cadastro público mostra outro número, (31) 2128-2020 (consulta de 24/11): perguntar |
 | E-mails por setor | `agendamento@`, `luciano@` (eventos e locação) e `diretoria@ouromedbh.com.br` | contato, botões dos serviços, formulário | Confirmar que continuam válidos e quem responde a cada um |
 | Marca | Marca tipográfica provisória em SVG ("Ouro" em ouro + "med" em azul-marinho, círculo com a cruz). `og.png` e `apple-icon.png` são do antes da paleta nova | cabeçalho, menu, intro da marca, favicon (este já na paleta nova), preview de link | O logo vetorial original; refazer `og.png` e `apple-icon.png` com ele |
@@ -43,9 +47,11 @@ resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
 
 ## 3. Ausente (não renderiza até o cliente enviar)
 
-**Fotos — os 13 espaços de mídia.** Nenhum arquivo existe em `public/midia/`. Proporção em que cada
-slot é recortado e onde aparece (a mesma tabela está em `scripts/fotos.mjs`, que confere estes slots
-contra o código a cada execução):
+**Fotos reais da Ouromed.** Os doze espaços têm hoje cenas ilustrativas geradas por IA e um recorte
+de um post do Instagram (§1); as fotos atuais da frota, da equipe, do interior da UTI e da Central 24 h
+dependem do cliente, com autorização de imagem de quem aparecer. Proporção em que cada slot é
+recortado e onde aparece (a mesma tabela está em `scripts/fotos.mjs`, que confere estes slots contra o
+código a cada execução):
 
 | Slot | Onde aparece | Proporção |
 |---|---|---|
@@ -59,12 +65,13 @@ contra o código a cada execução):
 | `destino`, `triagem`, `equipe` | topos de `/para-voce`, `/para-empresas`, `/sobre` | 4:3 |
 | `central` | home (cartão de "Quando chamar") · topo de `/contato` | 4:3 |
 
-Como entram (fase 2): as fotos do Instagram numa pasta, um mapa `slot → { arquivo, alt }`
-(`alt` é obrigatório) e `node scripts/fotos.mjs <pasta> <mapa.json>` grava AVIF e WebP em duas ou
-três larguras e imprime o que colar em `src/data/site.ts`. Antes de subir: autorização de imagem de
-quem aparecer e nenhum paciente identificável. As fotos de terceiros enviadas em 24/11 não entraram;
-os prompts do Google Flow (`docs/brief/PROMPTS-FLOW.md`) ficam como plano B. Com as fotos, o
-`Media.tsx` deixa de usar `next/image` por um `<picture>` para servir as larguras.
+Como entram: as fotos numa pasta, um mapa `slot → { arquivo, alt, foco?, posicao? }` (`alt` é
+obrigatório; `foco` ancora o recorte do slot; `posicao` é o `object-position` nas caixas de outra
+proporção) e `node scripts/fotos.mjs <pasta> <mapa.json> --manifest src/data/midia.json` grava AVIF e
+WebP em duas ou três larguras e o índice que o `Media.tsx` lê para montar o `<picture>`. O `alt` vive
+em `src/data/site.ts`. Antes de subir: autorização de imagem de quem aparecer e nenhum paciente
+identificável. O mapa e as fontes desta rodada ficaram fora do git (pasta local do gestor); os
+prompts do Google Flow (`docs/brief/PROMPTS-FLOW.md`) seguem como plano B.
 
 **O resto:**
 
@@ -108,6 +115,7 @@ os prompts do Google Flow (`docs/brief/PROMPTS-FLOW.md`) ficam como plano B. Com
 ## 6. Como conferir
 
 - `src/data/site.ts`: o conteúdo do site inteiro, com o resumo destas pendências no cabeçalho.
-- `scripts/fotos.mjs --ajuda`: o formato do mapa de fotos; `scripts/aceite.mjs <preview>`: os
-  critérios de `docs/CRITERIOS-DE-ACEITE.md` (o 3.2, imagens por tela, fica bloqueado até as fotos).
+- `scripts/fotos.mjs --ajuda`: o formato do mapa de fotos; `src/data/midia.json`: os arquivos por
+  slot; `scripts/aceite.mjs <preview>`: os critérios de `docs/CRITERIOS-DE-ACEITE.md` (com as fotos,
+  o 3.2 passa a ser medido: 11 imagens em 8,64 telas na home).
 - `vercel.json`: os redirecionamentos das rotas antigas.
