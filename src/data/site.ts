@@ -462,13 +462,16 @@ export const audiencePages: Record<
   },
 };
 
-/** Apresentação da home: quem é a Ouromed em duas frases e três fatos publicados. */
+/** Apresentação da home: quem é a Ouromed em duas frases e três fatos publicados. O do meio era
+ *  "COVE" (capacitação dos motoristas); saiu em 25/11 por ser obrigatória para toda ambulância. No
+ *  lugar, o alcance nacional, que o FAQ e os serviços já publicam ("em todo o território nacional
+ *  mediante agendamento") e o DESIGN.md já previa. */
 export const presentation = {
   label: 'A Ouromed',
   text: 'Saúde móvel em Belo Horizonte desde 2009. Uma Central que atende 24 horas e faz a triagem médica de cada chamado, e uma equipe própria que vai até o paciente.',
   facts: [
     { value: '24 h', label: 'Central com triagem médica, todos os dias' },
-    { value: 'COVE', label: 'Capacitação de todos os motoristas, exigida pelo CONTRAN' },
+    { value: 'Brasil', label: 'Remoções em todo o território nacional, mediante agendamento' },
     { value: '2009', label: 'Em atividade desde outubro de 2009, com CNPJ ativo' },
   ],
 };
