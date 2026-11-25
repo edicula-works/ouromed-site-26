@@ -258,8 +258,8 @@ export function AmbulanceTypes() {
 }
 
 /** Quando chamar a Ouromed (texto aprovado em 24/11): emergência, remoção, empresas; 192 como nota.
- *  Cada cartão abre com uma foto 16:9, colada nas bordas dele (padrão 3 do inventário); os cartões
- *  continuam chegando de lados diferentes com a seção parada, por isso a foto não tem reveal próprio. */
+ *  Cada cartão abre com uma foto 16:9, colada nas bordas dele; a foto não tem reveal próprio porque o
+ *  cartão inteiro é que entra (deslocamento curto, src/motion/setup.ts → scenes). */
 export function WhenToCall() {
   return (
     <section className="sec when" aria-labelledby="when-h">

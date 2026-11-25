@@ -28,12 +28,12 @@ export function setupMotion() {
   rows();
 }
 
-/** Cenas da home (rodada 7, aprovadas pela pessoa): um gesto por seção, nenhum repetido; uma coisa
- *  se move por vez; várias seções descansam. Só transform, opacity e clip-path (fps).
+/** Cenas da home (rodada 7, aprovadas pela pessoa; ajustadas em 25/11): um gesto por seção, nenhum
+ *  repetido; uma coisa se move por vez; várias seções descansam. Só transform, opacity e clip-path (fps).
  *  - A Ouromed: a frase acende com a leitura (cor por palavra); os fatos ficam parados.
  *  - Para você: a foto em destaque cresce de um quadro no centro até a largura toda.
  *  - Para empresas: a seção segura e a rolagem leva os cartões para o lado (pin).
- *  - Quando chamar: a seção segura enquanto os cartões chegam de lados diferentes (pin).
+ *  - Quando chamar: os cartões entram com um deslocamento curto assim que a grade aparece; sem pin.
  *  - Suporte básico × UTI: tela dividida (a foto fica parada por CSS sticky); sem animação.
  *  - Depoimentos, perguntas: sem animação de rolagem (descanso). */
 function scenes() {
@@ -74,11 +74,9 @@ function scenes() {
       );
     }
 
-    // Momentos em que a página segura (só no computador; no celular a faixa já desliza com o dedo):
+    // Momento em que a página segura (só no computador; no celular a faixa já desliza com o dedo):
     // - Para empresas: a seção fica parada e a rolagem leva os cartões para o lado, com a barra de
     //   progresso; termina com o último cartão alinhado à direita.
-    // - Quando chamar: a seção fica parada enquanto os cartões chegam (esquerda, baixo, direita) e
-    //   se encaixam no centro.
     const mm = gsap.matchMedia();
     mm.add('(min-width: 1024px)', () => {
       const sec = root.querySelector<HTMLElement>('#para-empresas');
@@ -100,30 +98,24 @@ function scenes() {
         const bar = sec.querySelector('.track__bar');
         if (bar) tl.fromTo(bar, { scaleX: 0.25 }, { scaleX: 1, ease: 'none' }, 0);
       }
-
-      const when = root.querySelector<HTMLElement>('.when');
-      const items = when ? [...when.querySelectorAll<HTMLElement>('.when__item')] : [];
-      if (when && items.length === 3) {
-        const from = [
-          { xPercent: -110, rotate: -3 },
-          { yPercent: 70, rotate: 0 },
-          { xPercent: 110, rotate: 3 },
-        ];
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: when,
-            start: 'center center',
-            end: '+=70%',
-            pin: true,
-            scrub: 0.6,
-          },
-        });
-        items.forEach((el, i) => {
-          tl.from(el, { ...from[i], opacity: 0, ease: 'power2.out', duration: 1 }, i * 0.35);
-        });
-      }
       return () => row?.classList.remove('is-track');
     });
+
+    // Quando chamar: os cartões entram assim que a grade aparece na base da tela, com um
+    // deslocamento curto e cada um do seu lado (esquerda, baixo, direita). A seção não segura mais a
+    // página: com o pin, o título ficava sozinho sobre um buraco até a rolagem trazer os cartões
+    // (25/11). Em qualquer tamanho de tela; o cabeçalho da seção nunca se esconde.
+    const whenGrid = root.querySelector<HTMLElement>('.when__grid');
+    if (whenGrid) {
+      const cartoes = [...whenGrid.querySelectorAll<HTMLElement>('.when__item')];
+      const lado = [{ x: -24 }, { y: 24 }, { x: 24 }];
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: whenGrid, start: 'top 94%', once: true },
+      });
+      cartoes.forEach((el, i) => {
+        tl.from(el, { ...lado[i % 3], autoAlpha: 0, duration: 0.7, ease: 'power3.out' }, i * 0.08);
+      });
+    }
 
     return () => {
       mm.revert();
