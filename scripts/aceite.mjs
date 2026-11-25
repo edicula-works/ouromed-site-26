@@ -270,6 +270,38 @@ for (const path of pages) {
   await ctx.close();
 }
 
+// 7.7 sem rolagem lateral no desktop durante a rolagem inteira da home: um trecho que segura
+// (pin) vira position: fixed e escapa do overflow-x do body; a faixa de cartões, mais larga que a
+// tela, deixava a página rolar para o lado (bug visto pela pessoa em 25/11).
+{
+  const { ctx, p } = await open(desk, '/');
+  await p.mouse.move(720, 450);
+  const H = await p.evaluate(() => document.documentElement.scrollHeight);
+  let worst = 0;
+  let at = 0;
+  for (let y = 0; y < H; y += 300) {
+    await p.mouse.wheel(0, 300);
+    await p.waitForTimeout(60);
+    const r = await p.evaluate(() => {
+      scrollBy(400, 0);
+      const x = scrollX;
+      scrollTo(0, scrollY);
+      return { x, wide: document.documentElement.scrollWidth - innerWidth, y: scrollY };
+    });
+    const bad = Math.max(r.x, r.wide);
+    if (bad > worst) {
+      worst = bad;
+      at = r.y;
+    }
+  }
+  add(
+    '7.7 / desktop sem rolagem lateral',
+    worst <= 1,
+    worst > 1 ? `rola ${worst} px para o lado em y=${at}` : 'nunca rola para o lado',
+  );
+  await ctx.close();
+}
+
 // 5.2 intro: quadros numa visita nova; 5.3 reduced motion
 {
   const ctx = await browser.newContext(desk);
