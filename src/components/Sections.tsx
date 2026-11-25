@@ -257,7 +257,9 @@ export function AmbulanceTypes() {
   );
 }
 
-/** Quando chamar a Ouromed (texto aprovado em 24/11): emergência, remoção, empresas; 192 como nota. */
+/** Quando chamar a Ouromed (texto aprovado em 24/11): emergência, remoção, empresas; 192 como nota.
+ *  Cada cartão abre com uma foto 16:9, colada nas bordas dele (padrão 3 do inventário); os cartões
+ *  continuam chegando de lados diferentes com a seção parada, por isso a foto não tem reveal próprio. */
 export function WhenToCall() {
   return (
     <section className="sec when" aria-labelledby="when-h">
@@ -271,18 +273,27 @@ export function WhenToCall() {
         <ul className="when__grid">
           {honesty.items.map((it) => (
             <li key={it.title} className="when__item">
-              <h3 className="when__title">{it.title}</h3>
-              <p className="when__text">{it.text}</p>
-              {it.href.startsWith('tel:') ? (
-                <a href={it.href} className="btn btn--gold">
-                  <Phone className="ico" />
-                  {it.cta}
-                </a>
-              ) : (
-                <Link href={it.href} className="link-arrow">
-                  {it.cta} <Arrow className="ico" />
-                </Link>
-              )}
+              <Media
+                k={it.media}
+                ratio="16 / 9"
+                reveal={false}
+                sizes="(min-width: 1024px) 33vw, 100vw"
+                className="when__media"
+              />
+              <div className="when__body">
+                <h3 className="when__title">{it.title}</h3>
+                <p className="when__text">{it.text}</p>
+                {it.href.startsWith('tel:') ? (
+                  <a href={it.href} className="btn btn--gold">
+                    <Phone className="ico" />
+                    {it.cta}
+                  </a>
+                ) : (
+                  <Link href={it.href} className="link-arrow">
+                    {it.cta} <Arrow className="ico" />
+                  </Link>
+                )}
+              </div>
             </li>
           ))}
         </ul>

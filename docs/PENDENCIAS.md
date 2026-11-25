@@ -14,8 +14,8 @@ resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
   de 2011 (`empresa.php`, `clientes.php`, …) têm redirecionamento permanente para as âncoras
   correspondentes (`vercel.json`).
 - **Nenhuma foto ainda.** O site tem 13 espaços de mídia (`media` em `src/data/site.ts`), 12 deles
-  renderizados; sem arquivo, cada espaço mostra em mono o que vai ali. As fotos chegam pelo
-  Instagram da Ouromed e entram com `scripts/fotos.mjs` (§3).
+  renderizados — 11 só na home; sem arquivo, cada espaço mostra em mono o que vai ali. As fotos chegam
+  pelo Instagram da Ouromed e entram com `scripts/fotos.mjs` (§3).
 - **Desenhos de BH em traço** no lugar de foto de banco: a vista da cidade no topo da home e na
   404 (foto de origem CC0) e a Serra do Curral no rodapé (foto de origem CC BY 2.0, crédito no
   rodapé). As curvas de nível da serra, geradas de dados de relevo (`scripts/curvas.py`), ficam só
@@ -51,10 +51,13 @@ contra o código a cada execução):
 |---|---|---|
 | `hero` | reservado: o topo da home é o desenho de BH, sem vídeo (decisão da pessoa, 24/11) | — |
 | `uti` | home (destaque de "Para você", largura toda) · `/para-voce#ambulancia` | 16:9 |
-| `domiciliar`, `remocao` | home (cartões) · `/para-voce` | 16:9 |
-| `protegida`, `eventos`, `locacao`, `ambulatorios` | home (faixa de "Para empresas") · `/para-empresas` | 4:3 |
+| `domiciliar` | home (cartão) · `/para-voce#atendimento-domiciliar` | 16:9 |
+| `remocao` | home (cartão e cartão de "Quando chamar") · `/para-voce#remocao` | 16:9 |
+| `protegida`, `eventos`, `locacao` | home (faixa de "Para empresas") · `/para-empresas` | 4:3 |
+| `ambulatorios` | home (faixa de "Para empresas" e cartão de "Quando chamar") · `/para-empresas#ambulatorios` | 4:3 |
 | `uti-interior` | home ("Suporte básico × UTI") | 4:3 |
-| `destino`, `triagem`, `equipe`, `central` | topos de `/para-voce`, `/para-empresas`, `/sobre`, `/contato` | 4:3 |
+| `destino`, `triagem`, `equipe` | topos de `/para-voce`, `/para-empresas`, `/sobre` | 4:3 |
+| `central` | home (cartão de "Quando chamar") · topo de `/contato` | 4:3 |
 
 Como entram (fase 2): as fotos do Instagram numa pasta, um mapa `slot → { arquivo, alt }`
 (`alt` é obrigatório) e `node scripts/fotos.mjs <pasta> <mapa.json>` grava AVIF e WebP em duas ou

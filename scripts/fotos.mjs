@@ -101,7 +101,7 @@ const SLOTS = {
     proporcao: '16/9',
     larguras: WIDE,
     sizes: '(min-width: 1024px) 66vw, 100vw',
-    onde: 'home (cartão) · /para-voce#remocao',
+    onde: 'home (cartão e cartão de Quando chamar) · /para-voce#remocao',
   },
   protegida: {
     // Home: faixa de Para empresas em 4 / 3 (cartão de até 500 px; sem JS, 3 / 4 em 4 colunas).
@@ -127,7 +127,7 @@ const SLOTS = {
     proporcao: '4/3',
     larguras: WIDE,
     sizes: '(min-width: 1024px) 66vw, 100vw',
-    onde: 'home (faixa de Para empresas) · /para-empresas#ambulatorios',
+    onde: 'home (faixa de Para empresas e cartão de Quando chamar) · /para-empresas#ambulatorios',
   },
   destino: {
     // Topos das páginas internas (PageHero): coluna de 5fr (~530 px); abaixo de 1024 px, largura toda.
@@ -149,10 +149,12 @@ const SLOTS = {
     onde: '/sobre (topo)',
   },
   central: {
+    // Topo de /contato (PageHero, coluna de 5fr; abaixo de 1024 px, largura toda) e cartão de
+    // "Quando chamar" na home (16 / 9, ~405 px).
     proporcao: '4/3',
     larguras: TOPO_PAGINA,
     sizes: '(min-width: 1024px) 40vw, 100vw',
-    onde: '/contato (topo)',
+    onde: 'home (cartão de Quando chamar) · /contato (topo)',
   },
 };
 

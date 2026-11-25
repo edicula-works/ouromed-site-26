@@ -489,9 +489,20 @@ export const ambulanceTypes = {
   },
 };
 
+/** Um cartão de "Quando chamar": abre com uma foto 16:9 (slot de `media`, como nos serviços). */
+type WhenItem = {
+  title: string;
+  tag: string;
+  text: string;
+  href: string;
+  cta: string;
+  media: MediaKey;
+};
+
 /** Quando chamar a Ouromed. A Ouromed atende emergência quando há viatura e equipe disponíveis
  *  (decisão da pessoa, 24/11/2026); o SAMU fica como nota de segurança, sem destaque. Sem preço,
- *  sem convênio nomeado e sem tempo de resposta em minutos. */
+ *  sem convênio nomeado e sem tempo de resposta em minutos. Cada cartão traz uma foto (decisão de
+ *  25/11: com as três, a home passa de 8 para 11 imagens e o critério 3.2 fecha com as fotos). */
 export const honesty = {
   heading: 'Quando chamar a Ouromed',
   lede: 'Toda chamada passa pela triagem médica, que define a viatura e a equipe. A Central diz na hora o que pode fazer pelo seu caso.',
@@ -502,6 +513,7 @@ export const honesty = {
       text: 'A Ouromed atende emergência 24 h quando há viatura e equipe disponíveis. A Central confirma na própria ligação.',
       href: `tel:${site.phones.tel}`,
       cta: `Ligar ${site.phones.display}`,
+      media: 'central',
     },
     {
       title: 'Remoção e transferência',
@@ -509,6 +521,7 @@ export const honesty = {
       text: 'Alta hospitalar, exames, transferência entre hospitais ou entre estados, com UTI móvel ou suporte básico.',
       href: '/para-voce#remocao',
       cta: 'Solicitar remoção',
+      media: 'remocao',
     },
     {
       title: 'Empresas e eventos',
@@ -516,8 +529,9 @@ export const honesty = {
       text: 'Área protegida, ambulatório em obra, cobertura de eventos e locação de ambulâncias, com orçamento por escrito.',
       href: '/contato',
       cta: 'Pedir orçamento',
+      media: 'ambulatorios',
     },
-  ],
+  ] satisfies WhenItem[],
   note: 'Risco de vida e a Central sem viatura livre na hora? Ligue 192 (SAMU).',
 };
 
