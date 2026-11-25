@@ -79,8 +79,8 @@ export function JsonLd({ data }: { data: object }) {
 
 /* ────────────────────────────── Home ────────────────────────────── */
 
-/** Topo: o título centrado sobre o azul-noite e BH em traço, em duas camadas que andam em
- *  velocidades diferentes ao rolar (a serra ao fundo, a cidade na frente). Sem vídeo. */
+/** Topo: o título centrado sobre o azul-noite e duas camadas que andam em ritmos diferentes:
+ *  as curvas de nível ao fundo e a cidade em traço na frente. Sem vídeo. */
 export function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-h" data-hero>
@@ -118,15 +118,13 @@ export function Presentation() {
         <h2 id="about-h" className="about__label">
           {presentation.label}
         </h2>
-        <p className="about__text" data-reveal="fade">
-          {presentation.text}
-        </p>
+        <p className="about__text">{presentation.text}</p>
       </div>
       <div className="about__facts">
         <Texture className="tex--facts" drift />
         <dl className="wrap facts">
           {presentation.facts.map((f) => (
-            <div key={f.value} className="fact" data-reveal="fade">
+            <div key={f.value} className="fact">
               <dt>{f.label}</dt>
               <dd>{f.value}</dd>
             </div>
@@ -139,7 +137,7 @@ export function Presentation() {
 
 function ServiceCard({ s }: { s: Service }) {
   return (
-    <li className="card" data-reveal="clip">
+    <li className="card">
       <Link href={serviceHref(s)} className="card__link">
         <Media k={s.media} ratio="4 / 3" reveal={false} className="card__media" />
         <span className="card__body">
@@ -171,7 +169,7 @@ export function ServiceCards({
     <section className="sec cards" id={id} aria-labelledby={`${id}-h`}>
       <div className="wrap">
         <header className="sec__head">
-          <h2 id={`${id}-h`} className="sec__title" data-split="lines">
+          <h2 id={`${id}-h`} className="sec__title">
             {heading}
           </h2>
           <p className="sec__lede">{lede}</p>
@@ -193,22 +191,22 @@ export function AmbulanceTypes() {
     <section className="sec types" aria-labelledby="types-h">
       <div className="wrap">
         <header className="sec__head">
-          <h2 id="types-h" className="sec__title" data-split="lines">
+          <h2 id="types-h" className="sec__title">
             {t.heading}
           </h2>
           <p className="sec__lede">{t.lede}</p>
         </header>
         <div className="types__grid">
-          <Media k="uti-interior" ratio="4 / 3" className="types__media" />
+          <Media k="uti-interior" ratio="4 / 3" reveal={false} className="types__media" />
           <div className="types__info">
             {t.types.map((x) => (
-              <div key={x.name} className="type" data-reveal="fade">
+              <div key={x.name} className="type">
                 <h3 className="type__name">{x.name}</h3>
                 <p>{x.for}</p>
                 <p className="type__team">{x.team}</p>
               </div>
             ))}
-            <div className="kit" data-reveal="fade">
+            <div className="kit">
               <h3 className="kit__h">{t.kit.heading}</h3>
               <ul className="kit__list">
                 {t.kit.items.map((k) => (
@@ -229,14 +227,14 @@ export function WhenToCall() {
     <section className="sec when" aria-labelledby="when-h">
       <div className="wrap">
         <header className="sec__head">
-          <h2 id="when-h" className="sec__title" data-split="lines">
+          <h2 id="when-h" className="sec__title">
             {honesty.heading}
           </h2>
           <p className="sec__lede">{honesty.lede}</p>
         </header>
         <ul className="when__grid">
           {honesty.items.map((it) => (
-            <li key={it.title} className="when__item" data-reveal="fade">
+            <li key={it.title} className="when__item">
               <h3 className="when__title">{it.title}</h3>
               <p className="when__text">{it.text}</p>
               {it.href.startsWith('tel:') ? (
@@ -267,12 +265,12 @@ export function Testimonials() {
   return (
     <section className="quotes" aria-labelledby="q-h">
       <div className="wrap">
-        <h2 id="q-h" className="sec__title quotes__h" data-split="lines">
+        <h2 id="q-h" className="sec__title quotes__h">
           Quem já contou com a Ouromed
         </h2>
         <ul className="quotes__grid">
           {testimonials.map((t) => (
-            <li key={t.name} className="quote" data-reveal="fade">
+            <li key={t.name} className="quote">
               <figure>
                 <blockquote>
                   <p>{t.quote}</p>

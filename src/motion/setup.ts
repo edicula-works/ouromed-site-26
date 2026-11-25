@@ -7,12 +7,14 @@
 //   6. menu e painéis abrindo por clip-path com itens em cascata (CSS)
 //   7. atos: na home, cada seção sobe e cobre a anterior, que escurece; no topo, as camadas do
 //      desenho de BH andam em ritmos diferentes (pedido da pessoa, 24/11)
+//   8. cenas: cada ato da home tem a própria coreografia (scenes()), nada de um efeito repetido
 // Fora disso: só a troca de página em opacidade e o cabeçalho (vidro, sair e voltar).
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import { ease, onPage, onScroll, prefersReducedMotion, setTransition } from '@/engine';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export function setupMotion() {
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
@@ -22,6 +24,212 @@ export function setupMotion() {
   hashTarget();
   videos();
   acts();
+  scenes();
+}
+
+/** Cenas da home: cada ato é pensado como unidade, com uma entrada própria.
+ *  apresentação: a frase acende palavra por palavra conforme a leitura; os fatos chegam da direita.
+ *  Para você: o cartão grande vem da esquerda, os pequenos da direita.
+ *  Para empresas: a fileira de cartões desliza na horizontal com a rolagem.
+ *  Tipos de ambulância: a foto do interior abre de cima para baixo; o kit cai item a item.
+ *  Quando chamar: os três cartões chegam de lados diferentes, girando de leve até assentar.
+ *  Depoimentos: o depoimento principal acende palavra por palavra; os outros vêm de lados opostos.
+ *  Perguntas: as perguntas chegam da direita, uma a uma. */
+function scenes() {
+  onPage(() => {
+    const root = document.querySelector<HTMLElement>('.acts');
+    if (!root || prefersReducedMotion()) return undefined;
+    const q = <T extends Element = HTMLElement>(sel: string) =>
+      gsap.utils.toArray<T>(sel, root) as T[];
+    const at = (el: Element | null, start = 'top 78%') =>
+      el ? { trigger: el, start, once: true } : undefined;
+    const splits: SplitText[] = [];
+    const words = (el: Element | null) => {
+      if (!el) return [];
+      const sp = SplitText.create(el, { type: 'words' });
+      splits.push(sp);
+      return sp.words;
+    };
+
+    // Apresentação: leitura que acende (scrub) e fatos da direita.
+    const about = root.querySelector('.about');
+    const aboutText = root.querySelector('.about__text');
+    gsap.fromTo(
+      words(aboutText),
+      { opacity: 0.18 },
+      {
+        opacity: 1,
+        stagger: 0.04,
+        ease: 'none',
+        scrollTrigger: { trigger: aboutText, start: 'top 85%', end: 'bottom 45%', scrub: true },
+      },
+    );
+    gsap.from(q('.about .fact'), {
+      x: 140,
+      opacity: 0,
+      duration: 1.1,
+      stagger: 0.14,
+      ease: ease.out,
+      scrollTrigger: at(root.querySelector('.about .facts'), 'top 85%'),
+    });
+    gsap.from(q('.about .fact dd'), {
+      fontStretch: '75%',
+      duration: 1.4,
+      stagger: 0.14,
+      ease: ease.out,
+      scrollTrigger: at(root.querySelector('.about .facts'), 'top 85%'),
+    });
+    void about;
+
+    // Para você: grande da esquerda, pequenos da direita, título desliza em sentido oposto.
+    const voce = root.querySelector('#para-voce');
+    if (voce) {
+      gsap.from(voce.querySelector('.sec__title'), {
+        x: -120,
+        opacity: 0,
+        duration: 1.1,
+        ease: ease.out,
+        scrollTrigger: at(voce),
+      });
+      gsap.from(voce.querySelector('.sec__lede'), {
+        x: 80,
+        opacity: 0,
+        duration: 1.1,
+        ease: ease.out,
+        scrollTrigger: at(voce),
+      });
+      const cards = gsap.utils.toArray<HTMLElement>('.card', voce);
+      gsap.from(cards[0], {
+        xPercent: -18,
+        opacity: 0,
+        duration: 1.3,
+        ease: ease.out,
+        scrollTrigger: at(cards[0], 'top 85%'),
+      });
+      gsap.from(cards.slice(1), {
+        xPercent: 30,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.16,
+        ease: ease.out,
+        scrollTrigger: at(cards[0], 'top 80%'),
+      });
+    }
+
+    // Para empresas: a fileira desliza da direita para o lugar conforme a rolagem; os cartões
+    // chegam em alturas diferentes.
+    const emp = root.querySelector('#para-empresas');
+    if (emp) {
+      const grid = emp.querySelector('.cards__grid');
+      gsap.fromTo(
+        grid,
+        { xPercent: 28 },
+        {
+          xPercent: 0,
+          ease: 'none',
+          scrollTrigger: { trigger: emp, start: 'top bottom', end: 'top 15%', scrub: 0.8 },
+        },
+      );
+      gsap.from(gsap.utils.toArray<HTMLElement>('.card', emp), {
+        y: (i: number) => [60, 140, 30, 110][i % 4],
+        ease: 'none',
+        scrollTrigger: { trigger: emp, start: 'top bottom', end: 'top 15%', scrub: 0.8 },
+      });
+      gsap.from(emp.querySelector('.sec__title'), {
+        x: 120,
+        opacity: 0,
+        duration: 1.1,
+        ease: ease.out,
+        scrollTrigger: at(emp),
+      });
+    }
+
+    // Tipos de ambulância: a foto abre de cima para baixo; colunas sobem; o kit cai item a item.
+    const types = root.querySelector('.types');
+    if (types) {
+      const media = types.querySelector('.types__media');
+      gsap.fromTo(
+        media,
+        { clipPath: 'inset(0% 0% 100% 0% round 8px)' },
+        {
+          clipPath: 'inset(0% 0% 0% 0% round 8px)',
+          duration: 1.4,
+          ease: ease.inOut,
+          scrollTrigger: at(media),
+        },
+      );
+      gsap.from(q('.types .type'), {
+        y: 70,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.18,
+        ease: ease.out,
+        scrollTrigger: at(types.querySelector('.types__info')),
+      });
+      gsap.from(q('.types .kit__list li'), {
+        y: -14,
+        opacity: 0,
+        duration: 0.5,
+        stagger: 0.06,
+        ease: ease.soft,
+        scrollTrigger: at(types.querySelector('.kit'), 'top 85%'),
+      });
+    }
+
+    // Quando chamar: cada cartão de um lado, girando de leve até assentar.
+    const when = q('.when__item');
+    const from = [
+      { x: -90, rotate: -4 },
+      { y: 110, rotate: 0 },
+      { x: 90, rotate: 4 },
+    ];
+    when.forEach((card, i) => {
+      gsap.from(card, {
+        ...from[i % 3],
+        opacity: 0,
+        duration: 1.2,
+        delay: i * 0.1,
+        ease: ease.out,
+        scrollTrigger: at(root.querySelector('.when__grid')),
+      });
+    });
+
+    // Depoimentos: o principal acende palavra por palavra; os outros vêm de lados opostos.
+    const main = root.querySelector('.quote:first-child blockquote p');
+    gsap.fromTo(
+      words(main),
+      { opacity: 0.15 },
+      {
+        opacity: 1,
+        stagger: 0.05,
+        ease: 'none',
+        scrollTrigger: { trigger: main, start: 'top 80%', end: 'bottom 40%', scrub: true },
+      },
+    );
+    q('.quote:not(:first-child)').forEach((el, i) => {
+      gsap.from(el, {
+        x: i % 2 ? 120 : -120,
+        opacity: 0,
+        duration: 1.2,
+        ease: ease.out,
+        scrollTrigger: at(el, 'top 88%'),
+      });
+    });
+
+    // Perguntas: chegam da direita, uma a uma.
+    gsap.from(q('.faq__item'), {
+      x: 60,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.08,
+      ease: ease.out,
+      scrollTrigger: at(root.querySelector('.faq__list')),
+    });
+
+    return () => {
+      for (const sp of splits) sp.revert();
+    };
+  });
 }
 
 /** Atos da home: cada seção sobe e cobre a anterior. Cada ato é `position: sticky` (classe

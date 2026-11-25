@@ -797,11 +797,9 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 /* Camadas do desenho: a serra ao fundo (mais tênue, maior) e a cidade na frente. Ao abrir, as
    linhas da cidade sobem de baixo para cima; ao rolar, as camadas andam em ritmos diferentes. */
 .tex--fundo {
-  inset: auto 0 0 0;
-  height: clamp(10rem, 32vw, 30rem);
-  --tex-c: rgb(212 173 42 / 0.07);
-  -webkit-mask: url("/textura/bh-serra.png") center top / 100% auto no-repeat;
-  mask: url("/textura/bh-serra.png") center top / 100% auto no-repeat;
+  /* Fundo do topo: as curvas de nível, bem tênues (a serra em traço é do rodapé). */
+  inset: -6% 0;
+  --tex-c: rgb(212 173 42 / 0.06);
 }
 @keyframes draw-up {
   from {
@@ -813,11 +811,60 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
     opacity: 0;
   }
 }
+/* Movimento constante e lento, fora do ritmo da página: a cidade e a serra derivam em sentidos
+   opostos, em ciclos de tamanhos diferentes, e uma luz suave passeia ao fundo. */
+@keyframes drift-a {
+  from {
+    translate: -2.5% 0;
+  }
+  to {
+    translate: 2.5% -1%;
+  }
+}
+@keyframes drift-b {
+  from {
+    translate: 3% 1%;
+  }
+  to {
+    translate: -3% 0;
+  }
+}
+@keyframes glow {
+  0% {
+    background-position: 35% 30%;
+  }
+  50% {
+    background-position: 65% 45%;
+  }
+  100% {
+    background-position: 45% 25%;
+  }
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 35% at center, rgb(212 173 42 / 0.09), transparent 70%) 0 0 / 160% 160%
+    no-repeat;
+}
+.motion .hero::before {
+  animation: glow 26s ease-in-out infinite alternate;
+}
+.tex--hero,
+.tex--fundo {
+  inset-inline: -4%;
+}
 .motion .tex--hero {
-  animation: draw-up 1.8s var(--ease-out) 0.25s both;
+  animation:
+    draw-up 1.8s var(--ease-out) 0.25s both,
+    drift-a 38s ease-in-out 2s infinite alternate;
 }
 .motion .tex--fundo {
-  animation: fade-in 2.4s var(--ease-out) 0.6s both;
+  animation:
+    fade-in 2.4s var(--ease-out) 0.6s both,
+    drift-b 61s ease-in-out infinite alternate;
 }
 
 /* ────────────────────────────── Atos (home) ────────────────────────────── */
