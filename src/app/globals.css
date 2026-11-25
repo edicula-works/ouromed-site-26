@@ -379,8 +379,25 @@ a {
   z-index: 1;
   --tex-c: rgb(212 173 42 / 0.15);
 }
+/* Curvas de nível da faixa de fatos: além da deriva com a rolagem (motor, no transform), uma deriva
+   contínua e lenta em translação, 90 s por sentido, só com CSS — a propriedade translate é individual,
+   então não briga com o transform do motor; sem JS por quadro. A caixa é 4 % mais larga de cada lado
+   para a textura não descobrir as bordas. Com menos movimento a classe motion nem existe, e o reset
+   global encerraria a animação no primeiro quadro. */
+@keyframes curvas {
+  from {
+    translate: -2% 0;
+  }
+  to {
+    translate: 2% -1%;
+  }
+}
 .tex--facts {
   --tex-c: rgb(3 68 135 / 0.13);
+  inset: -8% -4%;
+}
+.motion .tex--facts {
+  animation: curvas 90s ease-in-out infinite alternate;
 }
 .tex--footer {
   --tex-c: rgb(212 173 42 / 0.14);
@@ -2122,6 +2139,8 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   *::after {
     /* biome-ignore lint/complexity/noImportantStyles: o reset de reduced motion precisa vencer todas as regras de componente */
     animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: idem, para o atraso: sem ele, um item com delay ficava invisível até o atraso passar */
+    animation-delay: 0s !important;
     /* biome-ignore lint/complexity/noImportantStyles: idem */
     animation-iteration-count: 1 !important;
     /* biome-ignore lint/complexity/noImportantStyles: idem */
