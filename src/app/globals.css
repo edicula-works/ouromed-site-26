@@ -875,7 +875,9 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 .sec__head {
   display: grid;
   gap: calc(var(--u) * 1.5);
-  margin-bottom: calc(var(--u) * 5);
+  /* Rodada 8: um degrau a menos nos vãos (cabeçalho de seção, destaque, fatos, barra da faixa
+     e rodapé) para o critério 3.2; o ritmo das seções (--sec) fica como estava. */
+  margin-bottom: calc(var(--u) * 4);
 }
 .sec__title {
   font-size: var(--t-xl);
@@ -928,7 +930,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   position: relative;
   overflow: hidden;
   margin-top: var(--sec);
-  padding-block: calc(var(--u) * 7);
+  padding-block: calc(var(--u) * 5);
   background: var(--c-surface);
 }
 .facts {
@@ -963,7 +965,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 /* Destaque de "Para você": a foto cresce de um quadro no centro até a largura toda ao rolar
    (clip-path com scrub, src/motion/setup.ts → scenes). Sem JS, já aparece inteira. */
 .feature {
-  margin-bottom: calc(var(--u) * 5);
+  margin-bottom: calc(var(--u) * 4);
 }
 .feature__link {
   display: grid;
@@ -1028,7 +1030,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 .is-track + .track__rail {
   display: block;
   height: 2px;
-  margin-top: calc(var(--u) * 4);
+  margin-top: calc(var(--u) * 2);
   background: var(--c-line);
 }
 .track__bar {
@@ -1759,14 +1761,14 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: calc(var(--u) * 6);
+  gap: calc(var(--u) * 5);
   padding-top: var(--sec);
   padding-bottom: calc(var(--u) * 3);
 }
 .footer__top {
   display: grid;
   gap: 1.25rem;
-  padding-bottom: calc(var(--u) * 5);
+  padding-bottom: calc(var(--u) * 4);
   border-bottom: 1px solid var(--c-line-ink);
 }
 .footer__call {
