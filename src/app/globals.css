@@ -864,7 +864,12 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 
 /* ────────────────────────────── Seções ────────────────────────────── */
 
+/* Cada seção corta o que sai dela pelos lados (a faixa de Para empresas, os cartões de Quando
+   chamar antes de chegar). O overflow-x do body vai para a janela como "hidden", que ainda deixa a
+   página rolar para o lado por código, foco ou gesto (bug de 25/11, critério 7.7). clip não cria
+   área de rolagem: a foto fixa da UTI (sticky) continua funcionando. */
 .sec {
+  overflow-x: clip;
   padding-block: var(--sec);
 }
 .sec__head {
@@ -1006,11 +1011,6 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 
 /* Para empresas no computador: faixa que anda para o lado enquanto a seção segura (classe posta
    pelo JS; sem JS, continua a grade de 4 colunas). A faixa passa da margem direita da página. */
-/* A faixa é cortada na própria seção: o overflow-x do body vai para a janela como "hidden", que
-   ainda deixa a página rolar para o lado por código, foco ou gesto (bug de 25/11, critério 7.7). */
-.cards {
-  overflow-x: clip;
-}
 .cards__grid.is-track {
   display: flex;
   gap: var(--gutter);
