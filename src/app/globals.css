@@ -406,6 +406,12 @@ a {
   object-fit: cover;
   filter: saturate(0.9) contrast(1.03);
 }
+/* A foto vem num <picture>: ele ocupa a caixa e o <img> continua sendo o .media__el de sempre. */
+.media picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
 .media:not(.media--empty)::after {
   content: "";
   position: absolute;

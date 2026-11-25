@@ -14,14 +14,16 @@
 //      Telefones: os 3 do site antigo; a Receita mostra (31) 2128-2020 (perguntar ao cliente).
 //   2. CNPJ: 11.263.858/0001-65, enviado pela pessoa em 24/11 e conferido no cadastro público
 //      (ativa desde 20/10/2009). Renderiza no rodapé e nos dados estruturados.
-//   3. Fotos: 12 slots de foto (`media`) esperam as fotos do Instagram da Ouromed (fase 2), que
-//      entram com scripts/fotos.mjs; `hero` é reservado (o topo é o desenho de BH). Hoje o slot
-//      mostra em mono o que vai ali.
+//   3. Fotos: 12 slots com foto (11 cenas ilustrativas geradas por IA e uma real, `locacao`),
+//      processadas por scripts/fotos.mjs a partir de um mapa com alt obrigatório; a troca pelas fotos
+//      reais da Ouromed é pendência. `hero` é reservado (o topo é o desenho de BH).
 //   4. Frota: texto genérico (4×4 e furgões, de diversas marcas), sem modelo nem quantidade; a
 //      composição atual é confirmada na contratação. Frota atual: pendência.
 //   5. História: só "em atividade desde outubro de 2009" (abertura do CNPJ). Sem fundadores.
 //   6. Nunca: credencial específica, convênio aceito, preço, tempo de resposta em minutos,
 //      depoimento novo, cliente novo.
+
+import midiaJson from './midia.json';
 
 export type MediaKey =
   | 'hero'
@@ -116,10 +118,13 @@ export const site = {
   since: 'Cobrimos eventos desde 2010',
 };
 
-/** Fotos e vídeos do site. Sem `src`, o slot mostra o rótulo do que vai ali (as fotos chegam pelo
- *  Instagram da Ouromed e entram com scripts/fotos.mjs; como plano B, imagens do Google Flow,
- *  sempre sem texto, sem logo de terceiros e sem rosto em close; prompts em docs/brief/PROMPTS-FLOW.md).
- *  `alt` descreve o que se vê. */
+/** Fotos e vídeos do site. Os arquivos são os que scripts/fotos.mjs gerou em public/midia/ a partir de
+ *  um mapa (alt obrigatório, foco e posição do recorte por slot) e registrou em src/data/midia.json,
+ *  importado aqui: as 12 fotos de hoje são 11 cenas ilustrativas geradas por IA (sem texto, sem logo,
+ *  sem rosto em close) e uma real, a frota em `locacao`. Trocar pelas fotos reais da Ouromed é
+ *  pendência (docs/PENDENCIAS.md). Sem arquivo no manifesto, o slot mostra em mono o `label` do que
+ *  vai ali. `alt` descreve o que se vê. `video` (com `src` como pôster) é o caso do topo, se um dia
+ *  houver vídeo. */
 export const media: Record<MediaKey, { label: string; alt: string; src?: string; video?: string }> =
   {
     // Reservado: o topo da home é o desenho de BH, sem vídeo nem foto (decisão de 24/11).
@@ -129,7 +134,7 @@ export const media: Record<MediaKey, { label: string; alt: string; src?: string;
     },
     uti: {
       label: 'Foto: viatura UTI de perfil',
-      alt: 'Ambulância UTI móvel branca, de perfil, estacionada',
+      alt: 'Ambulância branca de perfil, estacionada ao entardecer, com prédios e morros ao fundo.',
     },
     'uti-interior': {
       label: 'Foto: interior da UTI móvel',
@@ -137,45 +142,55 @@ export const media: Record<MediaKey, { label: string; alt: string; src?: string;
     },
     domiciliar: {
       label: 'Foto: atendimento em casa',
-      alt: 'Profissional de saúde medindo a pressão de uma paciente idosa em casa',
+      alt: 'Enfermeira, vista de costas, mede a pressão de uma idosa sentada numa poltrona ao lado da janela.',
     },
     remocao: {
       label: 'Foto: maca entrando na viatura',
-      alt: 'Equipe colocando a maca com o paciente pela porta traseira da ambulância',
+      alt: 'Dois socorristas de uniforme azul-marinho, vistos de costas, colocam uma maca vazia na ambulância diante de um hospital.',
     },
     eventos: {
       label: 'Foto: equipe em evento',
-      alt: 'Ambulância e equipe de plantão na lateral de um evento ao ar livre',
+      alt: 'Socorrista, de costas, junto à porta lateral aberta de uma ambulância, com o público e as luzes de um festival ao fundo.',
     },
     locacao: {
       label: 'Foto: ambulância 4×4 em mineração',
-      alt: 'Ambulância 4×4 em estrada de terra de uma área de mineração',
+      alt: 'Fileira de ambulâncias 4×4 brancas da Ouromed, com faixas amarelas, estacionadas lado a lado.',
     },
     protegida: {
       label: 'Foto: área protegida em empresa',
-      alt: 'Ambulância de prontidão na entrada de um centro empresarial',
+      alt: 'Ambulância branca estacionada diante da entrada envidraçada de um prédio comercial.',
     },
     ambulatorios: {
       label: 'Foto: ambulatório em obra',
-      alt: 'Ambulatório montado num canteiro de obras, com maca e armário de medicamentos',
+      alt: 'Ambulatório montado num contêiner de obra, com maca, desfibrilador na parede e capacete de obra sobre a mesa.',
     },
     central: {
       label: 'Foto: a Central 24 h',
-      alt: 'Atendente da central com headset, diante de monitores',
+      alt: 'Operadora, de costas, com fone e microfone, diante de dois monitores com mapas, na central de atendimento.',
     },
     triagem: {
       label: 'Foto: triagem médica',
-      alt: 'Médico com headset fazendo a triagem de uma ligação',
+      alt: 'Profissional de saúde de uniforme azul-marinho, com estetoscópio, fone e microfone, faz anotações num caderno à luz de uma luminária.',
     },
     equipe: {
       label: 'Foto: equipe saindo com a viatura',
-      alt: 'Equipe uniformizada embarcando na ambulância',
+      alt: 'Dois socorristas de uniforme azul-marinho, vistos de costas, fecham as portas traseiras de uma ambulância à noite.',
     },
     destino: {
       label: 'Foto: chegada ao hospital',
-      alt: 'Ambulância chegando à entrada de emergência de um hospital',
+      alt: 'Ambulância branca chega à entrada coberta de um hospital à noite, com uma maca visível no interior do prédio.',
     },
   };
+
+/** Arquivos de um slot: as larguras em AVIF e WebP e, quando o mapa pede, a posição do recorte nas
+ *  caixas em que o slot aparece com outra proporção (object-position de CSS). */
+export type MidiaGerada = {
+  larguras: { w: number; h: number; avif: string; webp: string }[];
+  posicao?: string;
+};
+const midia: Partial<Record<MediaKey, MidiaGerada>> = midiaJson;
+/** O que scripts/fotos.mjs gerou para o slot; `undefined` enquanto não há foto. */
+export const midiaDe = (k: MediaKey): MidiaGerada | undefined => midia[k];
 
 export const services: Service[] = [
   {
