@@ -25,13 +25,15 @@ export function Footer() {
           </p>
         </div>
 
+        {/* Rodapé objetivo (25/11): atalhos em duas colunas desde o celular; os quatro serviços para
+            empresas em duas colunas no computador; os outros dois fixos na mesma linha. */}
         <div className="footer__grid">
           {groups.map((g) => (
             <div key={g} className="footer__col">
               <h2 className="footer__h">
                 <Link href={audiencePages[g].path}>{audiencePages[g].nav}</Link>
               </h2>
-              <ul className="footer__list">
+              <ul className={`footer__list${g === 'empresa' ? ' footer__list--2' : ''}`}>
                 {servicesFor(g).map((s) => (
                   <li key={s.slug}>
                     <Link href={serviceHref(s)}>{s.nav}</Link>
@@ -65,9 +67,10 @@ export function Footer() {
               <br />
               {site.address.zip}
             </address>
-            <ul className="footer__list">
+            <ul className="footer__phones">
               {site.phones.all.slice(1).map((p, i) => (
                 <li key={p}>
+                  {i > 0 && <span aria-hidden="true"> · </span>}
                   <a href={`tel:${site.phones.allTel[i + 1]}`}>{p}</a>
                 </li>
               ))}
