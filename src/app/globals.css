@@ -825,9 +825,12 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 }
 /* Movimento constante e lento, fora do ritmo da página: a cidade e a serra derivam em sentidos
    opostos, em ciclos de tamanhos diferentes, e uma luz suave passeia ao fundo. */
+/* Parte da posição de repouso (0): antes começava em -2,5 %, e a cidade dava um salto de uns 39 px
+   aos 2 s, quando a deriva começava, depois de a entrada por máscara terminar em 0 (25/11). Com
+   alternate, a volta inverte a trajetória, sem teleporte nos dois extremos. */
 @keyframes drift-a {
   from {
-    translate: -2.5% 0;
+    translate: 0 0;
   }
   to {
     translate: 2.5% -1%;
