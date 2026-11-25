@@ -70,8 +70,9 @@ function scenes() {
       );
     }
 
+    // Só onde a fileira é fileira (4 colunas, ≥ 1024px); no celular os cartões empilham.
     const row = root.querySelector<HTMLElement>('#para-empresas [data-row]');
-    if (row) {
+    if (row && matchMedia('(min-width: 1024px)').matches) {
       gsap.fromTo(
         row,
         { xPercent: 18 },

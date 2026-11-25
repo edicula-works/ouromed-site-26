@@ -862,10 +862,10 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   z-index: 1;
   background-color: var(--c-bg);
 }
-.acts > .types {
+.acts > section.types {
   background-color: var(--c-card);
 }
-.acts > .quotes {
+.acts > section.quotes {
   background-color: var(--c-night);
 }
 
