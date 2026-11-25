@@ -71,16 +71,31 @@ function scenes() {
       );
     }
 
-    // Só onde a fileira é fileira (4 colunas, ≥ 1024px); no celular os cartões empilham.
+    // Para empresas: os cartões abrem do centro. Começam juntos perto do meio da fileira e se
+    // espalham até as suas colunas, assentados antes de a seção chegar ao alto da tela. Só onde
+    // a fileira é fileira (4 colunas, ≥ 1024px); no celular os cartões empilham parados.
     const row = root.querySelector<HTMLElement>('#para-empresas [data-row]');
     if (row && matchMedia('(min-width: 1024px)').matches) {
+      const cards = [...row.children] as HTMLElement[];
+      const mid = row.getBoundingClientRect();
+      const cx = mid.left + mid.width / 2;
       gsap.fromTo(
-        row,
-        { xPercent: 18 },
+        cards,
         {
-          xPercent: -6,
-          ease: 'none',
-          scrollTrigger: { trigger: row, start: 'top bottom', end: 'bottom top', scrub: 0.5 },
+          x: (_i: number, el: HTMLElement) => {
+            const r = el.getBoundingClientRect();
+            return (cx - (r.left + r.width / 2)) * 0.45;
+          },
+          scale: 0.94,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          scale: 1,
+          opacity: 1,
+          ease: 'power2.out',
+          stagger: { each: 0.06, from: 'center' },
+          scrollTrigger: { trigger: row, start: 'top 92%', end: 'top 45%', scrub: 0.6 },
         },
       );
     }
@@ -151,13 +166,19 @@ function fade() {
   });
 }
 
-/** Cabeçalho: vidro depois da primeira rolagem; sai ao descer e volta ao subir (frame that steps
+/** Cabeçalho: fundo claro depois do topo; sai ao descer e volta ao subir (frame that steps
  *  aside, patterns.md §6), nunca com um painel ou o menu aberto. */
 function header() {
   let last = 0;
   onScroll(({ y }) => {
     const root = document.documentElement;
-    root.classList.toggle('is-scrolled', y > 8);
+    // Na home, o cabeçalho fica transparente enquanto estiver sobre o topo escuro e só ganha o
+    // fundo claro quando a apresentação chega embaixo dele (antes ele ficava branco sobre o
+    // azul e logo saía de cena).
+    const hero = document.querySelector<HTMLElement>('[data-hero]');
+    const hdr = document.querySelector<HTMLElement>('.hdr');
+    const solidAt = hero ? hero.offsetHeight - (hdr?.offsetHeight ?? 0) : 8;
+    root.classList.toggle('is-scrolled', y > solidAt);
     if (Math.abs(y - last) < 4) return;
     if (!root.classList.contains('menu-open'))
       root.classList.toggle('header-away', y > 160 && y > last);
