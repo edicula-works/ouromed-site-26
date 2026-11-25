@@ -154,7 +154,13 @@ for (const path of pages) {
     const hm = hero?.querySelector('.media');
     const hr = hero?.getBoundingClientRect();
     const h1 = document.querySelector('h1');
-    const H = document.documentElement.scrollHeight;
+    // Altura de conteúdo: desconta a rolagem dos trechos em que a página segura (pin do GSAP),
+    // onde o movimento é lateral e não há conteúdo novo empilhado (24/11).
+    const hold = [...document.querySelectorAll('.pin-spacer')].reduce((t, sp) => {
+      const pinned = sp.firstElementChild;
+      return t + (pinned ? sp.offsetHeight - pinned.offsetHeight : 0);
+    }, 0);
+    const H = document.documentElement.scrollHeight - hold;
     const screens = H / vh;
     const medias = [...document.querySelectorAll('.media')].filter(
       (e) => e.getBoundingClientRect().width > 120,

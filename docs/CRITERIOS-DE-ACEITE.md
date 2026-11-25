@@ -28,7 +28,7 @@ escrito.
 
 | # | Critério | Fonte | Como checar |
 |---|---|---|---|
-| 3.1 | Home com **≤ 10 telas** de altura no desktop | medianas: 9,7 e 8,5 | Auto |
+| 3.1 | Home com **≤ 10 telas** de altura no desktop (conteúdo; a rolagem dos trechos em que a página segura não conta) | medianas: 9,7 e 8,5 | Auto |
 | 3.2 | **≥ 1,2 imagens por tela** na home | medianas: 1,4 e 1,7 | Auto · **BLOQUEADO** até chegar a imagem |
 | 3.3 | **≤ 120 palavras por tela** | entre 85 e 146 | Auto |
 | 3.4 | **No máximo 2 famílias e 3 pesos de fonte**: Archivo (títulos e texto) e Martian Mono (só dados e legendas) | 1–2 famílias, 2–3 pesos; segunda voz a pedido da pessoa | Auto |
