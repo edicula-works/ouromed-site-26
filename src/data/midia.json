@@ -1,0 +1,265 @@
+{
+  "uti": {
+    "larguras": [
+      {
+        "w": 800,
+        "h": 450,
+        "avif": "/midia/uti-800.avif",
+        "webp": "/midia/uti-800.webp"
+      },
+      {
+        "w": 1280,
+        "h": 720,
+        "avif": "/midia/uti-1280.avif",
+        "webp": "/midia/uti-1280.webp"
+      }
+    ]
+  },
+  "uti-interior": {
+    "larguras": [
+      {
+        "w": 720,
+        "h": 540,
+        "avif": "/midia/uti-interior-720.avif",
+        "webp": "/midia/uti-interior-720.webp"
+      },
+      {
+        "w": 1080,
+        "h": 810,
+        "avif": "/midia/uti-interior-1080.avif",
+        "webp": "/midia/uti-interior-1080.webp"
+      }
+    ]
+  },
+  "remocao": {
+    "larguras": [
+      {
+        "w": 800,
+        "h": 450,
+        "avif": "/midia/remocao-800.avif",
+        "webp": "/midia/remocao-800.webp"
+      },
+      {
+        "w": 1280,
+        "h": 720,
+        "avif": "/midia/remocao-1280.avif",
+        "webp": "/midia/remocao-1280.webp"
+      }
+    ]
+  },
+  "domiciliar": {
+    "larguras": [
+      {
+        "w": 800,
+        "h": 450,
+        "avif": "/midia/domiciliar-800.avif",
+        "webp": "/midia/domiciliar-800.webp"
+      },
+      {
+        "w": 1280,
+        "h": 720,
+        "avif": "/midia/domiciliar-1280.avif",
+        "webp": "/midia/domiciliar-1280.webp"
+      }
+    ]
+  },
+  "eventos": {
+    "posicao": "50% 65%",
+    "larguras": [
+      {
+        "w": 800,
+        "h": 600,
+        "avif": "/midia/eventos-800.avif",
+        "webp": "/midia/eventos-800.webp"
+      },
+      {
+        "w": 1280,
+        "h": 960,
+        "avif": "/midia/eventos-1280.avif",
+        "webp": "/midia/eventos-1280.webp"
+      }
+    ]
+  },
+  "protegida": {
+    "posicao": "50% 75%",
+    "larguras": [
+      {
+        "w": 800,
+        "h": 600,
+        "avif": "/midia/protegida-800.avif",
+        "webp": "/midia/protegida-800.webp"
+      },
+      {
+        "w": 1280,
+        "h": 960,
+        "avif": "/midia/protegida-1280.avif",
+        "webp": "/midia/protegida-1280.webp"
+      }
+    ]
+  },
+  "ambulatorios": {
+    "posicao": "50% 100%",
+    "larguras": [
+      {
+        "w": 800,
+        "h": 600,
+        "avif": "/midia/ambulatorios-800.avif",
+        "webp": "/midia/ambulatorios-800.webp"
+      },
+      {
+        "w": 1280,
+        "h": 960,
+        "avif": "/midia/ambulatorios-1280.avif",
+        "webp": "/midia/ambulatorios-1280.webp"
+      }
+    ]
+  },
+  "central": {
+    "posicao": "50% 30%",
+    "larguras": [
+      {
+        "w": 640,
+        "h": 480,
+        "avif": "/midia/central-640.avif",
+        "webp": "/midia/central-640.webp"
+      },
+      {
+        "w": 960,
+        "h": 720,
+        "avif": "/midia/central-960.avif",
+        "webp": "/midia/central-960.webp"
+      },
+      {
+        "w": 1280,
+        "h": 960,
+        "avif": "/midia/central-1280.avif",
+        "webp": "/midia/central-1280.webp"
+      }
+    ]
+  },
+  "triagem": {
+    "larguras": [
+      {
+        "w": 640,
+        "h": 480,
+        "avif": "/midia/triagem-640.avif",
+        "webp": "/midia/triagem-640.webp"
+      },
+      {
+        "w": 960,
+        "h": 720,
+        "avif": "/midia/triagem-960.avif",
+        "webp": "/midia/triagem-960.webp"
+      },
+      {
+        "w": 1280,
+        "h": 960,
+        "avif": "/midia/triagem-1280.avif",
+        "webp": "/midia/triagem-1280.webp"
+      }
+    ]
+  },
+  "equipe": {
+    "larguras": [
+      {
+        "w": 640,
+        "h": 480,
+        "avif": "/midia/equipe-640.avif",
+        "webp": "/midia/equipe-640.webp"
+      },
+      {
+        "w": 960,
+        "h": 720,
+        "avif": "/midia/equipe-960.avif",
+        "webp": "/midia/equipe-960.webp"
+      },
+      {
+        "w": 1280,
+        "h": 960,
+        "avif": "/midia/equipe-1280.avif",
+        "webp": "/midia/equipe-1280.webp"
+      }
+    ]
+  },
+  "destino": {
+    "larguras": [
+      {
+        "w": 640,
+        "h": 480,
+        "avif": "/midia/destino-640.avif",
+        "webp": "/midia/destino-640.webp"
+      },
+      {
+        "w": 960,
+        "h": 720,
+        "avif": "/midia/destino-960.avif",
+        "webp": "/midia/destino-960.webp"
+      },
+      {
+        "w": 1280,
+        "h": 960,
+        "avif": "/midia/destino-1280.avif",
+        "webp": "/midia/destino-1280.webp"
+      }
+    ]
+  },
+  "locacao": {
+    "posicao": "50% 0%",
+    "larguras": [
+      {
+        "w": 747,
+        "h": 560,
+        "avif": "/midia/locacao-747.avif",
+        "webp": "/midia/locacao-747.webp"
+      }
+    ]
+  },
+  "cartao-emergencia": {
+    "larguras": [
+      {
+        "w": 800,
+        "h": 450,
+        "avif": "/midia/cartao-emergencia-800.avif",
+        "webp": "/midia/cartao-emergencia-800.webp"
+      },
+      {
+        "w": 1280,
+        "h": 720,
+        "avif": "/midia/cartao-emergencia-1280.avif",
+        "webp": "/midia/cartao-emergencia-1280.webp"
+      }
+    ]
+  },
+  "cartao-remocao": {
+    "larguras": [
+      {
+        "w": 800,
+        "h": 450,
+        "avif": "/midia/cartao-remocao-800.avif",
+        "webp": "/midia/cartao-remocao-800.webp"
+      },
+      {
+        "w": 1280,
+        "h": 720,
+        "avif": "/midia/cartao-remocao-1280.avif",
+        "webp": "/midia/cartao-remocao-1280.webp"
+      }
+    ]
+  },
+  "cartao-empresas": {
+    "larguras": [
+      {
+        "w": 800,
+        "h": 450,
+        "avif": "/midia/cartao-empresas-800.avif",
+        "webp": "/midia/cartao-empresas-800.webp"
+      },
+      {
+        "w": 1280,
+        "h": 720,
+        "avif": "/midia/cartao-empresas-1280.avif",
+        "webp": "/midia/cartao-empresas-1280.webp"
+      }
+    ]
+  }
+}

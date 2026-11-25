@@ -1,0 +1,24 @@
+import type { Metadata } from 'next';
+import { CallButtons, Faq, faqJsonLd, JsonLd, PageHero, ServiceIndex } from '@/components/Sections';
+import { audiencePages, servicesFor } from '@/data/site';
+
+const p = audiencePages.voce;
+
+export const metadata: Metadata = {
+  title: p.seoTitle,
+  description: p.description,
+  alternates: { canonical: './' },
+};
+
+export default function ParaVoce() {
+  return (
+    <>
+      <PageHero title={p.h1} intro={p.intro} media="destino">
+        <CallButtons />
+      </PageHero>
+      <ServiceIndex list={servicesFor('voce')} />
+      <Faq items={p.faq} />
+      <JsonLd data={faqJsonLd(p.faq)} />
+    </>
+  );
+}

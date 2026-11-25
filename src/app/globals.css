@@ -1,0 +1,2213 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Ouromed — rodada 6. O padrão medido em docs/brief/PADRAO.md e os critérios em
+   docs/CRITERIOS-DE-ACEITE.md: topo de ponta a ponta com imagem, mais imagem que
+   interface, uma família (Archivo, larga nos títulos), branco frio, azul e ouro
+   como acento, textura de curvas de nível da Serra do Curral em 3 lugares.
+   Motion: só os 6 padrões do inventário (src/motion/setup.ts).
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Cor por papel. Ouro #D4AD2A e azul-marinho #034487 são as cores do logotipo. */
+  --c-bg: #f7f8f9;
+  --c-surface: #eef2f6;
+  --c-card: #ffffff;
+  --c-ink: #14202e;
+  --c-muted: #4f5b66; /* 6,9:1 sobre --c-bg */
+  --c-navy: #034487; /* 8,9:1 sobre --c-bg */
+  --c-night: #0b2545;
+  --c-gold: #d4ad2a; /* acento: botão, número, textura; nunca texto pequeno sobre claro */
+  --c-gold-deep: #b48f17;
+  --c-red: #b3261e;
+  --c-paper: #f7f8f9;
+  --c-dust: #a9b4c0; /* texto secundário sobre azul-noite: 7,6:1 */
+  --c-line: rgb(20 32 46 / 0.12);
+  --c-line-ink: rgb(247 248 249 / 0.16);
+
+  /* Tipo: Archivo. Títulos largos (wdth 125) em caixa-alta, texto na largura normal.
+     Três pesos: 400 texto, 500 interface, 700 títulos. Martian Mono 400 para dados. */
+  --f: var(--font-archivo), system-ui, sans-serif;
+  /* Segunda voz: Martian Mono, só para dados e legendas (nunca rótulo de seção em toda parte). */
+  --f-mono: var(--font-mono), ui-monospace, monospace;
+  --t-hero: clamp(2.5rem, 1.2rem + 4.6vw, 5rem);
+  --t-xl: clamp(1.75rem, 1rem + 2.2vw, 3rem);
+  --t-l: clamp(1.375rem, 1.1rem + 0.9vw, 2rem);
+  --t-m: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem);
+  --t-body: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --t-s: 0.9375rem;
+  --t-xs: 0.8125rem;
+
+  /* Espaço e forma */
+  --u: clamp(0.5rem, 0.35rem + 0.6vw, 1rem);
+  --gutter: clamp(1.25rem, 0.6rem + 2.4vw, 3rem);
+  --sec: clamp(3.5rem, 2.3rem + 4vw, 6.25rem);
+  --max-w: 88rem;
+  --r: 8px;
+  --hdr-h: 4.5rem;
+  --ctabar-h: 0px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.83, 0, 0.17, 1);
+
+  --z-header: 50;
+  --z-menu: 55;
+  --z-ctabar: 60;
+  --z-curtain: 90;
+  --z-intro: 120;
+}
+
+/* ────────────────────────────── Fundação ────────────────────────────── */
+
+html {
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--f);
+  line-height: 1.5;
+  scroll-padding-top: var(--hdr-h);
+  scroll-padding-bottom: var(--ctabar-h);
+}
+body {
+  /* As cenas deslocam elementos na horizontal: clip corta o transbordo sem virar contêiner de
+     rolagem (o sticky dos atos continua funcionando). */
+  overflow-x: clip;
+  min-height: 100dvh;
+  font-size: var(--t-body);
+  font-variant-numeric: tabular-nums;
+  padding-bottom: var(--ctabar-h);
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3 {
+  font-weight: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+::selection {
+  background: var(--c-navy);
+  color: var(--c-paper);
+}
+:focus-visible {
+  outline: 2px solid var(--c-navy);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.hero :focus-visible,
+.quotes :focus-visible,
+.footer :focus-visible,
+.menu :focus-visible {
+  outline-color: var(--c-gold);
+}
+.wrap {
+  width: 100%;
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.ico {
+  display: inline-block;
+  flex: none;
+  width: 1.15em;
+  height: 1.15em;
+}
+.skip-link {
+  position: fixed;
+  left: var(--gutter);
+  top: 0.75rem;
+  z-index: calc(var(--z-intro) + 1);
+  padding: 0.7em 1.1em;
+  border-radius: var(--r);
+  background: var(--c-night);
+  color: var(--c-paper);
+  font-weight: 500;
+  translate: 0 -200%;
+  transition: translate 0.3s var(--ease-out);
+}
+.skip-link:focus-visible {
+  translate: 0 0;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Escondido até revelar: só com JS e com motion permitidos (o topo entra por keyframes CSS). */
+.motion [data-split],
+.motion [data-reveal] {
+  visibility: hidden;
+}
+.split-line {
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+/* Título por máscara (padrão 2) no topo: keyframes CSS, sem esperar o JS (o LCP é texto). */
+.hl {
+  display: block;
+  overflow: clip;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.hl > span {
+  display: block;
+}
+@keyframes rise {
+  from {
+    translate: 0 105%;
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+.motion .hl > span {
+  animation: rise 1s var(--ease-out) both;
+  animation-delay: 0.1s;
+}
+.motion .hl + .hl > span {
+  animation-delay: 0.2s;
+}
+
+/* ────────────────────────────── Botões e links ────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  min-height: 44px;
+  padding: 0.75em 1.3em;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: var(--t-s);
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    background-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out),
+    box-shadow 0.3s var(--ease-out),
+    scale 0.15s var(--ease-out);
+}
+/* Resposta ao toque: o botão cede um pouco ao ser pressionado. */
+.btn:active {
+  scale: 0.97;
+}
+.btn--lg {
+  min-height: 52px;
+  padding: 0.9em 1.5em;
+  font-size: var(--t-body);
+}
+.btn--gold {
+  background: var(--c-gold);
+  color: var(--c-ink);
+}
+.btn--ghost {
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+.btn--onink {
+  color: var(--c-paper);
+}
+@media (hover: hover) {
+  .btn--gold:hover {
+    background: var(--c-gold-deep);
+  }
+  .btn--ghost:hover {
+    background: rgb(20 32 46 / 0.06);
+  }
+  .btn--onink:hover {
+    background: rgb(247 248 249 / 0.12);
+  }
+}
+.btn:active {
+  scale: 0.98;
+}
+.link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-thickness 0.2s;
+}
+@media (hover: hover) {
+  .link:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  min-height: 44px;
+  font-weight: 500;
+  color: var(--c-navy);
+}
+.link-arrow .ico {
+  transition: translate 0.4s var(--ease-out);
+}
+@media (hover: hover) {
+  .link-arrow:hover .ico {
+    translate: 4px 0;
+  }
+}
+
+/* ────────────────────────────── Intro (padrão 1) ────────────────────────────── */
+
+/* A marca surge sobre o azul-noite e a camada dissolve, revelando o topo, que também é azul-noite:
+   o último quadro da intro é o primeiro do topo. Nada desliza. Total 1,15 s. */
+#intro {
+  display: none;
+}
+.intro-on #intro {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-intro);
+  display: grid;
+  place-content: center;
+  background: var(--c-night);
+  animation: intro-out 0.45s var(--ease-out) 0.7s both;
+}
+@keyframes intro-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes intro-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+.intro__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  font-size: clamp(2.25rem, 1.5rem + 3.5vw, 4rem);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  animation: intro-in 0.45s var(--ease-out) both;
+}
+.intro__mark {
+  width: 0.85em;
+  height: 0.85em;
+}
+.intro__word {
+  display: inline-flex;
+  padding-right: 0.08em;
+}
+.intro__ouro {
+  color: var(--c-gold);
+}
+.intro__med {
+  color: var(--c-paper);
+}
+/* O topo espera a intro terminar para fazer a própria entrada. */
+.intro-on .hero,
+.intro-on .hero * {
+  animation-play-state: paused;
+}
+
+/* Troca de página: o papel cobre em opacidade (src/motion/setup.ts → fade). */
+#curtain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-curtain);
+  background: var(--c-bg);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ────────────────────────────── Textura (padrão 5) ────────────────────────────── */
+
+/* Curvas de nível reais da Serra do Curral (scripts/curvas.py), pintadas pela cor do lugar
+   através de máscara. Sempre atrás, sempre ≤ 15 % de opacidade, nunca sob texto corrido. */
+.tex {
+  position: absolute;
+  inset: -8% 0;
+  pointer-events: none;
+  background: var(--tex-c, rgb(212 173 42 / 0.14));
+  -webkit-mask: url("/textura/serra-do-curral.svg") center / cover no-repeat;
+  mask: url("/textura/serra-do-curral.svg") center / cover no-repeat;
+}
+.tex--cidade,
+.tex--serra {
+  inset: auto 0 0 0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+}
+.tex--cidade {
+  height: clamp(7rem, 20vw, 19rem);
+  -webkit-mask-image: url("/textura/bh-cidade.png");
+  mask-image: url("/textura/bh-cidade.png");
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+}
+.tex--serra {
+  height: 100%;
+  -webkit-mask-image: url("/textura/bh-serra.png");
+  mask-image: url("/textura/bh-serra.png");
+  /* Ancorado no alto: a crista da serra inteira; o primeiro plano do desenho fica de fora. */
+  -webkit-mask-size: 100% auto;
+  mask-size: 100% auto;
+  -webkit-mask-position: center top;
+  mask-position: center top;
+}
+/* Desenhos de BH em traço do topo (sete SVGs de scripts/desenhos.mjs, um <path> por desenho): cada
+   um cabe na faixa, ancorado no chão, e é pintado de ouro pela cor do lugar. Só o desenho antigo
+   aparece sem movimento; com a classe motion (script de flags, depois da intro) os sete novos entram
+   no slideshow — e só então o navegador baixa os arquivos. */
+.tex--bh {
+  --tex-c: rgb(212 173 42 / 0.15);
+  inset: 0;
+  opacity: 0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+}
+/* O primeiro quadro é o desenho antigo da cidade (bh-cidade.png, como era antes do slideshow: 20vw
+   de altura, preenchendo a largura, ancorado no chão). Sem movimento é o único que aparece. */
+.tex--bh-cidade {
+  inset: auto 0 0 0;
+  height: clamp(7rem, 20vw, 19rem);
+  opacity: 1;
+  -webkit-mask-image: url("/textura/bh-cidade.png");
+  mask-image: url("/textura/bh-cidade.png");
+  -webkit-mask-size: cover;
+  mask-size: cover;
+}
+/* Curvas de nível da faixa de fatos: além da deriva com a rolagem (motor, no transform), uma deriva
+   contínua e lenta em translação, 90 s por sentido, só com CSS — a propriedade translate é individual,
+   então não briga com o transform do motor; sem JS por quadro. A caixa é 4 % mais larga de cada lado
+   para a textura não descobrir as bordas. Com menos movimento a classe motion nem existe, e o reset
+   global encerraria a animação no primeiro quadro. */
+@keyframes curvas {
+  from {
+    translate: -2% 0;
+  }
+  to {
+    translate: 2% -1%;
+  }
+}
+.tex--facts {
+  --tex-c: rgb(3 68 135 / 0.13);
+  inset: -8% -4%;
+}
+.motion .tex--facts {
+  animation: curvas 90s ease-in-out infinite alternate;
+}
+.tex--footer {
+  --tex-c: rgb(212 173 42 / 0.14);
+}
+
+/* ────────────────────────────── Mídia ────────────────────────────── */
+
+/* Um tratamento só para foto real e imagem gerada: cor levemente contida, granulação fina e uma
+   base em azul-noite. Sem arquivo, o slot diz em texto o que vai ali. */
+.media {
+  position: relative;
+  aspect-ratio: var(--ratio, 4 / 3);
+  overflow: hidden;
+  margin: 0;
+  border-radius: var(--r);
+  background: var(--c-night);
+}
+.media__el {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.9) contrast(1.03);
+}
+/* A foto vem num <picture>: ele ocupa a caixa e o <img> continua sendo o .media__el de sempre. */
+.media picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.media:not(.media--empty)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.1;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* Legenda das cenas geradas por IA (AGENTS.md §1: cenários ilustrativos são declarados na tela): em
+   mono, como toda legenda do site, discreta sobre a foto, sem mexer na altura da caixa. A placa
+   escura garante o contraste sobre qualquer foto. */
+.media__nota {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 2;
+  padding: 5px 8px;
+  border-radius: 4px;
+  background: rgb(11 37 69 / 0.84);
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--c-paper);
+  pointer-events: none;
+}
+.media__ph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: calc(var(--u) * 1.5);
+  background:
+    radial-gradient(120% 90% at 80% 10%, rgb(3 68 135 / 0.55), transparent 60%), var(--c-night);
+}
+.media__ph-label {
+  max-width: 26em;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: var(--c-dust);
+}
+
+/* ────────────────────────────── Cabeçalho ────────────────────────────── */
+
+.hdr {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header);
+  height: var(--hdr-h);
+  color: var(--c-ink);
+  border-bottom: 1px solid transparent;
+  /* Sempre visível (25/11): o "Ligar" tem de estar ao alcance em qualquer ponto da rolagem — é o
+     mais comum em sites de serviço de saúde. Sem transição de cor: animá-la repintava o cabeçalho
+     e derrubava o fps (24/11). */
+}
+/* Sobre o topo escuro da home: texto claro, sem fundo. */
+html:not(.is-scrolled) .hdr[data-home] {
+  color: var(--c-paper);
+}
+html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
+  fill: var(--c-paper);
+}
+/* Depois de rolar: fundo claro quase opaco. Sem backdrop-filter: o desfoque era recalculado a
+   cada quadro da rolagem e derrubava o fps (medido em 24/11). */
+.is-scrolled .hdr {
+  background: rgb(247 248 249 / 0.96);
+  border-bottom-color: var(--c-line);
+}
+.hdr__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u) * 2);
+  height: 100%;
+}
+.hdr__brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+.wordmark__mark {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.wordmark__text {
+  width: 5.75rem;
+  height: 1.5rem;
+  font-family: var(--f);
+  font-size: 22px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.02em;
+}
+.wordmark__ouro {
+  fill: var(--c-gold);
+}
+.wordmark__med {
+  fill: var(--c-navy);
+  transition: fill 0.35s var(--ease-out);
+}
+.hdr__nav {
+  display: none;
+  align-items: center;
+  gap: clamp(1rem, 0.2rem + 1.6vw, 2.25rem);
+}
+.hdr__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  min-height: 44px;
+  font-size: var(--t-s);
+  font-weight: 500;
+  background: linear-gradient(currentColor 0 0) left calc(50% + 0.85em) / 0% 1.5px no-repeat;
+  transition: background-size 0.4s var(--ease-out);
+}
+.hdr__link[aria-current="page"],
+.hdr__link[aria-expanded="true"] {
+  background-size: 100% 1.5px;
+}
+@media (hover: hover) {
+  .hdr__link:hover {
+    background-size: 100% 1.5px;
+  }
+}
+.hdr__caret {
+  width: 0.45em;
+  height: 0.45em;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  rotate: 45deg;
+  translate: 0 -0.15em;
+  transition: rotate 0.35s var(--ease-out);
+}
+[aria-expanded="true"] > .hdr__caret {
+  rotate: 225deg;
+  translate: 0 0.1em;
+}
+.hdr__cta {
+  display: none;
+}
+.hdr__menu {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 0.25rem;
+  font-weight: 500;
+  font-size: var(--t-s);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 1.5px;
+}
+
+/* Painéis "Para você" e "Para empresas" (padrão 6): vidro que se abre por clip-path, itens em
+   cascata. Sempre no DOM para poder animar; fechado, fica invisível e fora da ordem de foco. */
+.hdr__drop {
+  position: relative;
+}
+.drop {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  left: -1.25rem;
+  width: 27rem;
+  padding: 0.75rem;
+  border-radius: 14px;
+  color: var(--c-paper);
+  background: rgb(11 37 69 / 0.98);
+  box-shadow:
+    0 0 0 1px var(--c-line-ink) inset,
+    0 24px 60px rgb(11 37 69 / 0.35);
+  visibility: hidden;
+  clip-path: inset(0 0 100% 0 round 14px);
+  transition:
+    clip-path 0.45s var(--ease-out),
+    visibility 0s linear 0.45s;
+}
+[data-open] > .drop {
+  visibility: visible;
+  clip-path: inset(0 0 0 0 round 14px);
+  transition: clip-path 0.5s var(--ease-out);
+}
+.drop__list {
+  display: grid;
+  gap: 0.125rem;
+  padding: 0;
+  list-style: none;
+}
+.drop__list li {
+  opacity: 0;
+  translate: 0 0.6rem;
+  transition:
+    opacity 0.2s,
+    translate 0.2s;
+}
+[data-open] .drop__list li {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.45s var(--ease-out),
+    translate 0.45s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 45ms + 90ms);
+}
+.drop__item {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  grid-template-areas:
+    "icon name"
+    "icon lede";
+  column-gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  transition: background-color 0.25s;
+}
+@media (hover: hover) {
+  .drop__item:hover {
+    background: rgb(247 248 249 / 0.07);
+  }
+}
+.drop__icon {
+  grid-area: icon;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.1rem;
+  color: var(--c-gold);
+}
+.drop__name {
+  grid-area: name;
+  font-weight: 700;
+}
+.drop__lede {
+  grid-area: lede;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  color: var(--c-dust);
+}
+.drop__all {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  margin: 0.25rem 0.75rem 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--c-line-ink);
+  font-size: var(--t-s);
+  font-weight: 500;
+  color: var(--c-gold);
+}
+
+/* Menu do celular (padrão 6): overlay azul-noite que se abre por clip-path, itens em cascata. */
+@keyframes menu-in {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes item-in {
+  from {
+    opacity: 0;
+    translate: 0 0.75rem;
+  }
+}
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: calc(var(--u) * 3);
+  padding: 0 var(--gutter) calc(var(--u) * 3 + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  background: var(--c-night);
+  color: var(--c-paper);
+  animation: menu-in 0.6s var(--ease-out) both;
+}
+.menu__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--hdr-h);
+}
+.menu__top .wordmark__med {
+  fill: var(--c-paper);
+}
+.menu__nav {
+  display: grid;
+  align-content: start;
+  gap: calc(var(--u) * 3);
+}
+.menu__group {
+  display: grid;
+  gap: 0.25rem;
+}
+.menu__label {
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--c-dust);
+}
+.menu__list {
+  display: grid;
+  padding: 0;
+  list-style: none;
+}
+.menu__list a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  font-size: clamp(1.375rem, 5.4vw, 1.875rem);
+  font-weight: 700;
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
+}
+.menu__list--alt a {
+  font-size: var(--t-m);
+  font-weight: 500;
+  font-stretch: 100%;
+}
+.menu__label,
+.menu__list li {
+  animation: item-in 0.5s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 35ms + 160ms);
+}
+.menu__cta {
+  display: grid;
+  gap: 0.75rem;
+}
+.menu-open .ctabar {
+  visibility: hidden;
+}
+
+/* Barra fixa do celular: ligar a um toque em qualquer ponto da página. */
+.ctabar {
+  display: none;
+}
+
+/* ────────────────────────────── Topo da home ────────────────────────────── */
+
+.hero {
+  position: relative;
+  display: grid;
+  min-height: max(36rem, 100svh);
+  overflow: hidden;
+  color: var(--c-paper);
+  background:
+    radial-gradient(80% 60% at 50% 38%, rgb(3 68 135 / 0.55), transparent 70%), var(--c-night);
+}
+/* Título centrado no alto da cena; a faixa dos desenhos de BH ocupa a base, sem texto por cima. */
+.hero {
+  /* Altura da faixa dos desenhos: os mais altos (Praça Sete, 2,45:1) cabem até uns 74 % da largura
+     a 1440; os panoramas (serra, Mineirão) espalham pela largura toda, como um horizonte. */
+  --bh-h: clamp(8rem, 30vw, 28rem);
+}
+.hero__content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: calc(var(--u) * 2.5);
+  text-align: center;
+  padding-top: calc(var(--hdr-h) + var(--u) * 3);
+  padding-bottom: calc(var(--bh-h) + var(--u) * 2);
+}
+.hero__title {
+  max-width: 13em;
+  font-size: var(--t-hero);
+  font-weight: 700;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
+}
+.hero__ouro {
+  color: var(--c-gold);
+}
+.hero__lede {
+  max-width: 32em;
+  font-size: var(--t-m);
+  line-height: 1.45;
+  color: rgb(247 248 249 / 0.86);
+}
+.hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+.motion .hero__lede,
+.motion .hero__cta {
+  animation: fade-up 0.9s var(--ease-out) both;
+  animation-delay: 0.35s;
+}
+.motion .hero__cta {
+  animation-delay: 0.45s;
+}
+/* Camadas do desenho: ao abrir, as linhas sobem de baixo para cima; ao rolar, a faixa desce em
+   ritmo próprio (motor, setup.ts → acts). */
+@keyframes draw-up {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+/* Movimento constante e lento, fora do ritmo da página: os desenhos do topo derivam num sentido e
+   a luz suave passeia ao fundo. */
+/* Parte da posição de repouso (0): antes começava em -2,5 %, e o desenho dava um salto de uns
+   39 px aos 2 s, quando a deriva começava, depois de a entrada por máscara terminar em 0 (25/11).
+   Com alternate, a volta inverte a trajetória, sem teleporte nos dois extremos. */
+@keyframes drift-a {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 2.5% -1%;
+  }
+}
+/* A luz passeia por translate (compositor); animar background-position repintava a tela toda. */
+@keyframes glow {
+  0% {
+    translate: -14% -8%;
+  }
+  50% {
+    translate: 12% 6%;
+  }
+  100% {
+    translate: 2% -10%;
+  }
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background: radial-gradient(28% 26% at 50% 50%, rgb(212 173 42 / 0.09), transparent 70%);
+  will-change: translate;
+}
+.hero.is-off::before,
+.hero.is-off .hero__bh,
+.hero.is-off .tex--bh {
+  animation-play-state: paused;
+}
+.motion .hero::before {
+  animation: glow 26s ease-in-out infinite alternate;
+}
+/* A faixa dos desenhos: 4 % mais larga de cada lado para a deriva não descobrir as bordas; a
+   entrada por máscara (de baixo para cima) e a deriva são do conjunto, o crossfade é de cada
+   desenho. */
+.hero__bh {
+  position: absolute;
+  inset: auto 0 0 0;
+  inset-inline: -4%;
+  height: var(--bh-h);
+  z-index: 1;
+  pointer-events: none;
+}
+.motion .hero__bh {
+  animation:
+    draw-up 1.8s var(--ease-out) 0.25s both,
+    drift-a 38s ease-in-out 2s infinite alternate;
+}
+/* Slideshow: o desenho antigo e os sete novos, 8 × 10 s = 80 s por ciclo; cada um sai nos últimos
+   1,75 s do seu tempo enquanto o próximo entra (crossfade em opacidade, só no compositor). O atraso
+   negativo põe cada camada na sua fase: a i-ésima começa 10·i s depois da primeira, e a primeira
+   (atraso −80 s, o mesmo que 0) já está inteira quando a página abre. */
+@keyframes bh-fade {
+  0%,
+  10.31% {
+    opacity: 1;
+  }
+  12.5%,
+  97.81% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.motion .tex--bh {
+  animation: bh-fade 80s ease-in-out calc(var(--i) * 10s - 80s) infinite;
+}
+.motion .tex--bh:not(.tex--bh-cidade) {
+  -webkit-mask-image: var(--d);
+  mask-image: var(--d);
+}
+
+/* Home: o topo gruda e a apresentação passa por cima, uma vez só (olympic, Namaha). O sticky
+   vive no .stage (topo + apresentação): antes, preso ao .acts, o topo ficava animando atrás da
+   página inteira. */
+.stage > .hero {
+  position: sticky;
+  top: 0;
+}
+.stage > .about {
+  position: relative;
+  z-index: 1;
+  background-color: var(--c-bg);
+}
+
+/* ────────────────────────────── Seções ────────────────────────────── */
+
+/* Cada seção corta o que sai dela pelos lados (a faixa de Para empresas, os cartões de Quando
+   chamar antes de chegar). O overflow-x do body vai para a janela como "hidden", que ainda deixa a
+   página rolar para o lado por código, foco ou gesto (bug de 25/11, critério 7.7). clip não cria
+   área de rolagem: a foto fixa da UTI (sticky) continua funcionando. */
+.sec {
+  overflow-x: clip;
+  padding-block: var(--sec);
+}
+.sec__head {
+  display: grid;
+  gap: calc(var(--u) * 1.5);
+  /* Rodada 8: um degrau a menos nos vãos (cabeçalho de seção, destaque, fatos, barra da faixa
+     e rodapé) para o critério 3.2; o ritmo das seções (--sec) fica como estava. */
+  margin-bottom: calc(var(--u) * 4);
+}
+.sec__title {
+  font-size: var(--t-xl);
+  font-weight: 700;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--c-navy);
+}
+.sec__lede {
+  max-width: 34em;
+  font-size: var(--t-m);
+  line-height: 1.45;
+  color: var(--c-muted);
+}
+
+/* Apresentação: rótulo à esquerda, frase à direita (olympic), fatos sobre a textura. */
+.about {
+  padding-bottom: 0;
+}
+.about__grid {
+  display: grid;
+  gap: calc(var(--u) * 2);
+}
+.about__label {
+  font-size: var(--t-s);
+  font-weight: 700;
+  color: var(--c-navy);
+}
+.about__text {
+  max-width: 30em;
+  font-size: var(--t-l);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.lit {
+  display: grid;
+}
+.lit > * {
+  grid-area: 1 / 1;
+}
+/* A parte ainda não lida é só o rastro do texto: antes era o cinza AA (6,9:1) e dava para ler tudo
+   antes de a leitura acender; agora é a tinta a 22 % sobre o fundo (≈1,5:1), como pediu a pessoa
+   (25/11). A parte lida (`.lit__top`, por cima) fica na cor do texto (15,6:1). Sem movimento não há
+   divisão em palavras e a camada de cima aparece inteira. */
+.lit > :first-child {
+  color: rgb(20 32 46 / 0.22);
+}
+.lit__w {
+  will-change: opacity;
+}
+.about__facts {
+  position: relative;
+  overflow: hidden;
+  margin-top: var(--sec);
+  padding-block: calc(var(--u) * 5);
+  background: var(--c-surface);
+}
+.facts {
+  position: relative;
+  display: grid;
+  gap: calc(var(--u) * 4) var(--gutter);
+}
+.fact {
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+.fact dd {
+  order: -1;
+  font-size: clamp(2.5rem, 1.2rem + 4.2vw, 5.25rem);
+  font-weight: 700;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+  color: var(--c-navy);
+}
+.fact dt {
+  max-width: 24em;
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  color: var(--c-muted);
+}
+
+/* Destaque de "Para você": a foto já ocupa a largura toda e entra só por transparência (motor,
+   reveal fade, 0,6 s); o crescimento pela rolagem saiu a pedido da pessoa (25/11). Sem JS, aparece
+   inteira. */
+.feature {
+  margin-bottom: calc(var(--u) * 4);
+}
+.feature__link {
+  display: grid;
+  gap: 1.25rem;
+}
+.feature__media {
+  height: min(82vh, 58vw);
+  border-radius: 0;
+}
+.feature__body {
+  display: grid;
+  gap: 0.35rem;
+}
+.feature .card__name {
+  font-size: var(--t-l);
+}
+.cards__grid--2 {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Celular: na home, os 4 serviços para empresas viram uma faixa com deslize (o próximo cartão
+   aparece pela metade para indicar que há mais). Encurta a página em quase três telas. */
+@media (max-width: 639px) {
+  #para-empresas .cards__grid {
+    display: flex;
+    gap: 1rem;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  #para-empresas .cards__grid::-webkit-scrollbar {
+    display: none;
+  }
+  #para-empresas .card {
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+  }
+}
+
+/* Para empresas no computador: faixa que anda para o lado enquanto a seção segura (classe posta
+   pelo JS; sem JS, continua a grade de 4 colunas). A faixa passa da margem direita da página. */
+.cards__grid.is-track {
+  display: flex;
+  gap: var(--gutter);
+  width: max-content;
+}
+.cards__grid.is-track > .card {
+  width: clamp(340px, 33vw, 500px);
+}
+.cards__grid.is-track .card__media {
+  aspect-ratio: 4 / 3;
+}
+/* Cada foto da faixa vira a sua própria camada: o filtro de cor e a granulação (overlay) são
+   pintados uma vez e a rolagem só desloca a camada. Sem isso, o navegador recompunha filtro e
+   mistura de cada foto a cada quadro do pin (queda de fps medida em 25/11: 45 → 59 fps a 4× CPU). */
+.cards__grid.is-track .media {
+  will-change: transform;
+  isolation: isolate;
+}
+.track__rail {
+  display: none;
+}
+.is-track + .track__rail {
+  display: block;
+  height: 2px;
+  margin-top: calc(var(--u) * 2);
+  background: var(--c-line);
+}
+.track__bar {
+  display: block;
+  height: 100%;
+  background: var(--c-gold);
+  transform-origin: left center;
+}
+
+/* Cartões de serviço com foto (padrões 3 e 4). */
+.cards__grid {
+  display: grid;
+  gap: calc(var(--u) * 4) var(--gutter);
+  padding: 0;
+  list-style: none;
+}
+.card__link {
+  display: grid;
+  gap: 1rem;
+}
+.card__media .media__el,
+.card__media .media__ph {
+  transition: scale 0.9s var(--ease-out);
+}
+@media (hover: hover) {
+  .card__link:hover .card__media .media__el,
+  .card__link:hover .card__media .media__ph {
+    scale: 1.04;
+  }
+  .card__link:hover .card__name {
+    color: var(--c-navy);
+  }
+}
+.card__link:focus-visible .card__media .media__ph,
+.card__link:focus-visible .card__media .media__el {
+  scale: 1.04;
+}
+.card__body {
+  display: grid;
+  gap: 0.35rem;
+}
+.card__name {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  font-size: var(--t-m);
+  font-weight: 700;
+  transition: color 0.3s;
+}
+.card__icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  flex: none;
+  color: var(--c-navy);
+}
+.card__lede {
+  font-size: var(--t-s);
+  line-height: 1.45;
+  color: var(--c-muted);
+}
+
+/* Suporte básico × UTI móvel, com o interior. */
+.types {
+  background: var(--c-card);
+}
+.types__media {
+  /* Tela dividida: a foto do interior fica parada enquanto o texto passa ao lado. */
+  position: sticky;
+  top: calc(var(--hdr-h) + var(--u) * 2);
+}
+.types__grid {
+  display: grid;
+  gap: calc(var(--u) * 4) var(--gutter);
+  align-items: start;
+}
+.types__info {
+  display: grid;
+  gap: calc(var(--u) * 3);
+}
+.type {
+  display: grid;
+  gap: 0.5rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--c-navy);
+}
+.type__name {
+  font-size: var(--t-l);
+  font-weight: 700;
+  font-stretch: 112%;
+  line-height: 1.1;
+}
+.type p {
+  color: var(--c-muted);
+}
+.type .type__team {
+  color: var(--c-ink);
+  font-weight: 500;
+}
+
+/* Quando chamar a Ouromed. */
+.when__grid {
+  display: grid;
+  gap: var(--gutter);
+  padding: 0;
+  list-style: none;
+}
+/* Quando chamar a Ouromed. Cada cartão abre com uma foto 16:9, colada nas bordas dele (os cantos
+   superiores acompanham o raio do cartão); o texto fica embaixo, no respiro de sempre. */
+.when__item {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  border-radius: 12px;
+  background: var(--c-card);
+  box-shadow: 0 1px 0 var(--c-line);
+}
+.when__media {
+  border-radius: 12px 12px 0 0;
+}
+.when__body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 0.75rem;
+  padding: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+}
+.when__title {
+  font-size: var(--t-l);
+  font-weight: 700;
+  font-stretch: 112%;
+  line-height: 1.1;
+}
+.when__text {
+  color: var(--c-muted);
+}
+.when__item .btn,
+.when__item .link-arrow {
+  justify-self: start;
+}
+.when__note a,
+.footer__bottom a {
+  display: inline-block;
+  padding-block: 0.3rem;
+}
+.when__note {
+  margin-top: calc(var(--u) * 3);
+  font-size: var(--t-s);
+  color: var(--c-muted);
+}
+
+/* Depoimentos: um por vez, sobre o azul-noite, troca por transparência. */
+.quotes {
+  position: relative;
+  padding-block: var(--sec);
+  background: var(--c-night);
+  color: var(--c-paper);
+}
+.quotes__inner {
+  display: grid;
+  gap: calc(var(--u) * 4);
+}
+.quotes__h {
+  max-width: 14em;
+  color: var(--c-paper);
+}
+.quotes__stage {
+  display: grid;
+}
+.quote {
+  grid-area: 1 / 1;
+  display: grid;
+  align-content: start;
+  gap: 1.5rem;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.7s var(--ease-out),
+    visibility 0s linear 0.7s;
+}
+.quote[data-active] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.7s var(--ease-out);
+}
+.quote blockquote::before {
+  content: "\201C";
+  display: block;
+  height: 0.55em;
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--c-gold);
+}
+.quote blockquote p {
+  max-width: 30em;
+  font-size: var(--t-l);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+.quote__ph {
+  color: var(--c-dust);
+}
+.quote figcaption {
+  display: grid;
+  gap: 0.25rem;
+}
+.quote figcaption strong {
+  font-weight: 700;
+}
+.quote figcaption span {
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  line-height: 1.6;
+  color: var(--c-dust);
+}
+.quotes__nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.quotes__btn {
+  display: grid;
+  place-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px rgb(247 248 249 / 0.4);
+  color: var(--c-paper);
+  transition: background-color 0.25s;
+}
+@media (hover: hover) {
+  .quotes__btn:hover {
+    background: rgb(247 248 249 / 0.1);
+  }
+}
+.quotes__prev {
+  rotate: 180deg;
+}
+.quotes__count {
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  color: var(--c-dust);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Perguntas frequentes, com o contato na coluna do título. */
+.faq__grid {
+  display: grid;
+  gap: calc(var(--u) * 4) var(--gutter);
+}
+.faq__aside {
+  display: grid;
+  align-content: start;
+  gap: calc(var(--u) * 4);
+}
+.faq__list {
+  border-bottom: 1px solid var(--c-line);
+}
+.faq__item {
+  border-top: 1px solid var(--c-line);
+}
+.faq__item summary {
+  transition: color 0.25s var(--ease-out);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 60px;
+  padding-block: 1rem;
+  cursor: pointer;
+  list-style: none;
+  font-size: var(--t-m);
+  font-weight: 500;
+  line-height: 1.3;
+}
+.faq__item summary::-webkit-details-marker {
+  display: none;
+}
+.faq__item summary:focus-visible {
+  outline-offset: -2px;
+}
+.faq__item summary .ico {
+  width: 1.4rem;
+  height: 1.4rem;
+  color: var(--c-navy);
+  transition: rotate 0.35s var(--ease-out);
+}
+.faq__item[open] summary .ico {
+  rotate: 45deg;
+}
+.faq__item p {
+  max-width: 40em;
+  padding-bottom: 1.25rem;
+  color: var(--c-muted);
+}
+.cta-block {
+  display: grid;
+  gap: 1rem;
+}
+.cta-block__h {
+  font-size: var(--t-l);
+  font-weight: 700;
+  line-height: 1.15;
+}
+.cta-block__text {
+  max-width: 28em;
+  color: var(--c-muted);
+}
+.cta-block__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* ────────────────────────────── Páginas internas ────────────────────────────── */
+
+.phero {
+  padding-top: calc(var(--hdr-h) + clamp(3rem, 2rem + 4vw, 6rem));
+  padding-bottom: clamp(3rem, 2rem + 4vw, 6rem);
+}
+.phero__grid {
+  display: grid;
+  gap: calc(var(--u) * 4) var(--gutter);
+  align-items: end;
+}
+.phero__text {
+  display: grid;
+  gap: calc(var(--u) * 2.5);
+}
+.phero__title {
+  font-size: clamp(2.25rem, 1.2rem + 3.6vw, 4.25rem);
+  font-weight: 700;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
+  color: var(--c-navy);
+}
+.phero__intro {
+  max-width: 32em;
+  font-size: var(--t-m);
+  line-height: 1.45;
+  color: var(--c-muted);
+}
+.phero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.motion .phero__intro,
+.motion .phero__cta,
+.motion .phero__media {
+  animation: fade-up 0.9s var(--ease-out) both;
+  animation-delay: 0.3s;
+}
+
+/* Serviços das páginas de público: índice que acompanha a leitura + um serviço por bloco. */
+.svcs {
+  border-top: 1px solid var(--c-line);
+}
+.svcs__grid {
+  display: grid;
+}
+.svcs__nav {
+  position: sticky;
+  top: var(--hdr-h);
+  z-index: 5;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 0.6rem var(--gutter);
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: rgb(247 248 249 / 0.97);
+  border-bottom: 1px solid var(--c-line);
+}
+.svcs__nav::-webkit-scrollbar {
+  display: none;
+}
+.svcs__nav ol {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  white-space: nowrap;
+}
+.svcs__nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0 1rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--c-line);
+  font-weight: 600;
+  color: var(--c-muted);
+  transition:
+    background-color 0.35s var(--ease-out),
+    color 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out);
+}
+.svcs__nav a[aria-current="true"] {
+  color: var(--c-paper);
+  background: var(--c-navy);
+  box-shadow: none;
+}
+.svcs__n {
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  font-weight: 400;
+}
+.svc {
+  display: grid;
+  gap: calc(var(--u) * 3);
+  padding-block: calc(var(--sec) * 0.75);
+  scroll-margin-top: calc(var(--hdr-h) + 4.5rem);
+}
+.svc + .svc {
+  border-top: 1px solid var(--c-line);
+}
+.svc__head {
+  display: grid;
+  gap: 1rem;
+}
+.svc__intro {
+  max-width: 34em;
+  font-size: var(--t-m);
+  line-height: 1.45;
+}
+.svc__body {
+  display: grid;
+  gap: calc(var(--u) * 3) var(--gutter);
+}
+.svc__text {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  color: var(--c-muted);
+}
+.svc__side {
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
+}
+.svc__list-h {
+  font-weight: 700;
+}
+.svc__list,
+.duo__list {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+.svc__list li,
+.duo__list li {
+  padding-left: 1rem;
+  background: linear-gradient(var(--c-gold), var(--c-gold)) 0 0.7em / 0.45rem 2px no-repeat;
+}
+.svc__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin-top: 0.5rem;
+}
+
+@media (hover: hover) {
+  .svcs__nav a:not([aria-current]):hover {
+    color: var(--c-navy);
+  }
+  .faq__item summary:hover {
+    color: var(--c-navy);
+  }
+}
+
+/* Sobre: frase, equipe e frota lado a lado, PQO em linhas numeradas. */
+.statement {
+  border-top: 1px solid var(--c-line);
+}
+.duo {
+  padding-top: calc(var(--sec) * 0.35);
+}
+.duo__grid {
+  display: grid;
+  gap: calc(var(--u) * 5) var(--gutter);
+}
+.duo__col {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  padding-top: calc(var(--u) * 3);
+  border-top: 2px solid var(--c-navy);
+  color: var(--c-muted);
+}
+.duo__h {
+  font-size: var(--t-l);
+  font-weight: 700;
+  color: var(--c-navy);
+}
+.duo__note {
+  font-size: var(--t-s);
+}
+.rows {
+  background: var(--c-card);
+}
+.rows__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rows__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: var(--gutter);
+  padding-block: calc(var(--u) * 2.5);
+}
+.rows__rule {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: var(--c-line);
+  transform-origin: left center;
+}
+.rows__n {
+  font-family: var(--f-mono);
+  font-size: var(--t-s);
+  color: var(--c-navy);
+  padding-top: 0.2em;
+}
+.rows__text {
+  max-width: 44em;
+  font-size: var(--t-m);
+  line-height: 1.45;
+}
+
+/* Depois de enviar: o que aconteceu e como copiar a mensagem. */
+.form__sent {
+  display: grid;
+  gap: 0.9rem;
+  justify-items: start;
+  padding: calc(var(--u) * 2.5);
+  border-radius: var(--r);
+  background: var(--c-surface);
+  box-shadow: inset 3px 0 0 var(--c-gold);
+  animation: fade-up 0.5s var(--ease-out) both;
+}
+
+/* Contato. */
+.contact {
+  padding-top: calc(var(--sec) * 0.5);
+}
+.contact__grid {
+  display: grid;
+  gap: calc(var(--u) * 5) var(--gutter);
+}
+.contact__col {
+  display: grid;
+  align-content: start;
+  gap: calc(var(--u) * 2.5);
+}
+.contact__col .sec__title {
+  font-size: var(--t-l);
+}
+.channels {
+  display: grid;
+  border-bottom: 1px solid var(--c-line);
+}
+.channels > div {
+  display: grid;
+  gap: 0.25rem;
+  padding-block: 1rem;
+  border-top: 1px solid var(--c-line);
+}
+.channels dt {
+  font-size: var(--t-s);
+  color: var(--c-muted);
+}
+.channels dd {
+  font-family: var(--f-mono);
+  font-size: var(--t-s);
+}
+.channels dd a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  overflow-wrap: anywhere;
+}
+.address {
+  font-style: normal;
+  font-size: var(--t-m);
+  line-height: 1.5;
+}
+.contact-form {
+  background: var(--c-card);
+}
+.contact-form .sec__lede {
+  margin: 1rem 0 calc(var(--u) * 4);
+}
+.form {
+  display: grid;
+  gap: calc(var(--u) * 2.5) var(--gutter);
+}
+.form__field {
+  display: grid;
+  gap: 0.4em;
+}
+.form label {
+  font-size: var(--t-s);
+  font-weight: 500;
+}
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.7em 0.9em;
+  border: 1px solid rgb(20 32 46 / 0.25);
+  border-radius: var(--r);
+  background: var(--c-bg);
+  font-size: var(--t-body);
+  color: var(--c-ink);
+}
+.form textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+.form input:focus-visible,
+.form select:focus-visible,
+.form textarea:focus-visible {
+  outline: 2px solid var(--c-navy);
+  outline-offset: 2px;
+}
+.form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.form__note {
+  max-width: 44em;
+  font-size: var(--t-s);
+  color: var(--c-muted);
+}
+
+/* 404 */
+.nf {
+  position: relative;
+  overflow: hidden;
+  min-height: 86svh;
+  display: grid;
+  align-items: center;
+  padding-top: calc(var(--hdr-h) + 3rem);
+  padding-bottom: clamp(9rem, 22vw, 20rem);
+}
+.nf__inner {
+  position: relative;
+  z-index: 1;
+}
+/* A cidade em traço ao pé da página perdida: o mesmo desenho do topo da home, em azul. */
+.tex--nf {
+  inset-inline: -4%;
+  --tex-c: rgb(3 68 135 / 0.16);
+}
+.motion .tex--nf {
+  animation:
+    draw-up 1.8s var(--ease-out) 0.2s both,
+    drift-a 38s ease-in-out 2s infinite alternate;
+}
+.nf__inner {
+  display: grid;
+  gap: 1.5rem;
+}
+.nf__code {
+  font-weight: 700;
+  color: var(--c-muted);
+}
+.nf__title {
+  max-width: 14em;
+  font-size: clamp(2.25rem, 1.2rem + 3.6vw, 4.25rem);
+  font-weight: 700;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  line-height: 0.95;
+  color: var(--c-navy);
+}
+.nf__text {
+  max-width: 34em;
+  font-size: var(--t-m);
+  color: var(--c-muted);
+}
+.nf__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* ────────────────────────────── Rodapé ────────────────────────────── */
+
+.footer {
+  position: relative;
+  overflow: hidden;
+  background: var(--c-night);
+  color: var(--c-paper);
+}
+/* Objetivo e baixo (25/11: na metade da altura de antes, uns 450 px no computador): o telefone, os
+   atalhos, onde ficar e a linha legal. A serra em traço continua atrás, mas não reserva altura. */
+.footer > .tex--serra {
+  inset: auto 0 0 0;
+  height: 100%;
+  -webkit-mask-size: min(1500px, 120%) auto;
+  mask-size: min(1500px, 120%) auto;
+  /* Pela crista (ancorado no alto): num rodapé baixo, o primeiro plano do desenho fica de fora. */
+  -webkit-mask-position: center top;
+  mask-position: center top;
+}
+.footer__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: calc(var(--u) * 2.5);
+  padding-top: calc(var(--sec) * 0.5);
+  /* Folga de 3,75rem no desktop (o botão do VLibras ocupa os 56 px de baixo à direita, 16 px acima
+     do fim): sem ela, entre 1152 e 1366 px de largura ele cobria o fim do crédito "Edícula Works".
+     No celular a barra fixa (--ctabar-h) já afasta o fim do rodapé, e a conta dá o vão de sempre. */
+  padding-bottom: max(calc(var(--u) * 3), calc(3.75rem - var(--ctabar-h)));
+}
+/* O telefone grande à esquerda; a nota do 192 ao lado (no computador, à direita). */
+.footer__top {
+  display: grid;
+  gap: 0.5rem 2rem;
+  align-items: end;
+}
+.footer__call {
+  display: grid;
+  gap: 0.2rem;
+}
+.footer__lede {
+  font-size: var(--t-s);
+  color: var(--c-dust);
+}
+.footer__number {
+  display: inline-flex;
+  align-items: center;
+  /* Alvo de 44 px mesmo quando a letra encolhe no celular (o principal link do rodapé). */
+  min-height: 44px;
+  font-family: var(--f-mono);
+  font-size: clamp(1.5rem, 0.9rem + 1.8vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--c-gold);
+  justify-self: start;
+}
+.footer__note {
+  font-size: var(--t-s);
+  color: var(--c-dust);
+}
+.footer__note a {
+  display: inline-block;
+  padding-block: 0.3rem;
+  text-decoration: underline;
+  text-decoration-color: rgb(247 248 249 / 0.35);
+  text-underline-offset: 0.25em;
+}
+/* Duas colunas desde o celular; no computador, quatro. */
+.footer__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--u) * 2.5) var(--gutter);
+}
+.footer__col {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+}
+.footer__h {
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.footer__list {
+  display: grid;
+  gap: 0;
+  padding: 0;
+  list-style: none;
+}
+.footer__list a,
+.footer__h a,
+.footer__phones a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  color: rgb(247 248 249 / 0.82);
+  transition: color 0.2s;
+}
+.footer__h a {
+  color: var(--c-paper);
+}
+@media (hover: hover) {
+  .footer__list a:hover,
+  .footer__h a:hover,
+  .footer__bottom a:hover,
+  .footer__note a:hover,
+  .footer__phones a:hover,
+  .footer__address a:hover {
+    color: var(--c-gold);
+  }
+}
+/* Onde: o endereço com o link para o mapa e os outros dois fixos na mesma linha. */
+.footer__address {
+  font-style: normal;
+  font-size: var(--t-s);
+  line-height: 1.4;
+  color: rgb(247 248 249 / 0.82);
+}
+.footer__address a {
+  display: inline-block;
+  padding-block: 0.4rem;
+}
+.footer__phones {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-s);
+  color: var(--c-dust);
+}
+.footer__phones a {
+  color: rgb(247 248 249 / 0.82);
+}
+/* Faixa final: uma linha, discreta. */
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding-top: calc(var(--u) * 1.5);
+  border-top: 1px solid var(--c-line-ink);
+  font-size: var(--t-xs);
+  color: rgb(169 180 192 / 0.85);
+}
+.footer__bottom a {
+  display: inline-block;
+  padding-block: 0.3rem;
+  color: var(--c-dust);
+  text-decoration: none;
+  border-bottom: 1px solid rgb(169 180 192 / 0.4);
+  line-height: 1.1;
+}
+@media (min-width: 1024px) {
+  .footer__top {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .footer__note {
+    text-align: right;
+    max-width: 22em;
+  }
+  .footer__grid {
+    grid-template-columns: 3fr 5fr 3fr 4fr;
+  }
+  /* Os quatro serviços para empresas em duas colunas: duas linhas em vez de quatro. */
+  .footer__list--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gutter);
+  }
+}
+
+/* VLibras (widget do governo, v7). O botão fica num shadow DOM aberto e se põe, sozinho, em
+   position: fixed; top: calc(50vh - 20px); right: 10px. A folha do site não alcança o que é da
+   shadow tree, mas o host (#vlibras-access-wrapper, criado pelo plugin no body) está no DOM da
+   página: com transform, ele vira o bloco de contenção desses elementos fixed e o botão passa a
+   ser medido a partir da caixa do host. Caixa de 50 × 40 px com o topo em 50vh - 20px - folga: o
+   botão (40 px) cai no canto de baixo, a 10 px da borda direita (o right: 10px do plugin), acima
+   da barra fixa do celular. Antes (b648354) a caixa era 56 × 56 ancorada por baixo: o botão caía
+   50vh abaixo dela, fora da tela. Conferência com o widget real: node .jury/r8/vlibras.mjs.
+   Se o plugin mudar o top ou o tamanho do botão, medir de novo. Some com o menu aberto. */
+#vlibras-access-wrapper {
+  --vlibras-gap: calc(var(--ctabar-h) + 1rem);
+  position: fixed;
+  top: calc(50vh - 20px - var(--vlibras-gap));
+  right: 0;
+  z-index: calc(var(--z-ctabar) - 1);
+  width: 50px;
+  height: 40px;
+  transform: translateZ(0);
+}
+.menu-open #vlibras-access-wrapper {
+  display: none;
+}
+
+/* ────────────────────────────── Tablet ────────────────────────────── */
+
+@media (min-width: 640px) {
+  .cards__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .form__field--full {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ────────────────────────────── Desktop ────────────────────────────── */
+
+@media (min-width: 1024px) {
+  .hdr__nav {
+    display: flex;
+  }
+  .hdr__cta {
+    display: inline-flex;
+  }
+  .hdr__menu {
+    display: none;
+  }
+  .sec__head {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--gutter);
+    align-items: end;
+  }
+  .about__grid {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    column-gap: var(--gutter);
+  }
+  .cards__grid--2 .card__media {
+    aspect-ratio: 16 / 9;
+  }
+  .cards__grid--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .cards__grid--4 .card__media {
+    aspect-ratio: 3 / 4;
+  }
+  .types__grid {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  }
+  .types__info {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gutter);
+  }
+  .when__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .faq__grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+  .phero__grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+  .rows > .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    column-gap: var(--gutter);
+    align-items: start;
+  }
+  .rows .sec__head {
+    position: sticky;
+    top: calc(var(--hdr-h) + var(--u) * 3);
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 1rem;
+    margin-bottom: 0;
+  }
+  .svc__body,
+  .duo__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .svcs__grid {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    column-gap: var(--gutter);
+  }
+  .svcs__nav {
+    top: calc(var(--hdr-h) + var(--u) * 2);
+    align-self: start;
+    margin: 0;
+    padding: calc(var(--sec) * 0.75) 0 0;
+    overflow: visible;
+    background: none;
+    border: 0;
+  }
+  .svcs__nav ol {
+    flex-direction: column;
+    gap: 0;
+    white-space: normal;
+  }
+  .svcs__nav a {
+    padding: 0.35rem 0 0.35rem 1rem;
+    border-radius: 0;
+    box-shadow: inset 2px 0 0 var(--c-line);
+  }
+  .svcs__nav a[aria-current="true"] {
+    color: var(--c-navy);
+    background: none;
+    box-shadow: inset 2px 0 0 var(--c-gold);
+  }
+  .contact__grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+}
+
+/* ────────────────────────────── Celular ────────────────────────────── */
+
+@media (max-width: 767px) {
+  :root {
+    --hdr-h: 3.75rem;
+    --ctabar-h: 4.5rem;
+  }
+  .hero {
+    min-height: max(32rem, 88svh);
+  }
+  /* "PADRÃO OURO" não quebra: o tamanho cabe nos 390 px do celular. */
+  .hero__title {
+    font-size: min(2.25rem, 9vw);
+  }
+  .ctabar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-ctabar);
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 0.5rem;
+    padding: 0.6rem var(--gutter) calc(0.6rem + env(safe-area-inset-bottom, 0px));
+    background: rgb(247 248 249 / 0.9);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-top: 1px solid var(--c-line);
+  }
+  .ctabar .btn {
+    min-height: 48px;
+  }
+  /* Ligar e orçamento já estão na barra fixa: no topo do celular só a frase e o título. */
+  .hero__cta,
+  .phero__cta {
+    display: none;
+  }
+  #curtain {
+    bottom: var(--ctabar-h);
+  }
+}
+
+/* ────────────────────────────── Menos movimento ────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: o reset de reduced motion precisa vencer todas as regras de componente */
+    animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: idem, para o atraso: sem ele, um item com delay ficava invisível até o atraso passar */
+    animation-delay: 0s !important;
+    /* biome-ignore lint/complexity/noImportantStyles: idem */
+    animation-iteration-count: 1 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: idem */
+    transition-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: idem */
+    transition-delay: 0s !important;
+    /* biome-ignore lint/complexity/noImportantStyles: idem */
+    scroll-behavior: auto !important;
+  }
+  .card__link:hover .card__media .media__el,
+  .card__link:hover .card__media .media__ph {
+    scale: none;
+  }
+}

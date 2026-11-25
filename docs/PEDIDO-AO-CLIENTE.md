@@ -7,7 +7,7 @@ acontece se não vier. O que não vier até o lançamento entra como pendência 
 > saúde), precisamos das confirmações e dos materiais abaixo. Pode responder por tópico, mesmo que parcial.
 
 ## 1. Dados oficiais
-- **CNPJ e razão social** exatos como devem aparecer no rodapé. *(Obrigatório em site institucional; hoje não está no site.)*
+- **CNPJ e razão social**: recebidos de vocês (CNPJ 11.263.858/0001-65 · Ouromed, Serviço Móvel de Saúde Ltda.) e já no rodapé. Só confirme se é assim que devem aparecer.
 - **Licenças e certificações que podem ser exibidas** — licença sanitária municipal, registro da frota, ANVISA, outras. *(Entra só o que vocês confirmarem por escrito.)*
 - O escritório da Rua Senador Lúcio Bittencourt, 53 **recebe clientes**? Em que horário?
 
@@ -27,6 +27,8 @@ Precisamos de fotos **reais e recentes** — foto de banco de imagens com jaleco
 - Equipe uniformizada (com **autorização de imagem** assinada por quem aparecer);
 - A Central 24 h em funcionamento.
 Celular serve. Mínimo 8 fotos; o ideal é 15.
+A foto da fileira de ambulâncias 4×4 que está no site hoje é um recorte de um post do Instagram
+da própria Ouromed (990 × 560 px): precisamos do **arquivo original**, em alta resolução.
 
 ## 5. Frota
 - Modelos e **quantidades** em operação hoje (o site cita Sprinter 313 CDI, Ford Transit, Renault Master, Fiat Ducato, Defender 4×4 — ainda é isso?).
@@ -47,7 +49,7 @@ Celular serve. Mínimo 8 fotos; o ideal é 15.
 - **Eventos**: há porte mínimo? Cobrem por hora, diária, turno?
 
 ## 8. Conduta da equipe
-O site vai ter uma seção "Segurança começa antes do atendimento". Para escrevê-la com verdade:
+O site tem, na página Sobre, a seção "PQO, Padrão de Qualidade Ouromed". Para escrever as regras da equipe com verdade:
 - Todos os motoristas têm **COVE**? O treinamento é renovado com que frequência?
 - Equipe trabalha **uniformizada e identificada** (crachá com nome)?
 - Qual a **regra interna para uso de sirene**?
