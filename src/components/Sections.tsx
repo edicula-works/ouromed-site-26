@@ -175,7 +175,8 @@ export function ServiceCards({
   heading: string;
   lede: string;
   id: string;
-  /** O primeiro serviço vira destaque: a foto cresce até a largura toda ao rolar. */
+  /** O primeiro serviço vira destaque: a foto ocupa a largura toda desde o início e só surge por
+   *  transparência (motor, reveal fade). */
   feature?: boolean;
   /** No computador, a seção fica parada e a rolagem leva os cartões para o lado. */
   track?: boolean;
@@ -196,13 +197,7 @@ export function ServiceCards({
       {feature && first && (
         <div className="feature" data-feature>
           <Link href={serviceHref(first)} className="feature__link">
-            <Media
-              k={first.media}
-              ratio="auto"
-              reveal={false}
-              sizes="100vw"
-              className="feature__media"
-            />
+            <Media k={first.media} ratio="auto" sizes="100vw" className="feature__media" />
             <span className="wrap feature__body">
               <span className="card__name">
                 <ServiceIcon k={first.icon} className="card__icon" />

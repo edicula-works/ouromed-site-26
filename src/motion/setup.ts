@@ -2,7 +2,8 @@
 // docs/brief/PROPOSTA-R7.md:
 //   1. intro que surge e dissolve (CSS; aqui só pular e encerrar)
 //   2. título por máscara (data-split) e blocos que aparecem por transparência (data-reveal, motor)
-//   3. zoom leve da foto do cartão no hover (CSS)
+//   3. zoom leve da foto do cartão no hover (CSS); na entrada, foto nenhuma cresce: só
+//      transparência (data-reveal="fade", motor)
 //   4. texturas com deriva lenta (data-parallax, motor; os desenhos do topo por CSS: deriva e
 //      slideshow em crossfade)
 //   5. menu e painéis abrindo por clip-path com itens em cascata (CSS)
@@ -31,8 +32,9 @@ export function setupMotion() {
 
 /** Cenas da home (rodada 7, aprovadas pela pessoa; ajustadas em 25/11): um gesto por seção, nenhum
  *  repetido; uma coisa se move por vez; várias seções descansam. Só transform, opacity e clip-path (fps).
- *  - A Ouromed: a frase acende com a leitura (cor por palavra); os fatos ficam parados.
- *  - Para você: a foto em destaque cresce de um quadro no centro até a largura toda.
+ *  - A Ouromed: a frase acende com a leitura (opacidade por palavra); os fatos ficam parados.
+ *  - Para você: a foto em destaque surge por transparência, já do tamanho final (motor, reveal
+ *    fade) — antes crescia de 0,6 até 1 presa à rolagem, e a pessoa pediu sem crescer (25/11).
  *  - Para empresas: a seção segura e a rolagem leva os cartões para o lado (pin).
  *  - Quando chamar: os cartões entram com um deslocamento curto assim que a grade aparece; sem pin.
  *  - Suporte básico × UTI: tela dividida (a foto fica parada por CSS sticky); sem animação.
@@ -57,20 +59,6 @@ function scenes() {
           stagger: 0.04,
           ease: 'none',
           scrollTrigger: { trigger: lit, start: 'top 85%', end: 'bottom 45%', scrub: true },
-        },
-      );
-    }
-
-    const feature = root.querySelector<HTMLElement>('[data-feature] .feature__media');
-    if (feature) {
-      // Escala (compositor) em vez de clip-path, que repintava a foto inteira a cada quadro.
-      gsap.fromTo(
-        feature,
-        { scale: 0.6 },
-        {
-          scale: 1,
-          ease: 'none',
-          scrollTrigger: { trigger: feature, start: 'top 90%', end: 'center 55%', scrub: 0.5 },
         },
       );
     }

@@ -1,7 +1,7 @@
 // Motion declarativa por data-attributes (abaixo da dobra; o hero entra por keyframes CSS para o
 // LCP ser texto HTML real, sem depender de hidratação):
 //   data-split="lines|words|chars"   revelação de texto com máscara (SplitText)
-//   data-reveal="up|fade"            revelação de bloco (fotos: fade, nunca deslizam)
+//   data-reveal="up|fade"            revelação de bloco (fotos: fade, 0,6 s — nunca deslizam nem crescem)
 //   data-intro                       toca na entrada da página em vez de no scroll
 //   data-delay="0.2"                 atraso extra (segundos)
 //   data-parallax="0.15"             deriva vertical ligada ao scroll (fração da altura do elemento)
@@ -63,7 +63,8 @@ function blockTween(el: HTMLElement, paused: boolean) {
   return gsap.fromTo(el, from, {
     y: 0,
     autoAlpha: 1,
-    duration: kind === 'fade' ? 0.9 : 1.1,
+    // Foto: 0,6 s e só opacidade (pedido da pessoa, 25/11: nada de crescer nem deslizar).
+    duration: kind === 'fade' ? 0.6 : 1.1,
     ease: ease.out,
     delay,
     paused,

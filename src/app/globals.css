@@ -1059,8 +1059,9 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   color: var(--c-muted);
 }
 
-/* Destaque de "Para você": a foto cresce de um quadro no centro até a largura toda ao rolar
-   (clip-path com scrub, src/motion/setup.ts → scenes). Sem JS, já aparece inteira. */
+/* Destaque de "Para você": a foto já ocupa a largura toda e entra só por transparência (motor,
+   reveal fade, 0,6 s); o crescimento pela rolagem saiu a pedido da pessoa (25/11). Sem JS, aparece
+   inteira. */
 .feature {
   margin-bottom: calc(var(--u) * 4);
 }
@@ -1071,9 +1072,6 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 .feature__media {
   height: min(82vh, 58vw);
   border-radius: 0;
-}
-.motion .feature__media {
-  will-change: transform;
 }
 .feature__body {
   display: grid;
