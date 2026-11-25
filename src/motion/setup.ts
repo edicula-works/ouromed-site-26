@@ -7,7 +7,7 @@
 //   5. menu e painéis abrindo por clip-path com itens em cascata (CSS)
 //   6. topo que gruda e é coberto pela apresentação (acts) e um gesto por seção da home (scenes)
 // Regra de desempenho: só transform, opacity e clip-path de elementos pequenos; nada de
-// backdrop-filter, background-position ou cor animados. Prova: .jury/motion/perf.mjs.
+// backdrop-filter, background-position ou cor animados. Prova: scripts/perf.mjs.
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
