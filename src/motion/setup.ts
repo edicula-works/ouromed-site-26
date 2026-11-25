@@ -5,8 +5,7 @@
 //   4. zoom leve da foto do cartão no hover (CSS)
 //   5. textura de curvas de nível com deriva lenta (data-parallax, motor)
 //   6. menu e painéis abrindo por clip-path com itens em cascata (CSS)
-//   7. atos: na home, cada seção sobe e cobre a anterior, que escurece; no topo, as camadas do
-//      desenho de BH andam em ritmos diferentes (pedido da pessoa, 24/11)
+//   7. saída do topo: título e cidade em ritmos diferentes da página
 //   8. cenas: cada ato da home tem a própria coreografia (scenes()), nada de um efeito repetido
 // Fora disso: só a troca de página em opacidade e o cabeçalho (vidro, sair e voltar).
 import { gsap } from 'gsap';
@@ -29,9 +28,8 @@ export function setupMotion() {
 
 /** Cenas da home: cada ato é pensado como unidade, com uma entrada própria.
  *  apresentação: a frase acende palavra por palavra conforme a leitura; os fatos chegam da direita.
- *  Para você: o cartão grande vem da esquerda, os pequenos da direita.
- *  Para empresas: a fileira de cartões desliza na horizontal com a rolagem.
- *  Tipos de ambulância: a foto do interior abre de cima para baixo; o kit cai item a item.
+ *  Fotos (cartões, interior da UTI) aparecem por transparência, sem movimento.
+ *  Tipos de ambulância: as colunas sobem; o kit cai item a item.
  *  Quando chamar: os três cartões chegam de lados diferentes, girando de leve até assentar.
  *  Depoimentos: o depoimento principal acende palavra por palavra; os outros vêm de lados opostos.
  *  Perguntas: as perguntas chegam da direita, uma a uma. */
@@ -102,14 +100,12 @@ function scenes() {
       });
       const cards = gsap.utils.toArray<HTMLElement>('.card', voce);
       gsap.from(cards[0], {
-        xPercent: -18,
         opacity: 0,
         duration: 1.3,
         ease: ease.out,
         scrollTrigger: at(cards[0], 'top 85%'),
       });
       gsap.from(cards.slice(1), {
-        xPercent: 30,
         opacity: 0,
         duration: 1.2,
         stagger: 0.16,
@@ -122,20 +118,12 @@ function scenes() {
     // chegam em alturas diferentes.
     const emp = root.querySelector('#para-empresas');
     if (emp) {
-      const grid = emp.querySelector('.cards__grid');
-      gsap.fromTo(
-        grid,
-        { xPercent: 28 },
-        {
-          xPercent: 0,
-          ease: 'none',
-          scrollTrigger: { trigger: emp, start: 'top bottom', end: 'top 15%', scrub: 0.8 },
-        },
-      );
       gsap.from(gsap.utils.toArray<HTMLElement>('.card', emp), {
-        y: (i: number) => [60, 140, 30, 110][i % 4],
-        ease: 'none',
-        scrollTrigger: { trigger: emp, start: 'top bottom', end: 'top 15%', scrub: 0.8 },
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.18,
+        ease: ease.soft,
+        scrollTrigger: at(emp.querySelector('.cards__grid'), 'top 82%'),
       });
       gsap.from(emp.querySelector('.sec__title'), {
         x: 120,
@@ -150,16 +138,7 @@ function scenes() {
     const types = root.querySelector('.types');
     if (types) {
       const media = types.querySelector('.types__media');
-      gsap.fromTo(
-        media,
-        { clipPath: 'inset(0% 0% 100% 0% round 8px)' },
-        {
-          clipPath: 'inset(0% 0% 0% 0% round 8px)',
-          duration: 1.4,
-          ease: ease.inOut,
-          scrollTrigger: at(media),
-        },
-      );
+      gsap.from(media, { opacity: 0, duration: 1.4, ease: ease.soft, scrollTrigger: at(media) });
       gsap.from(q('.types .type'), {
         y: 70,
         opacity: 0,
@@ -234,70 +213,26 @@ function scenes() {
   });
 }
 
-/** Atos da home: cada seção sobe e cobre a anterior. Cada ato é `position: sticky` (classe
- *  `acts-on`) e gruda no ponto em que o fim dele encosta no fim da tela; o próximo, que vem
- *  depois no HTML, passa por cima, e o que ficou para trás escurece. No topo, durante a saída, o
- *  título sobe e some, a cidade sobe mais rápido e a serra ao fundo mais devagar.
- *  Só no desktop (≥ 768 px) e com movimento permitido; senão é uma página comum. */
+/** Saída do topo: enquanto o topo sai da tela, o título sobe e some antes e a cidade em traço
+ *  sobe mais devagar que a página (assincronia). Só com movimento permitido. Os "atos" que se
+ *  cobriam (sticky com cantos arredondados) saíram: repetitivos e caros em fps (pessoa, 24/11). */
 function acts() {
   onPage(() => {
-    const root = document.querySelector<HTMLElement>('.acts');
-    if (!root || prefersReducedMotion()) return undefined;
-    const mm = gsap.matchMedia();
-    mm.add('(min-width: 768px)', () => {
-      const list = gsap.utils.toArray<HTMLElement>(':scope > section', root);
-      const place = () => {
-        for (const act of list) act.style.top = `${Math.min(0, innerHeight - act.offsetHeight)}px`;
-      };
-      root.classList.add('acts-on');
-      place();
-      ScrollTrigger.addEventListener('refreshInit', place);
-      list.forEach((act, i) => {
-        const next = list[i + 1];
-        if (!next) return;
-        gsap.fromTo(
-          act,
-          { '--dim': 0 },
-          {
-            '--dim': 0.5,
-            ease: 'none',
-            scrollTrigger: { trigger: next, start: 'top bottom', end: 'top top', scrub: true },
-          },
-        );
-      });
-      const hero = root.querySelector<HTMLElement>('[data-hero]');
-      const next = list[1];
-      if (hero && next) {
-        const st = { trigger: next, start: 'top bottom', end: 'top top', scrub: 0.6 };
-        gsap.to(hero.querySelector('[data-hero-content]'), {
-          yPercent: -18,
-          opacity: 0,
-          scale: 0.96,
-          ease: 'power1.in',
-          scrollTrigger: st,
-        });
-        gsap.to(hero.querySelector('[data-layer="cidade"]'), {
-          yPercent: -22,
-          ease: 'none',
-          scrollTrigger: st,
-        });
-        gsap.to(hero.querySelector('[data-layer="fundo"]'), {
-          yPercent: -6,
-          ease: 'none',
-          scrollTrigger: st,
-        });
-      }
-      // Abrir uma pergunta do FAQ muda a altura: recalcula onde cada ato gruda.
-      const refresh = () => ScrollTrigger.refresh();
-      root.addEventListener('toggle', refresh, true);
-      return () => {
-        root.removeEventListener('toggle', refresh, true);
-        ScrollTrigger.removeEventListener('refreshInit', place);
-        root.classList.remove('acts-on');
-        for (const act of list) act.style.top = '';
-      };
+    const hero = document.querySelector<HTMLElement>('[data-hero]');
+    if (!hero || prefersReducedMotion()) return undefined;
+    const st = { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.6 };
+    gsap.to(hero.querySelector('[data-hero-content]'), {
+      yPercent: -25,
+      opacity: 0,
+      ease: 'power1.in',
+      scrollTrigger: st,
     });
-    return () => mm.revert();
+    gsap.to(hero.querySelector('[data-layer="cidade"]'), {
+      yPercent: 18,
+      ease: 'none',
+      scrollTrigger: st,
+    });
+    return undefined;
   });
 }
 

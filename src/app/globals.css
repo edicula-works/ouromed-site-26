@@ -799,11 +799,6 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 }
 /* Camadas do desenho: a serra ao fundo (mais tênue, maior) e a cidade na frente. Ao abrir, as
    linhas da cidade sobem de baixo para cima; ao rolar, as camadas andam em ritmos diferentes. */
-.tex--fundo {
-  /* Fundo do topo: as curvas de nível, bem tênues (a serra em traço é do rodapé). */
-  inset: -6% 0;
-  --tex-c: rgb(212 173 42 / 0.06);
-}
 @keyframes draw-up {
   from {
     clip-path: inset(100% 0 0 0);
@@ -822,14 +817,6 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   }
   to {
     translate: 2.5% -1%;
-  }
-}
-@keyframes drift-b {
-  from {
-    translate: 3% 1%;
-  }
-  to {
-    translate: -3% 0;
   }
 }
 @keyframes glow {
@@ -855,50 +842,13 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 .motion .hero::before {
   animation: glow 26s ease-in-out infinite alternate;
 }
-.tex--hero,
-.tex--fundo {
+.tex--hero {
   inset-inline: -4%;
 }
 .motion .tex--hero {
   animation:
     draw-up 1.8s var(--ease-out) 0.25s both,
     drift-a 38s ease-in-out 2s infinite alternate;
-}
-.motion .tex--fundo {
-  animation:
-    fade-in 2.4s var(--ease-out) 0.6s both,
-    drift-b 61s ease-in-out infinite alternate;
-}
-
-/* ────────────────────────────── Atos (home) ────────────────────────────── */
-
-/* A home é uma sequência de atos: cada seção sobe e cobre a anterior, que escurece e fica para
-   trás (src/motion/setup.ts → acts). Sem JS ou com menos movimento, é uma página comum. */
-.acts > section {
-  position: relative;
-  background-color: var(--c-bg);
-}
-.acts > .types {
-  background-color: var(--c-card);
-}
-.acts > .quotes,
-.acts > .hero {
-  background-color: var(--c-night);
-}
-.acts > section::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 6;
-  pointer-events: none;
-  background: rgb(11 37 69 / var(--dim, 0));
-}
-.acts-on > section {
-  position: sticky;
-}
-.acts-on > section + section {
-  border-radius: 28px 28px 0 0;
-  box-shadow: 0 -28px 70px rgb(11 37 69 / 0.16);
 }
 
 /* ────────────────────────────── Seções ────────────────────────────── */

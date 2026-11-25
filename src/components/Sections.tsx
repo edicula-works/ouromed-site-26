@@ -79,12 +79,11 @@ export function JsonLd({ data }: { data: object }) {
 
 /* ────────────────────────────── Home ────────────────────────────── */
 
-/** Topo: o título centrado sobre o azul-noite e duas camadas que andam em ritmos diferentes:
- *  as curvas de nível ao fundo e a cidade em traço na frente. Sem vídeo. */
+/** Topo: o título centrado sobre o azul-noite e a cidade em traço na base, que deriva devagar
+ *  e sobe em ritmo próprio ao rolar. Sem vídeo e sem curvas de nível. */
 export function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-h" data-hero>
-      <Texture className="tex--fundo" layer="fundo" />
       <Texture className="tex--cidade tex--hero" layer="cidade" />
       <div className="wrap hero__content" data-hero-content>
         <h1 id="hero-h" className="hero__title">
