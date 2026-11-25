@@ -20,9 +20,12 @@ resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
   (AVIF e WebP em duas ou três larguras) estão em `public/midia/`, gerados por `scripts/fotos.mjs`;
   `hero` segue sem foto. Trocar as ilustrações pelas fotos reais da frota, da equipe, do interior e
   da Central é pendência com a Ouromed (§3).
-- **Desenhos de BH em traço** no lugar de foto de banco: a vista da cidade no topo da home e na
-  404 (foto de origem CC0) e a Serra do Curral no rodapé (foto de origem CC BY 2.0, crédito no
-  rodapé). As curvas de nível da serra, geradas de dados de relevo (`scripts/curvas.py`), ficam só
+- **Desenhos de BH em traço** no lugar de foto de banco: sete pontos da cidade (Praça da
+  Liberdade, Mineirão, Pampulha, Serra do Curral, Praça do Papa, Praça Sete e Raul Soares) gerados
+  por IA a partir de referências livres e vetorizados em SVG de traço único por `scripts/desenhos.mjs`,
+  num slideshow lento no topo da home (sem movimento, só o primeiro); a vista da cidade (foto de
+  origem CC0) ficou na 404 e a Serra do Curral (foto de origem CC BY 2.0, crédito no rodapé) no
+  rodapé. As curvas de nível da serra, geradas de dados de relevo (`scripts/curvas.py`), ficam só
   atrás dos três fatos da Ouromed. Origem e licenças: `docs/brief/desenhos/CREDITOS.md`.
 - **Depoimentos**: três espaços reservados, um por vez, até o cliente enviar os atuais.
 - **Sem WhatsApp, sem eventos com ano, sem logos de clientes** (decisão de 24/11, rodada 6), até o

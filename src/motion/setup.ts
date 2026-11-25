@@ -3,7 +3,8 @@
 //   1. intro que surge e dissolve (CSS; aqui só pular e encerrar)
 //   2. título por máscara (data-split) e blocos que aparecem por transparência (data-reveal, motor)
 //   3. zoom leve da foto do cartão no hover (CSS)
-//   4. texturas com deriva lenta (data-parallax, motor; a cidade do topo por CSS)
+//   4. texturas com deriva lenta (data-parallax, motor; os desenhos do topo por CSS: deriva e
+//      slideshow em crossfade)
 //   5. menu e painéis abrindo por clip-path com itens em cascata (CSS)
 //   6. topo que gruda e é coberto pela apresentação (acts) e um gesto por seção da home (scenes)
 // Regra de desempenho: só transform, opacity e clip-path de elementos pequenos; nada de
@@ -125,7 +126,8 @@ function scenes() {
 }
 
 /** Saída do topo: o topo gruda (CSS) e a seção seguinte passa por cima; enquanto isso o título
- *  sobe e some antes e a cidade em traço desce devagar (assincronia). Uma vez só na página. */
+ *  sobe e some antes e os desenhos de BH em traço descem devagar (assincronia). Uma vez só na
+ *  página. */
 function acts() {
   onPage(() => {
     const hero = document.querySelector<HTMLElement>('[data-hero]');
@@ -137,12 +139,12 @@ function acts() {
       ease: 'power1.in',
       scrollTrigger: st,
     });
-    gsap.to(hero.querySelector('[data-layer="cidade"]'), {
+    gsap.to(hero.querySelector('[data-layer="bh"]'), {
       yPercent: 18,
       ease: 'none',
       scrollTrigger: st,
     });
-    // Fora da tela, a luz e a deriva da cidade param.
+    // Fora da tela, a luz, a deriva e o slideshow dos desenhos param.
     ScrollTrigger.create({
       trigger: hero.closest('.stage') ?? hero,
       start: 'top top',

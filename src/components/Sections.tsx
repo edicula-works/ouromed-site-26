@@ -1,7 +1,7 @@
 // Seções do site (rodada 6: o padrão medido em docs/brief/PADRAO.md). Server Components; o motion
 // é declarativo (data-split, data-reveal, data-parallax) e roda pelo motor em src/engine/.
 import Link from 'next/link';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import {
   ambulanceTypes,
   type Faq as FaqItem,
@@ -19,25 +19,15 @@ import { Arrow, Phone, Plus } from './Icons';
 import { Media } from './Media';
 import { ServiceIcon } from './ServiceIcon';
 
-/** Textura da marca: desenhos em traço de BH (vista da cidade, Serra do Curral; ver
+/** Textura da marca: desenho em traço de BH (a cidade na 404 e a serra do rodapé; ver
  *  docs/brief/desenhos/CREDITOS.md) e, secundárias, as curvas de nível reais (scripts/curvas.py).
  *  `drift` liga a deriva lenta com a rolagem (só nas curvas; os desenhos ficam ancorados). */
-export function Texture({
-  className,
-  drift = false,
-  layer,
-}: {
-  className: string;
-  drift?: boolean;
-  /** Camada do topo animada pela rolagem (src/motion/setup.ts → acts). */
-  layer?: string;
-}) {
+export function Texture({ className, drift = false }: { className: string; drift?: boolean }) {
   return (
     <span
       className={`tex ${className}`}
       aria-hidden="true"
       data-parallax={drift ? '0.06' : undefined}
-      data-layer={layer}
     />
   );
 }
@@ -70,12 +60,34 @@ export function JsonLd({ data }: { data: object }) {
 
 /* ────────────────────────────── Home ────────────────────────────── */
 
-/** Topo: o título centrado sobre o azul-noite e a cidade em traço na base, que deriva devagar
- *  e sobe em ritmo próprio ao rolar. Sem vídeo e sem curvas de nível. */
+/** Os sete desenhos de BH em traço do topo (public/textura/bh-*.svg, vetorizados por
+ *  scripts/desenhos.mjs), na ordem do slideshow. O primeiro é o que fica parado sem movimento: a
+ *  Praça da Liberdade, que sustenta a tela sozinha; a serra é só um horizonte e entra no ciclo. */
+const DESENHOS_BH = [
+  'liberdade',
+  'mineirao',
+  'pampulha',
+  'serra-do-curral',
+  'praca-do-papa',
+  'praca-sete',
+  'raul-soares',
+];
+
+/** Topo: o título centrado sobre o azul-noite e, na base, um slideshow lento dos desenhos de BH
+ *  (cada um passa 10 s, crossfade de 1,75 s), que deriva devagar e sobe em ritmo próprio ao rolar.
+ *  Sem vídeo e sem curvas de nível. */
 export function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-h" data-hero>
-      <Texture className="tex--cidade tex--hero" layer="cidade" />
+      <div className="hero__bh" data-layer="bh" aria-hidden="true">
+        {DESENHOS_BH.map((id, i) => (
+          <span
+            key={id}
+            className="tex tex--bh"
+            style={{ '--i': i, '--d': `url("/textura/bh-${id}.svg")` } as CSSProperties}
+          />
+        ))}
+      </div>
       <div className="wrap hero__content" data-hero-content>
         <h1 id="hero-h" className="hero__title">
           <span className="hl">

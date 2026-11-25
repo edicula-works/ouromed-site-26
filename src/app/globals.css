@@ -375,9 +375,25 @@ a {
   -webkit-mask-position: center top;
   mask-position: center top;
 }
-.tex--hero {
-  z-index: 1;
+/* Desenhos de BH em traço do topo (sete SVGs de scripts/desenhos.mjs, um <path> por desenho): cada
+   um cabe na faixa, ancorado no chão, e é pintado de ouro pela cor do lugar. Só o primeiro aparece
+   sem movimento; com a classe motion (script de flags, depois da intro) os outros seis entram no
+   slideshow — e só então o navegador baixa os arquivos. */
+.tex--bh {
   --tex-c: rgb(212 173 42 / 0.15);
+  inset: 0;
+  opacity: 0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+}
+.tex--bh:first-child {
+  opacity: 1;
+  -webkit-mask-image: var(--d);
+  mask-image: var(--d);
 }
 /* Curvas de nível da faixa de fatos: além da deriva com a rolagem (motor, no transform), uma deriva
    contínua e lenta em translação, 90 s por sentido, só com CSS — a propriedade translate é individual,
@@ -785,7 +801,12 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   background:
     radial-gradient(80% 60% at 50% 38%, rgb(3 68 135 / 0.55), transparent 70%), var(--c-night);
 }
-/* Título centrado no alto da cena; o desenho de BH ocupa a base, sem texto por cima. */
+/* Título centrado no alto da cena; a faixa dos desenhos de BH ocupa a base, sem texto por cima. */
+.hero {
+  /* Altura da faixa dos desenhos: os mais altos (Praça Sete, 2,45:1) cabem até uns 74 % da largura
+     a 1440; os panoramas (serra, Mineirão) espalham pela largura toda, como um horizonte. */
+  --bh-h: clamp(8rem, 30vw, 28rem);
+}
 .hero__content {
   position: relative;
   z-index: 2;
@@ -795,7 +816,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   gap: calc(var(--u) * 2.5);
   text-align: center;
   padding-top: calc(var(--hdr-h) + var(--u) * 3);
-  padding-bottom: calc(clamp(7rem, 20vw, 19rem) + var(--u) * 2);
+  padding-bottom: calc(var(--bh-h) + var(--u) * 2);
 }
 .hero__title {
   max-width: 13em;
@@ -829,8 +850,8 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 .motion .hero__cta {
   animation-delay: 0.45s;
 }
-/* Camadas do desenho: a serra ao fundo (mais tênue, maior) e a cidade na frente. Ao abrir, as
-   linhas da cidade sobem de baixo para cima; ao rolar, as camadas andam em ritmos diferentes. */
+/* Camadas do desenho: ao abrir, as linhas sobem de baixo para cima; ao rolar, a faixa desce em
+   ritmo próprio (motor, setup.ts → acts). */
 @keyframes draw-up {
   from {
     clip-path: inset(100% 0 0 0);
@@ -841,11 +862,11 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
     opacity: 0;
   }
 }
-/* Movimento constante e lento, fora do ritmo da página: a cidade e a serra derivam em sentidos
-   opostos, em ciclos de tamanhos diferentes, e uma luz suave passeia ao fundo. */
-/* Parte da posição de repouso (0): antes começava em -2,5 %, e a cidade dava um salto de uns 39 px
-   aos 2 s, quando a deriva começava, depois de a entrada por máscara terminar em 0 (25/11). Com
-   alternate, a volta inverte a trajetória, sem teleporte nos dois extremos. */
+/* Movimento constante e lento, fora do ritmo da página: os desenhos do topo derivam num sentido e
+   a luz suave passeia ao fundo. */
+/* Parte da posição de repouso (0): antes começava em -2,5 %, e o desenho dava um salto de uns
+   39 px aos 2 s, quando a deriva começava, depois de a entrada por máscara terminar em 0 (25/11).
+   Com alternate, a volta inverte a trajetória, sem teleporte nos dois extremos. */
 @keyframes drift-a {
   from {
     translate: 0 0;
@@ -875,19 +896,50 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   will-change: translate;
 }
 .hero.is-off::before,
-.hero.is-off .tex--hero {
+.hero.is-off .hero__bh,
+.hero.is-off .tex--bh {
   animation-play-state: paused;
 }
 .motion .hero::before {
   animation: glow 26s ease-in-out infinite alternate;
 }
-.tex--hero {
+/* A faixa dos desenhos: 4 % mais larga de cada lado para a deriva não descobrir as bordas; a
+   entrada por máscara (de baixo para cima) e a deriva são do conjunto, o crossfade é de cada
+   desenho. */
+.hero__bh {
+  position: absolute;
+  inset: auto 0 0 0;
   inset-inline: -4%;
+  height: var(--bh-h);
+  z-index: 1;
+  pointer-events: none;
 }
-.motion .tex--hero {
+.motion .hero__bh {
   animation:
     draw-up 1.8s var(--ease-out) 0.25s both,
     drift-a 38s ease-in-out 2s infinite alternate;
+}
+/* Slideshow: 7 desenhos × 10 s = 70 s por ciclo; cada um sai nos últimos 1,75 s do seu tempo
+   enquanto o próximo entra (crossfade em opacidade, só no compositor). O atraso negativo põe cada
+   camada na sua fase: a i-ésima começa 10·i s depois da primeira, e a primeira (atraso −70 s, o
+   mesmo que 0) já está inteira quando a página abre. */
+@keyframes bh-fade {
+  0%,
+  11.79% {
+    opacity: 1;
+  }
+  14.29%,
+  97.5% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.motion .tex--bh {
+  -webkit-mask-image: var(--d);
+  mask-image: var(--d);
+  animation: bh-fade 70s ease-in-out calc(var(--i) * 10s - 70s) infinite;
 }
 
 /* Home: o topo gruda e a apresentação passa por cima, uma vez só (olympic, Namaha). O sticky
