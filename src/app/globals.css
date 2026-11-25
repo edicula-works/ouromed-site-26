@@ -1763,7 +1763,10 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   display: grid;
   gap: calc(var(--u) * 5);
   padding-top: var(--sec);
-  padding-bottom: calc(var(--u) * 3);
+  /* Folga de 3,75rem no desktop (o botão do VLibras ocupa os 56 px de baixo à direita, 16 px acima
+     do fim): sem ela, entre 1152 e 1366 px de largura ele cobria o fim do crédito "Edícula Works".
+     No celular a barra fixa (--ctabar-h) já afasta o fim do rodapé, e a conta dá o vão de sempre. */
+  padding-bottom: max(calc(var(--u) * 3), calc(3.75rem - var(--ctabar-h)));
 }
 .footer__top {
   display: grid;
