@@ -24,9 +24,10 @@ export function setupMotion() {
   acts();
 }
 
-/** Atos da home: cada seção sobe e cobre a anterior. A seção que sai fica presa (pin sem
- *  espaçamento) enquanto a próxima passa por cima, e escurece. No topo, durante a saída, o
- *  título sobe e some antes, a cidade sobe mais rápido e a serra ao fundo mais devagar.
+/** Atos da home: cada seção sobe e cobre a anterior. Cada ato é `position: sticky` (classe
+ *  `acts-on`) e gruda no ponto em que o fim dele encosta no fim da tela; o próximo, que vem
+ *  depois no HTML, passa por cima, e o que ficou para trás escurece. No topo, durante a saída, o
+ *  título sobe e some, a cidade sobe mais rápido e a serra ao fundo mais devagar.
  *  Só no desktop (≥ 768 px) e com movimento permitido; senão é uma página comum. */
 function acts() {
   onPage(() => {
@@ -35,24 +36,20 @@ function acts() {
     const mm = gsap.matchMedia();
     mm.add('(min-width: 768px)', () => {
       const list = gsap.utils.toArray<HTMLElement>(':scope > section', root);
+      const place = () => {
+        for (const act of list) act.style.top = `${Math.min(0, innerHeight - act.offsetHeight)}px`;
+      };
+      root.classList.add('acts-on');
+      place();
+      ScrollTrigger.addEventListener('refreshInit', place);
       list.forEach((act, i) => {
-        act.style.zIndex = String(i + 1);
         const next = list[i + 1];
         if (!next) return;
-        // Ato mais alto que a tela: prende quando o fim dele chega ao fim da tela.
-        ScrollTrigger.create({
-          trigger: act,
-          start: () => (act.offsetHeight > innerHeight ? 'bottom bottom' : 'top top'),
-          endTrigger: next,
-          end: 'top top',
-          pin: true,
-          pinSpacing: false,
-        });
         gsap.fromTo(
           act,
           { '--dim': 0 },
           {
-            '--dim': 0.55,
+            '--dim': 0.5,
             ease: 'none',
             scrollTrigger: { trigger: next, start: 'top bottom', end: 'top top', scrub: true },
           },
@@ -80,10 +77,15 @@ function acts() {
           scrollTrigger: st,
         });
       }
-      // Abrir uma pergunta do FAQ muda a altura: recalcula os pontos de prender.
+      // Abrir uma pergunta do FAQ muda a altura: recalcula onde cada ato gruda.
       const refresh = () => ScrollTrigger.refresh();
       root.addEventListener('toggle', refresh, true);
-      return () => root.removeEventListener('toggle', refresh, true);
+      return () => {
+        root.removeEventListener('toggle', refresh, true);
+        ScrollTrigger.removeEventListener('refreshInit', place);
+        root.classList.remove('acts-on');
+        for (const act of list) act.style.top = '';
+      };
     });
     return () => mm.revert();
   });

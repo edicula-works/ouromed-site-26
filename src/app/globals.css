@@ -843,7 +843,10 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   pointer-events: none;
   background: rgb(11 37 69 / var(--dim, 0));
 }
-.js.motion .acts > section + section {
+.acts-on > section {
+  position: sticky;
+}
+.acts-on > section + section {
   border-radius: 28px 28px 0 0;
   box-shadow: 0 -28px 70px rgb(11 37 69 / 0.16);
 }
