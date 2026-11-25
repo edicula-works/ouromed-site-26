@@ -444,11 +444,9 @@ a {
   height: var(--hdr-h);
   color: var(--c-ink);
   border-bottom: 1px solid transparent;
-  transition:
-    background-color 0.35s var(--ease-out),
-    border-color 0.35s var(--ease-out),
-    color 0.35s var(--ease-out),
-    translate 0.6s var(--ease-out);
+  /* Só a saída e a volta são animadas. A troca de cor (escuro → claro) acontece com o
+     cabeçalho fora de cena ao descer; animá-la repintava o cabeçalho e derrubava o fps. */
+  transition: translate 0.6s var(--ease-out);
 }
 /* Sobre o topo escuro da home: texto claro, sem fundo. */
 html:not(.is-scrolled) .hdr[data-home] {
