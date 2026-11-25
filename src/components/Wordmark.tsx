@@ -1,4 +1,4 @@
-// A marca no cabeçalho e no menu, até chegar o vetor original (⚠️ pendência 7): o "o" com a cruz e
+// A marca no cabeçalho e no menu, até chegar o vetor original (docs/PENDENCIAS.md §2): o "o" com a cruz e
 // "Ouro" em ouro + "med" em azul-marinho, as cores do logotipo. O nome é SVG, como um logotipo:
 // a cor do "Ouro" sobre fundo claro não segue o contraste de texto (logotipos são isentos na WCAG
 // 1.4.3), e o nome acessível vem do link que envolve a marca.

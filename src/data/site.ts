@@ -5,18 +5,21 @@
 // emergência é uma seção, não o tom. Nunca inventar número, credencial, depoimento ou cliente.
 //
 // Versão de apresentação (decisões da pessoa, 2026-11-24): vale o que o site atual publica
-// (endereço, 3 fixos, e-mails por setor, serviços, equipamentos, frota citada, depoimentos com
-// nome e cargo). Rodada 6: 5 páginas por público; fotos de eventos (2010–2014) e logos de
-// clientes (2011) fora do site até o cliente confirmar quais podem aparecer.
+// (endereço, 3 fixos, e-mails por setor, serviços, equipamentos). Rodada 6: 5 páginas por público;
+// fotos de eventos (2010–2014), logos de clientes (2011) e os depoimentos antigos ficam fora até o
+// cliente confirmar o que pode aparecer.
 // O que é provisório ou ausente está em docs/PENDENCIAS.md. Resumo:
 //   1. WhatsApp: fora do site (decisão da pessoa, 24/11): o (31) 7818-7838 do site antigo tem 8
 //      dígitos e não é celular atual. Volta quando o cliente informar o número real.
 //      Telefones: os 3 do site antigo; a Receita mostra (31) 2128-2020 (perguntar ao cliente).
-//   2. CNPJ: null. Não renderizar enquanto for null.
-//   3. Fotos: viaturas, equipe e interior são slots de foto (`media`), preenchidos com fotos
-//      reais ou imagens do Google Flow. Fotos atuais: pendência.
-//   4. Frota citada é a de 2011 (modelos publicados); frota atual: pendência.
-//   5. História: só "cobrimos eventos desde 2010" (fato do portfólio). Sem ano de fundação.
+//   2. CNPJ: 11.263.858/0001-65, enviado pela pessoa em 24/11 e conferido no cadastro público
+//      (ativa desde 20/10/2009). Renderiza no rodapé e nos dados estruturados.
+//   3. Fotos: 12 slots de foto (`media`) esperam as fotos do Instagram da Ouromed (fase 2), que
+//      entram com scripts/fotos.mjs; `hero` é reservado (o topo é o desenho de BH). Hoje o slot
+//      mostra em mono o que vai ali.
+//   4. Frota: texto genérico (4×4 e furgões, de diversas marcas), sem modelo nem quantidade; a
+//      composição atual é confirmada na contratação. Frota atual: pendência.
+//   5. História: só "em atividade desde outubro de 2009" (abertura do CNPJ). Sem fundadores.
 //   6. Nunca: credencial específica, convênio aceito, preço, tempo de resposta em minutos,
 //      depoimento novo, cliente novo.
 
@@ -113,11 +116,13 @@ export const site = {
   since: 'Cobrimos eventos desde 2010',
 };
 
-/** Fotos e vídeos do site. Sem `src`, o slot mostra o rótulo do que vai ali (pendência de fotos:
- *  fotos reais da Ouromed ou imagens geradas no Google Flow, sempre sem texto, sem logo de terceiros
- *  e sem rosto em close; prompts em docs/brief/PROMPTS-FLOW.md). `alt` descreve o que se vê. */
+/** Fotos e vídeos do site. Sem `src`, o slot mostra o rótulo do que vai ali (as fotos chegam pelo
+ *  Instagram da Ouromed e entram com scripts/fotos.mjs; como plano B, imagens do Google Flow,
+ *  sempre sem texto, sem logo de terceiros e sem rosto em close; prompts em docs/brief/PROMPTS-FLOW.md).
+ *  `alt` descreve o que se vê. */
 export const media: Record<MediaKey, { label: string; alt: string; src?: string; video?: string }> =
   {
+    // Reservado: o topo da home é o desenho de BH, sem vídeo nem foto (decisão de 24/11).
     hero: {
       label: 'Vídeo: viatura UTI em avenida de BH ao entardecer',
       alt: 'Ambulância UTI branca em movimento numa avenida de Belo Horizonte ao entardecer',

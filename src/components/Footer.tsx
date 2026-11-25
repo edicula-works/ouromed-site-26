@@ -78,7 +78,8 @@ export function Footer() {
         <div className="footer__bottom">
           <p>
             © {y} {site.legalName}
-            {/* CNPJ: ausente no site atual; só renderiza quando o cliente enviar. */}
+            {/* CNPJ enviado pela pessoa em 24/11 e conferido no cadastro público; a lista do que
+                ainda falta está em docs/PENDENCIAS.md. */}
             {site.cnpj && <> · CNPJ {site.cnpj}</>}
           </p>
           <p className="footer__credits">

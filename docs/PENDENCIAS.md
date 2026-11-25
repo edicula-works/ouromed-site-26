@@ -1,68 +1,112 @@
-# Pendências da versão de apresentação
+# Pendências — o estado real do site (rodada 8, 25/11/2026)
 
-Este site é a **v1 para apresentação**: não haverá contato com o cliente antes. Tudo o que é
-provisório, ausente ou depende de confirmação está listado aqui, e esta lista acompanha a
-apresentação. A copy v1 (`docs/conteudo/copy-v1.md`, mesclada na `dev`) continua valendo com as
-suas marcações ⚠️; `docs/PEDIDO-AO-CLIENTE.md` é o pedido que vai para a Ouromed com o porquê de
-cada item. Esta lista é o espelho do site no estado em que ele é apresentado.
+Espelho do site no estado em que está: tudo o que é provisório, ausente ou depende de confirmação
+está aqui. A fonte única do conteúdo é `src/data/site.ts`; o pedido que vai para a Ouromed, com o
+porquê de cada item, é `docs/PEDIDO-AO-CLIENTE.md`.
 
-**Decisão de 2026-11-24 (a pessoa responsável pelo projeto):**
+Regra que vale para tudo: **nunca inventar** credencial, número, cliente, depoimento, tempo de
+resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
 
-1. Usa-se todo dado público do site atual (2011): endereço, os 3 fixos, e-mails por setor,
-   serviços, equipamentos, frota citada, depoimentos com nome e cargo, eventos com ano (o mais
-   recente é 2014) e a lista de clientes.
-2. WhatsApp provisório: (31) 7818-7838, público na página de APH, como `wa.me/553178187838`,
-   marcado no código como "a confirmar".
-3. CNPJ: `null` no `src/data/site.ts`; não renderiza enquanto for `null`.
-4. Fotos: só as miniaturas públicas do portfólio (eventos e logos de clientes). Viaturas e equipe
-   são ilustração SVG própria. Nenhuma foto de banco.
-5. Nunca inventar credencial específica, convênio aceito, preço, tempo de resposta em minutos,
-   depoimento ou cliente novo. No lugar, frases verdadeiras e genéricas.
-6. História: só "cobrimos eventos desde 2010" (fato do portfólio). Sem ano de fundação.
+## 1. O que o site é hoje
 
-## Provisório (está no site, marcado no código)
+- **Cinco páginas**: `/` (home), `/para-voce`, `/para-empresas`, `/sobre`, `/contato`, e uma 404
+  desenhada. As sete rotas da primeira versão (`/ambulancia`, `/remocao`, …) e os endereços do site
+  de 2011 (`empresa.php`, `clientes.php`, …) têm redirecionamento permanente para as âncoras
+  correspondentes (`vercel.json`).
+- **Nenhuma foto ainda.** O site tem 13 espaços de mídia (`media` em `src/data/site.ts`), 12 deles
+  renderizados; sem arquivo, cada espaço mostra em mono o que vai ali. As fotos chegam pelo
+  Instagram da Ouromed e entram com `scripts/fotos.mjs` (§3).
+- **Desenhos de BH em traço** no lugar de foto de banco: a vista da cidade no topo da home e na
+  404 (foto de origem CC0) e a Serra do Curral no rodapé (foto de origem CC BY 2.0, crédito no
+  rodapé). As curvas de nível da serra, geradas de dados de relevo (`scripts/curvas.py`), ficam só
+  atrás dos três fatos da Ouromed. Origem e licenças: `docs/brief/desenhos/CREDITOS.md`.
+- **Depoimentos**: três espaços reservados, um por vez, até o cliente enviar os atuais.
+- **Sem WhatsApp, sem eventos com ano, sem logos de clientes** (decisão de 24/11, rodada 6), até o
+  cliente confirmar o que pode aparecer.
+- **Conferido, não é pendência**: CNPJ `11.263.858/0001-65` e razão social (enviados pela pessoa em
+  24/11 e conferidos no cadastro público: ativa desde 20/10/2009 — é daí que vem o "desde 2009");
+  endereço da Rua Senador Lúcio Bittencourt, 53; serviços, equipamentos e regras publicadas pela
+  própria Ouromed em 2011 (COVE exigida pelo CONTRAN, ABNT, Star of Life, 24 h com triagem médica).
+
+## 2. Provisório (está no site, à espera de confirmação)
 
 | Item | O que está no site | Onde | O que falta |
 |---|---|---|---|
-| WhatsApp | (31) 7818-7838 → `wa.me/553178187838` | `site.whatsapp` (comentário "provisório, a confirmar"): barra fixa do celular, hero, menu, rodapé, contato, formulário | Confirmar o número oficial e quem atende |
-| Frota citada | Mercedes-Benz Sprinter 313 CDI, Ford Transit, Renault Master, Fiat Ducato, Land Rover Defender 4×4 (lista publicada em 2011) | `/ambulancia`, `/sobre` | Frota atual (modelos e quantidades) e fotos atuais; a página avisa "lista confirmada na contratação" |
-| Eventos | Os 8 do portfólio, com ano só onde é público: rodeio de Pedro Leopoldo (2010 a 2013), Minas Trend Preview (2014), Mostra das Profissões da UFMG (2010, legível na marca) | home, `/eventos` | Eventos de 2015 em diante; ano dos demais |
-| Depoimentos | Os 3 publicados, com nome e cargo, texto literal | home | Confirmar se ainda podem ser usados |
-| Clientes | 29 logos publicados no site atual | home, `/sobre` | Confirmar quais podem continuar aparecendo (muitos são de 2011 a 2014) e o direito de uso das marcas |
-| Fotos de eventos | 5 miniaturas públicas (220 × 133) e 3 marcas de eventos | home, `/eventos` | Fotos atuais em resolução; autorização de imagem (nenhum rosto é reconhecível nas miniaturas, mas as fotos são de público) |
+| Telefones da Central 24 h | (31) 3786-1506 no botão "Ligar"; (31) 4103-5452 e (31) 3786-7112 ao lado — os três fixos do site de 2011 | barra fixa do celular, cabeçalho, botões, rodapé, contato | Confirmar os três e qual é o principal. O cadastro público mostra outro número, (31) 2128-2020 (consulta de 24/11): perguntar |
+| E-mails por setor | `agendamento@`, `luciano@` (eventos e locação) e `diretoria@ouromedbh.com.br` | contato, botões dos serviços, formulário | Confirmar que continuam válidos e quem responde a cada um |
+| Marca | Marca tipográfica provisória em SVG ("Ouro" em ouro + "med" em azul-marinho, círculo com a cruz). `og.png` e `apple-icon.png` são do antes da paleta nova | cabeçalho, menu, intro da marca, favicon (este já na paleta nova), preview de link | O logo vetorial original; refazer `og.png` e `apple-icon.png` com ele |
+| Depoimentos | Três espaços reservados ("Espaço para o depoimento de um cliente atual." · "depoimento a confirmar") num carrossel azul-noite | home | Depoimentos atuais com nome e cargo; os de 2011–2014 não puderam ser confirmados |
+| Frota | Texto genérico: veículos 4×4 e furgões pequenos e grandes, de diversas marcas, com o equipamento da UTI; "A composição atual da frota é confirmada na contratação." | `/sobre`, `/para-voce#ambulancia` | Modelos e quantidades em operação |
+| Formulário de orçamento | Sem backend: compõe o e-mail conforme a pessoa digita e abre o aplicativo de correio; a confirmação oferece "Copiar mensagem". Nada fica guardado | `/contato` | Confirmar os destinos, o prazo de resposta e se um formulário por e-mail serve |
+| "Avaliar no Google" | Link para a busca da Ouromed no Google Maps | rodapé | A ficha (3,6 em 25 avaliações, sem dono) reivindicada e o link direto de avaliação |
+| Escritório | Endereço com link para o mapa; nenhum horário | `/contato`, rodapé | Se recebe clientes e em que horário |
 
-## Ausente (não renderiza até o cliente enviar)
+## 3. Ausente (não renderiza até o cliente enviar)
+
+**Fotos — os 13 espaços de mídia.** Nenhum arquivo existe em `public/midia/`. Proporção em que cada
+slot é recortado e onde aparece (a mesma tabela está em `scripts/fotos.mjs`, que confere estes slots
+contra o código a cada execução):
+
+| Slot | Onde aparece | Proporção |
+|---|---|---|
+| `hero` | reservado: o topo da home é o desenho de BH, sem vídeo (decisão da pessoa, 24/11) | — |
+| `uti` | home (destaque de "Para você", largura toda) · `/para-voce#ambulancia` | 16:9 |
+| `domiciliar`, `remocao` | home (cartões) · `/para-voce` | 16:9 |
+| `protegida`, `eventos`, `locacao`, `ambulatorios` | home (faixa de "Para empresas") · `/para-empresas` | 4:3 |
+| `uti-interior` | home ("Suporte básico × UTI") | 4:3 |
+| `destino`, `triagem`, `equipe`, `central` | topos de `/para-voce`, `/para-empresas`, `/sobre`, `/contato` | 4:3 |
+
+Como entram (fase 2): as fotos do Instagram numa pasta, um mapa `slot → { arquivo, alt }`
+(`alt` é obrigatório) e `node scripts/fotos.mjs <pasta> <mapa.json>` grava AVIF e WebP em duas ou
+três larguras e imprime o que colar em `src/data/site.ts`. Antes de subir: autorização de imagem de
+quem aparecer e nenhum paciente identificável. As fotos de terceiros enviadas em 24/11 não entraram;
+os prompts do Google Flow (`docs/brief/PROMPTS-FLOW.md`) ficam como plano B. Com as fotos, o
+`Media.tsx` deixa de usar `next/image` por um `<picture>` para servir as larguras.
+
+**O resto:**
 
 | Item | Estado no site |
 |---|---|
-| CNPJ | `site.cnpj = null`; o rodapé mostra a razão social sem CNPJ |
-| Ano de fundação e história | Só "cobrimos eventos desde 2010" |
-| Logotipo vetorial e manual de marca | Marca tipográfica provisória (Wordmark em SVG). O raster `logomarca-ouromed.jpg` (387 × 65) usa azul-marinho, que a paleta nova deliberadamente não usa (DESIGN.md) |
-| Fotos atuais: viaturas por tipo, interior da UTI, equipe uniformizada, Central 24 h | Ilustrações SVG próprias no lugar |
-| Cidades atendidas e tempo de resposta por região | Nenhuma citação |
-| Convênios e seguros aceitos | Nenhuma citação (a pergunta "Atende convênio?" ficou fora do FAQ) |
-| Preço e formas de pagamento | Nenhuma citação; o FAQ "Quanto custa?" manda ligar |
-| Regras internas: uniforme e crachá, uso de sirene, composição da equipe por viatura | Removidas; a seção "Conduta" só traz o que o texto de 2011 publica (COVE, equipe própria, 24 h, calibração, ABNT e Star of Life, materiais) |
-| Modalidades comerciais: locação com ou sem equipe, área protegida (contrato), eventos (mínimo, hora ou diária) | Texto genérico |
-| Ficha no Google (3,6 em 25 avaliações, não reivindicada) | "Avaliar a Ouromed no Google" aponta para a busca; falta o place id e a reivindicação da ficha |
-| Formulário de orçamento | Sem backend: compõe `mailto:` (por serviço) e `wa.me` no navegador. Confirmar tempo de resposta e se os e-mails por setor continuam certos |
-| Escritório: recebe clientes? Em que horário? | A página de contato diz só "venha até o escritório na Carlos Prates" (texto do site atual), sem horário |
-| Telefone principal do botão "Ligar" | `(31) 3786-1506`, o primeiro do site atual; confirmar qual é o principal |
-| Google Ads | Tag `AW-955189289` mantida (remarketing). Pendente: quem gere a conta configurar as conversões de "ligar" e "WhatsApp" no site novo |
-| Licenças e credenciais (CRM, COREN, licença sanitária, registro da frota) | Nenhuma citação; nunca inventar |
+| WhatsApp | Fora. O (31) 7818-7838 do site antigo tem 8 dígitos e não é celular atual; o segundo botão é "Pedir orçamento" |
+| Eventos cobertos (nome, ano) | Fora. Os oito de 2010–2014 do portfólio estão no acervo (`docs/conteudo-atual/imagens/`); só a lista de tipos de evento, sem ano |
+| Clientes (nomes, logos) | Fora. A lista publicada em 2011 está em `docs/brief/OUROMED-pesquisa.md` §3 (o AGENTS.md cita §6; a lista está em §3) |
+| História da empresa | Só "em atividade desde outubro de 2009" (abertura do CNPJ). Sem fundadores, sem marcos |
+| Cidades atendidas e tempo de resposta | "Belo Horizonte e todo o Brasil, mediante agendamento"; nenhum tempo em minutos |
+| Convênios e seguros aceitos | A pergunta "Aceitam convênio?" fica no FAQ com resposta genérica (cada plano tem regra própria) |
+| Preço e formas de pagamento | Nenhuma citação; o FAQ "Quanto custa?" manda ligar ou pedir orçamento |
+| Regras internas: uniforme e crachá, uso de sirene, composição da equipe por viatura | Não citadas |
+| Modalidades comerciais: locação com ou sem equipe, contrato de área protegida, mínimo de eventos | Texto genérico |
+| Licenças e credenciais (CRM, COREN, licença sanitária, registro da frota) | Nenhuma citação |
+| Google Ads | Tag `AW-955189289` mantida (só remarketing, como no site de 2011). Falta quem gere a conta configurar as conversões de "ligar" no site novo |
 
-## Do acervo, não usado
+## 4. Do acervo, não usado
 
-- `docs/conteudo-atual/imagens/empresa.jpg`: montagem de quartos hospitalares que parece foto de
-  banco. Fora, por decisão (nenhuma foto de banco).
-- `docs/conteudo-atual/imagens/logomarca-ouromed.jpg`: raster de baixa resolução; a marca
-  tipográfica provisória está em `src/components/Illustrations.tsx` (`Wordmark`).
-- "Pioneira em qualidade em Belo Horizonte" e "as mais modernas ambulâncias do mercado, luxuosas,
-  novas": frases de 2011 que o site novo não repete (não são checáveis).
+- `docs/conteudo-atual/imagens/cliente-*.jpg` e `cliente.jpg` (29 arquivos de logos de clientes)
+  e as fotos e marcas de eventos: de 2011 a 2014, sem direito de uso confirmado.
+- `empresa.jpg`: montagem de quartos hospitalares que parece foto de banco. Fora por decisão.
+- `logomarca-ouromed.jpg`: raster de 387 × 65; a marca provisória é tipográfica.
+- "Pioneira em qualidade em Belo Horizonte", "as mais modernas ambulâncias do mercado, luxuosas,
+  novas": frases de 2011 que não são checáveis e o site novo não repete.
+- `docs/brief/desenhos/bh-praca-liberdade-linha.png`: Praça da Liberdade desenhada (foto CC0),
+  guardada sem uso.
+- Um desenho da Praça Raul Soares visto de cima, enviado pela pessoa em 24/11: não está no
+  repositório e não foi usado; a origem e a licença não foram informadas.
 
-## Como conferir
+## 5. Terceiros e técnica
 
-- `src/data/site.ts`: cabeçalho com o resumo destas decisões; `site.whatsapp.provisional`,
-  `site.cnpj`, `events[].year`, `clients[]`.
-- As imagens públicas estão copiadas em `public/imagens/eventos/` e `public/imagens/clientes/`
-  (origem: `docs/conteudo-atual/imagens/`).
+- **VLibras** (tradução para Libras, do governo federal): script de `vlibras.gov.br` carregado depois
+  do carregamento da página; o tradutor só carrega ao clicar. O botão fica no canto de baixo à
+  direita, acima da barra do celular, com a cor própria do widget (não dá para trocar).
+- **Fontes**: Archivo e Martian Mono, do Google Fonts, baixadas no build pelo `next/font`.
+- **`sharp`**: usado por `scripts/fotos.mjs`. Está instalado como dependência opcional do Next, mas
+  não está declarado no `package.json`; declarar em `devDependencies` é decisão da pessoa.
+- **Campos sem uso em `site.ts`**: `since`, `lede`, `trust`, `address.embed`, `about.read` e
+  `contact.read` não são renderizados por nenhuma página; limpar quando for conveniente.
+- **`og.png` e `apple-icon.png`**: gerados antes da paleta nova (`a36ef38`); refazer com o logo final.
+
+## 6. Como conferir
+
+- `src/data/site.ts`: o conteúdo do site inteiro, com o resumo destas pendências no cabeçalho.
+- `scripts/fotos.mjs --ajuda`: o formato do mapa de fotos; `scripts/aceite.mjs <preview>`: os
+  critérios de `docs/CRITERIOS-DE-ACEITE.md` (o 3.2, imagens por tela, fica bloqueado até as fotos).
+- `vercel.json`: os redirecionamentos das rotas antigas.
