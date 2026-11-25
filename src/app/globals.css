@@ -467,9 +467,9 @@ a {
   height: var(--hdr-h);
   color: var(--c-ink);
   border-bottom: 1px solid transparent;
-  /* Só a saída e a volta são animadas. A troca de cor (escuro → claro) acontece com o
-     cabeçalho fora de cena ao descer; animá-la repintava o cabeçalho e derrubava o fps. */
-  transition: translate 0.6s var(--ease-out);
+  /* Sempre visível (25/11): o "Ligar" tem de estar ao alcance em qualquer ponto da rolagem — é o
+     mais comum em sites de serviço de saúde. Sem transição de cor: animá-la repintava o cabeçalho
+     e derrubava o fps (24/11). */
 }
 /* Sobre o topo escuro da home: texto claro, sem fundo. */
 html:not(.is-scrolled) .hdr[data-home] {
@@ -483,9 +483,6 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 .is-scrolled .hdr {
   background: rgb(247 248 249 / 0.96);
   border-bottom-color: var(--c-line);
-}
-.header-away .hdr {
-  translate: 0 -100%;
 }
 .hdr__row {
   display: flex;
@@ -1445,10 +1442,6 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   scrollbar-width: none;
   background: rgb(247 248 249 / 0.97);
   border-bottom: 1px solid var(--c-line);
-  transition: top 0.6s var(--ease-out);
-}
-.header-away .svcs__nav {
-  top: 0;
 }
 .svcs__nav::-webkit-scrollbar {
   display: none;
@@ -2062,9 +2055,6 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
     overflow: visible;
     background: none;
     border: 0;
-  }
-  .header-away .svcs__nav {
-    top: calc(var(--u) * 2);
   }
   .svcs__nav ol {
     flex-direction: column;

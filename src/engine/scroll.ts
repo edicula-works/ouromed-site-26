@@ -1,6 +1,6 @@
 // Scroll nativo, sem Lenis: Namaha (referência de saúde do brief) também não usa, e um site de
 // saúde não deve brigar com o polegar. ScrollTrigger lê o scroll nativo; este módulo só publica
-// a posição para o cabeçalho (sair ao descer, voltar ao subir).
+// a posição para o cabeçalho (fundo claro depois do topo).
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 

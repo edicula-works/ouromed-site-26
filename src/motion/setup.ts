@@ -235,23 +235,16 @@ function fade() {
   });
 }
 
-/** Cabeçalho: fundo claro depois do topo; sai ao descer e volta ao subir (frame that steps
- *  aside, patterns.md §6), nunca com um painel ou o menu aberto. */
+/** Cabeçalho sempre visível (25/11; antes saía ao descer): com fundo claro depois do topo. Na
+ *  home ele fica transparente enquanto está sobre o topo escuro e só ganha o fundo claro quando a
+ *  apresentação chega embaixo dele. */
 function header() {
-  let last = 0;
   onScroll(({ y }) => {
     const root = document.documentElement;
-    // Na home, o cabeçalho fica transparente enquanto estiver sobre o topo escuro e só ganha o
-    // fundo claro quando a apresentação chega embaixo dele (antes ele ficava branco sobre o
-    // azul e logo saía de cena).
     const hero = document.querySelector<HTMLElement>('[data-hero]');
     const hdr = document.querySelector<HTMLElement>('.hdr');
     const solidAt = hero ? hero.offsetHeight - (hdr?.offsetHeight ?? 0) : 8;
     root.classList.toggle('is-scrolled', y > solidAt);
-    if (Math.abs(y - last) < 4) return;
-    if (!root.classList.contains('menu-open'))
-      root.classList.toggle('header-away', y > 160 && y > last);
-    last = y;
   });
 }
 

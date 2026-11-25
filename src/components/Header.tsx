@@ -1,8 +1,8 @@
 'use client';
 
 // Cabeçalho (rodada 6). Desktop: marca · Para você ▾ · Para empresas ▾ · Sobre · Contato · Ligar.
-// Transparente sobre o topo escuro da home; vidro claro depois de rolar; sai ao descer e volta
-// ao subir (src/motion/setup.ts → header()). Os painéis abrem por clip-path com os itens em cascata
+// Transparente sobre o topo escuro da home; fundo claro depois de rolar; sempre visível
+// (src/motion/setup.ts → header()). Os painéis abrem por clip-path com os itens em cascata
 // (CSS, por [data-open]). Celular: botão "Menu" abre um overlay azul-noite de tela cheia.
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -21,11 +21,10 @@ export function Header() {
   const [menu, setMenu] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
-  // Classe do menu no <html> (a barra fixa some e o cabeçalho não sai de cena com o menu aberto).
+  // Classe do menu no <html> (a barra fixa do celular some com o menu aberto).
   useEffect(() => {
     const h = document.documentElement;
     h.classList.toggle('menu-open', menu || open !== null);
-    if (menu || open) h.classList.remove('header-away');
     return () => h.classList.remove('menu-open');
   }, [menu, open]);
 
