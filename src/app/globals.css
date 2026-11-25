@@ -1490,7 +1490,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   border-top: 1px solid var(--c-line);
 }
 .duo {
-  padding-top: 0;
+  padding-top: calc(var(--sec) * 0.35);
 }
 .duo__grid {
   display: grid;
