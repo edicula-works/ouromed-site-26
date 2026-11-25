@@ -25,12 +25,22 @@ import { ServiceIcon } from './ServiceIcon';
 /** Textura da marca: desenhos em traço de BH (vista da cidade, Serra do Curral; ver
  *  docs/brief/desenhos/CREDITOS.md) e, secundárias, as curvas de nível reais (scripts/curvas.py).
  *  `drift` liga a deriva lenta com a rolagem (só nas curvas; os desenhos ficam ancorados). */
-export function Texture({ className, drift = false }: { className: string; drift?: boolean }) {
+export function Texture({
+  className,
+  drift = false,
+  layer,
+}: {
+  className: string;
+  drift?: boolean;
+  /** Camada do topo animada pela rolagem (src/motion/setup.ts → acts). */
+  layer?: string;
+}) {
   return (
     <span
       className={`tex ${className}`}
       aria-hidden="true"
       data-parallax={drift ? '0.06' : undefined}
+      data-layer={layer}
     />
   );
 }
@@ -69,26 +79,20 @@ export function JsonLd({ data }: { data: object }) {
 
 /* ────────────────────────────── Home ────────────────────────────── */
 
-/** Topo de ponta a ponta: vídeo (slot `hero`), véu azul-noite, textura e o título curto. */
+/** Topo: o título centrado sobre o azul-noite e BH em traço, em duas camadas que andam em
+ *  velocidades diferentes ao rolar (a serra ao fundo, a cidade na frente). Sem vídeo. */
 export function Hero() {
   return (
-    <section className="hero" aria-labelledby="hero-h">
-      <div className="hero__media">
-        <Media
-          k="hero"
-          ratio="auto"
-          priority
-          reveal={false}
-          sizes="100vw"
-          className="media--fill"
-        />
-      </div>
-      <div className="hero__veil" aria-hidden="true" />
-      <Texture className="tex--cidade tex--hero" />
-      <div className="wrap hero__content">
+    <section className="hero" aria-labelledby="hero-h" data-hero>
+      <Texture className="tex--fundo" layer="fundo" />
+      <Texture className="tex--cidade tex--hero" layer="cidade" />
+      <div className="wrap hero__content" data-hero-content>
         <h1 id="hero-h" className="hero__title">
           <span className="hl">
-            <span>Padrão{'\u00a0'}ouro</span>
+            <span>
+              Padrão{'\u00a0'}
+              <span className="hero__ouro">ouro</span>
+            </span>
           </span>{' '}
           <span className="hl">
             <span>em saúde móvel.</span>

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <>
+    <div className="acts">
       <Hero />
       <Presentation />
       <ServiceCards
@@ -42,6 +42,6 @@ export default function Home() {
       <Testimonials />
       <Faq />
       <JsonLd data={faqJsonLd(homeFaq)} />
-    </>
+    </div>
   );
 }

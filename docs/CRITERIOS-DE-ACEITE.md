@@ -20,7 +20,7 @@ escrito.
 
 | # | Critério | Fonte | Como checar |
 |---|---|---|---|
-| 2.1 | Foto ou vídeo **de ponta a ponta** (largura ≥ 95 % da tela) ocupando **≥ 85 %** da altura da 1ª tela, no desktop e no celular | medianas: 100 % e 88 % | Auto · **BLOQUEADO** até chegar a imagem |
+| 2.1 | Topo **de ponta a ponta** (largura ≥ 95 % da tela, ≥ 85 % da altura), com o título centrado e o desenho de BH em camadas na base. **Sem vídeo** (decisão da pessoa, 24/11) | medianas: 100 % e 88 % | Auto |
 | 2.2 | Título com **≤ 8 palavras** e **48–80 px** no desktop | mediana ~56 px; 2 a 8 palavras | Auto |
 | 2.3 | Texto sobre a imagem com contraste AA (com véu escuro se precisar) | WCAG | Auto (axe) |
 
@@ -50,7 +50,7 @@ escrito.
 
 | # | Critério | Fonte | Como checar |
 |---|---|---|---|
-| 5.1 | No máximo estes **6 padrões** no site inteiro: (1) intro que surge e dissolve; (2) título entrando por máscara; (3) imagem que se revela e sai da escala 1,06 para 1; (4) cartão com zoom leve no hover; (5) textura de curvas de nível com deriva lenta; (6) menu e painéis abrindo por clip-path com itens em cascata | Awwwards (olympic, Namaha); o 6º a pedido da pessoa | Manual + Auto (lista de animações) |
+| 5.1 | No máximo estes **7 padrões** no site inteiro: (1) intro que surge e dissolve; (2) título entrando por máscara; (3) imagem que se revela do centro para as bordas e sai da escala 1,06 para 1; (4) cartão com zoom leve no hover; (5) textura de curvas de nível com deriva lenta; (6) menu e painéis abrindo por clip-path com itens em cascata; (7) atos: na home, cada seção sobe e cobre a anterior, que escurece, e no topo as camadas do desenho andam em ritmos diferentes (só desktop) | Awwwards (olympic, Namaha); o 6º a pedido da pessoa | Manual + Auto (lista de animações) |
 | 5.2 | Intro: **≤ 1,2 s**, só na 1ª visita da sessão, pulável, **em fade**, sem nada deslizando | pedido da pessoa | Auto (quadros em 0, 0,4, 0,8 e 1,2 s) |
 | 5.3 | Com `prefers-reduced-motion`, nenhum desses 5 roda | WCAG; AGENTS §5 | Auto |
 

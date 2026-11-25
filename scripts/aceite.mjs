@@ -185,7 +185,8 @@ for (const path of pages) {
     return {
       heroShare: hr ? Math.round((Math.min(hr.bottom, vh) / vh) * 100) : 0,
       heroFull: hr ? hr.width >= vw * 0.95 : false,
-      heroEmpty: hm ? hm.classList.contains('media--empty') : true,
+      // Topo sem vídeo (decisão de 24/11): vale o desenho de BH no lugar da mídia.
+      heroEmpty: hm ? hm.classList.contains('media--empty') : !hero?.querySelector('.tex--cidade'),
       title: h1 ? h1.innerText.replace(/\s+/g, ' ').trim() : '',
       titlePx: h1 ? Math.round(parseFloat(getComputedStyle(h1).fontSize)) : 0,
       screens: Math.round(screens * 10) / 10,

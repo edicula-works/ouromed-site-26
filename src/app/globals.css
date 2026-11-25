@@ -747,34 +747,19 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   min-height: max(36rem, 100svh);
   overflow: hidden;
   color: var(--c-paper);
-  background: var(--c-night);
-}
-.hero__media {
-  position: absolute;
-  inset: 0;
-}
-.hero .media__ph {
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding: calc(var(--hdr-h) + var(--u) * 2) var(--gutter) 0;
-  background: var(--c-night);
-}
-.hero__veil {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
   background:
-    linear-gradient(to top, rgb(11 37 69 / 0.9), rgb(11 37 69 / 0.2) 55%, rgb(11 37 69 / 0.5)),
-    linear-gradient(to right, rgb(11 37 69 / 0.6), transparent 60%);
+    radial-gradient(80% 60% at 50% 38%, rgb(3 68 135 / 0.55), transparent 70%), var(--c-night);
 }
+/* Título centrado no alto da cena; o desenho de BH ocupa a base, sem texto por cima. */
 .hero__content {
   position: relative;
   z-index: 2;
   display: grid;
-  align-content: end;
+  align-content: center;
+  justify-items: center;
   gap: calc(var(--u) * 2.5);
-  padding-top: calc(var(--hdr-h) + var(--u) * 4);
-  /* O texto fica acima do desenho da cidade, nunca sobre as linhas. */
+  text-align: center;
+  padding-top: calc(var(--hdr-h) + var(--u) * 3);
   padding-bottom: calc(clamp(7rem, 20vw, 19rem) + var(--u) * 2);
 }
 .hero__title {
@@ -786,8 +771,11 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   letter-spacing: -0.015em;
   line-height: 0.95;
 }
+.hero__ouro {
+  color: var(--c-gold);
+}
 .hero__lede {
-  max-width: 34em;
+  max-width: 32em;
   font-size: var(--t-m);
   line-height: 1.45;
   color: rgb(247 248 249 / 0.86);
@@ -795,6 +783,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 .hero__cta {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.75rem;
 }
 .motion .hero__lede,
@@ -804,6 +793,59 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 }
 .motion .hero__cta {
   animation-delay: 0.45s;
+}
+/* Camadas do desenho: a serra ao fundo (mais tênue, maior) e a cidade na frente. Ao abrir, as
+   linhas da cidade sobem de baixo para cima; ao rolar, as camadas andam em ritmos diferentes. */
+.tex--fundo {
+  inset: auto 0 0 0;
+  height: clamp(10rem, 32vw, 30rem);
+  --tex-c: rgb(212 173 42 / 0.07);
+  -webkit-mask: url("/textura/bh-serra.png") center top / 100% auto no-repeat;
+  mask: url("/textura/bh-serra.png") center top / 100% auto no-repeat;
+}
+@keyframes draw-up {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+.motion .tex--hero {
+  animation: draw-up 1.8s var(--ease-out) 0.25s both;
+}
+.motion .tex--fundo {
+  animation: fade-in 2.4s var(--ease-out) 0.6s both;
+}
+
+/* ────────────────────────────── Atos (home) ────────────────────────────── */
+
+/* A home é uma sequência de atos: cada seção sobe e cobre a anterior, que escurece e fica para
+   trás (src/motion/setup.ts → acts). Sem JS ou com menos movimento, é uma página comum. */
+.acts > section {
+  position: relative;
+  background-color: var(--c-bg);
+}
+.acts > .types {
+  background-color: var(--c-card);
+}
+.acts > .quotes,
+.acts > .hero {
+  background-color: var(--c-night);
+}
+.acts > section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background: rgb(11 37 69 / var(--dim, 0));
+}
+.js.motion .acts > section + section {
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -28px 70px rgb(11 37 69 / 0.16);
 }
 
 /* ────────────────────────────── Seções ────────────────────────────── */

@@ -5,6 +5,8 @@
 //   4. zoom leve da foto do cartão no hover (CSS)
 //   5. textura de curvas de nível com deriva lenta (data-parallax, motor)
 //   6. menu e painéis abrindo por clip-path com itens em cascata (CSS)
+//   7. atos: na home, cada seção sobe e cobre a anterior, que escurece; no topo, as camadas do
+//      desenho de BH andam em ritmos diferentes (pedido da pessoa, 24/11)
 // Fora disso: só a troca de página em opacidade e o cabeçalho (vidro, sair e voltar).
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -19,6 +21,72 @@ export function setupMotion() {
   header();
   hashTarget();
   videos();
+  acts();
+}
+
+/** Atos da home: cada seção sobe e cobre a anterior. A seção que sai fica presa (pin sem
+ *  espaçamento) enquanto a próxima passa por cima, e escurece. No topo, durante a saída, o
+ *  título sobe e some antes, a cidade sobe mais rápido e a serra ao fundo mais devagar.
+ *  Só no desktop (≥ 768 px) e com movimento permitido; senão é uma página comum. */
+function acts() {
+  onPage(() => {
+    const root = document.querySelector<HTMLElement>('.acts');
+    if (!root || prefersReducedMotion()) return undefined;
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 768px)', () => {
+      const list = gsap.utils.toArray<HTMLElement>(':scope > section', root);
+      list.forEach((act, i) => {
+        act.style.zIndex = String(i + 1);
+        const next = list[i + 1];
+        if (!next) return;
+        // Ato mais alto que a tela: prende quando o fim dele chega ao fim da tela.
+        ScrollTrigger.create({
+          trigger: act,
+          start: () => (act.offsetHeight > innerHeight ? 'bottom bottom' : 'top top'),
+          endTrigger: next,
+          end: 'top top',
+          pin: true,
+          pinSpacing: false,
+        });
+        gsap.fromTo(
+          act,
+          { '--dim': 0 },
+          {
+            '--dim': 0.55,
+            ease: 'none',
+            scrollTrigger: { trigger: next, start: 'top bottom', end: 'top top', scrub: true },
+          },
+        );
+      });
+      const hero = root.querySelector<HTMLElement>('[data-hero]');
+      const next = list[1];
+      if (hero && next) {
+        const st = { trigger: next, start: 'top bottom', end: 'top top', scrub: 0.6 };
+        gsap.to(hero.querySelector('[data-hero-content]'), {
+          yPercent: -18,
+          opacity: 0,
+          scale: 0.96,
+          ease: 'power1.in',
+          scrollTrigger: st,
+        });
+        gsap.to(hero.querySelector('[data-layer="cidade"]'), {
+          yPercent: -22,
+          ease: 'none',
+          scrollTrigger: st,
+        });
+        gsap.to(hero.querySelector('[data-layer="fundo"]'), {
+          yPercent: -6,
+          ease: 'none',
+          scrollTrigger: st,
+        });
+      }
+      // Abrir uma pergunta do FAQ muda a altura: recalcula os pontos de prender.
+      const refresh = () => ScrollTrigger.refresh();
+      root.addEventListener('toggle', refresh, true);
+      return () => root.removeEventListener('toggle', refresh, true);
+    });
+    return () => mm.revert();
+  });
 }
 
 /** Intro da marca na primeira visita da sessão. A animação é CSS (começa antes do JS) e o script

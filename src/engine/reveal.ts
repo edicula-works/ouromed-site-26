@@ -1,7 +1,7 @@
 // Motion declarativa por data-attributes (abaixo da dobra; o hero entra por keyframes CSS para o
 // LCP ser texto HTML real, sem depender de hidratação):
 //   data-split="lines|words|chars"   revelação de texto com máscara (SplitText)
-//   data-reveal="up|fade|clip"       revelação de bloco
+//   data-reveal="up|fade|clip"       revelação de bloco (clip abre do centro para as bordas)
 //   data-intro                       toca na entrada da página em vez de no scroll
 //   data-delay="0.2"                 atraso extra (segundos)
 //   data-parallax="0.15"             deriva vertical ligada ao scroll (fração da altura do elemento)
@@ -62,9 +62,10 @@ function blockTween(el: HTMLElement, paused: boolean) {
     kind === 'fade'
       ? { autoAlpha: 0 }
       : kind === 'clip'
-        ? { clipPath: 'inset(0% 100% 0% 0%)', autoAlpha: 1 }
+        ? { clipPath: 'inset(14% 14% 14% 14% round 16px)', autoAlpha: 1 }
         : { y: 32, autoAlpha: 0 };
-  const to: gsap.TweenVars = kind === 'clip' ? { clipPath: 'inset(0% 0% 0% 0%)' } : {};
+  const to: gsap.TweenVars =
+    kind === 'clip' ? { clipPath: 'inset(0% 0% 0% 0% round 0px)', clearProps: 'clipPath' } : {};
   gsap.set(el, { visibility: 'visible' });
   // Imagem que se revela: o conteúdo de dentro assenta de 1,06 para 1 junto com a máscara.
   const inner = kind === 'clip' ? el.querySelector<HTMLElement>('[data-reveal-scale]') : null;
