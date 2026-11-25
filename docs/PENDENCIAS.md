@@ -38,7 +38,7 @@ resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
 | Fotos | Doze espaços com arquivo: 11 cenas ilustrativas geradas por IA e o recorte real de `locacao`; sem texto, logo de terceiros ou rosto em close | home e as quatro páginas | As fotos reais da Ouromed, com autorização de imagem; até lá, as ilustrativas ficam no lugar |
 | Telefones da Central 24 h | (31) 3786-1506 no botão "Ligar"; (31) 4103-5452 e (31) 3786-7112 ao lado — os três fixos do site de 2011 | barra fixa do celular, cabeçalho, botões, rodapé, contato | Confirmar os três e qual é o principal. O cadastro público mostra outro número, (31) 2128-2020 (consulta de 24/11): perguntar |
 | E-mails por setor | `agendamento@`, `luciano@` (eventos e locação) e `diretoria@ouromedbh.com.br` | contato, botões dos serviços, formulário | Confirmar que continuam válidos e quem responde a cada um |
-| Marca | Marca tipográfica provisória em SVG ("Ouro" em ouro + "med" em azul-marinho, círculo com a cruz). `og.png` e `apple-icon.png` são do antes da paleta nova | cabeçalho, menu, intro da marca, favicon (este já na paleta nova), preview de link | O logo vetorial original; refazer `og.png` e `apple-icon.png` com ele |
+| Marca | Marca tipográfica provisória em SVG ("Ouro" em ouro + "med" em azul-marinho, círculo com a cruz). O favicon, o cartão de compartilhamento (`og.png`) e o ícone da Apple seguem essa marca e a paleta atuais, gerados por `bun scripts/marca.tsx` | cabeçalho, menu, intro da marca, favicon, preview de link | O logo vetorial original; quando chegar, rodar `scripts/marca.tsx` de novo |
 | Depoimentos | Três espaços reservados ("Espaço para o depoimento de um cliente atual." · "depoimento a confirmar") num carrossel azul-noite | home | Depoimentos atuais com nome e cargo; os de 2011–2014 não puderam ser confirmados |
 | Frota | Texto genérico: veículos 4×4 e furgões pequenos e grandes, de diversas marcas, com o equipamento da UTI; "A composição atual da frota é confirmada na contratação." | `/sobre`, `/para-voce#ambulancia` | Modelos e quantidades em operação |
 | Formulário de orçamento | Sem backend: compõe o e-mail conforme a pessoa digita e abre o aplicativo de correio; a confirmação oferece "Copiar mensagem". Nada fica guardado | `/contato` | Confirmar os destinos, o prazo de resposta e se um formulário por e-mail serve |
@@ -110,7 +110,6 @@ prompts do Google Flow (`docs/brief/PROMPTS-FLOW.md`) seguem como plano B.
 - **Fontes**: Archivo e Martian Mono, do Google Fonts, baixadas no build pelo `next/font`.
 - **Campos sem uso em `site.ts`**: `since`, `lede`, `trust`, `address.embed`, `about.read` e
   `contact.read` não são renderizados por nenhuma página; limpar quando for conveniente.
-- **`og.png` e `apple-icon.png`**: gerados antes da paleta nova (`a36ef38`); refazer com o logo final.
 
 ## 6. Como conferir
 
