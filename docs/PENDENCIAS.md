@@ -72,7 +72,7 @@ os prompts do Google Flow (`docs/brief/PROMPTS-FLOW.md`) ficam como plano B. Com
 |---|---|
 | WhatsApp | Fora. O (31) 7818-7838 do site antigo tem 8 dígitos e não é celular atual; o segundo botão é "Pedir orçamento" |
 | Eventos cobertos (nome, ano) | Fora. Os oito de 2010–2014 do portfólio estão no acervo (`docs/conteudo-atual/imagens/`); só a lista de tipos de evento, sem ano |
-| Clientes (nomes, logos) | Fora. A lista publicada em 2011 está em `docs/brief/OUROMED-pesquisa.md` §3 (o AGENTS.md cita §6; a lista está em §3) |
+| Clientes (nomes, logos) | Fora. A lista publicada em 2011 está em `docs/brief/OUROMED-pesquisa.md` §3 |
 | História da empresa | Só "em atividade desde outubro de 2009" (abertura do CNPJ). Sem fundadores, sem marcos |
 | Cidades atendidas e tempo de resposta | "Belo Horizonte e todo o Brasil, mediante agendamento"; nenhum tempo em minutos |
 | Convênios e seguros aceitos | A pergunta "Aceitam convênio?" fica no FAQ com resposta genérica (cada plano tem regra própria) |

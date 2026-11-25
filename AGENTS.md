@@ -51,7 +51,7 @@ limite de minutos de Actions; PRs para a `dev` são verificadas localmente antes
   CONTRAN); central 24 h com triagem médica; neonatal com incubadora de transporte; geriatria.
 - **Prova social**: os 3 depoimentos têm nome e cargo; os 8 eventos têm ano (o mais recente é 2014 —
   mostre o ano, não esconda); a lista de clientes tem ~31 marcas — só exiba as que o cliente confirmar
-  (lista em `OUROMED-pesquisa.md` §6). Foto de banco de imagens com jaleco sorridente: nunca.
+  (lista em `OUROMED-pesquisa.md` §3). Foto de banco de imagens com jaleco sorridente: nunca.
 - **Tom**: fato concreto no lugar de adjetivo. Não "viaturas luxuosas"; sim "maca retrátil, climatização,
   oxigenação fixa e portátil". Emergência é uma seção; não é o tom do site inteiro.
 - **Telefone e WhatsApp** (`tel:` / `wa.me`) fixos em toda página — a conversão é ligar. Números oficiais
