@@ -41,7 +41,7 @@
   /* Espaço e forma */
   --u: clamp(0.5rem, 0.35rem + 0.6vw, 1rem);
   --gutter: clamp(1.25rem, 0.6rem + 2.4vw, 3rem);
-  --sec: clamp(4rem, 2.6rem + 5vw, 7.5rem);
+  --sec: clamp(3.5rem, 2.3rem + 4vw, 6.25rem);
   --max-w: 88rem;
   --r: 8px;
   --hdr-h: 4.5rem;
@@ -204,7 +204,12 @@ a {
   transition:
     background-color 0.3s var(--ease-out),
     color 0.3s var(--ease-out),
-    box-shadow 0.3s var(--ease-out);
+    box-shadow 0.3s var(--ease-out),
+    scale 0.15s var(--ease-out);
+}
+/* Resposta ao toque: o botão cede um pouco ao ser pressionado. */
+.btn:active {
+  scale: 0.97;
 }
 .btn--lg {
   min-height: 52px;
@@ -979,6 +984,28 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   grid-template-columns: minmax(0, 1fr);
 }
 
+/* Celular: na home, os 4 serviços para empresas viram uma faixa com deslize (o próximo cartão
+   aparece pela metade para indicar que há mais). Encurta a página em quase três telas. */
+@media (max-width: 639px) {
+  #para-empresas .cards__grid {
+    display: flex;
+    gap: 1rem;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  #para-empresas .cards__grid::-webkit-scrollbar {
+    display: none;
+  }
+  #para-empresas .card {
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+  }
+}
+
 /* Cartões de serviço com foto (padrões 3 e 4). */
 .cards__grid {
   display: grid;
@@ -1240,6 +1267,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   border-top: 1px solid var(--c-line);
 }
 .faq__item summary {
+  transition: color 0.25s var(--ease-out);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1334,41 +1362,109 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   animation-delay: 0.3s;
 }
 
-/* Um serviço por seção nas páginas de público. */
-.svc {
-  padding-block: calc(var(--sec) * 0.7);
+/* Serviços das páginas de público: índice que acompanha a leitura + um serviço por bloco. */
+.svcs {
   border-top: 1px solid var(--c-line);
 }
-.svc__grid {
+.svcs__grid {
   display: grid;
-  gap: calc(var(--u) * 4) var(--gutter);
-  align-items: start;
 }
-.svc__text {
+.svcs__nav {
+  position: sticky;
+  top: var(--hdr-h);
+  z-index: 5;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 0.6rem var(--gutter);
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: rgb(247 248 249 / 0.97);
+  border-bottom: 1px solid var(--c-line);
+  transition: top 0.6s var(--ease-out);
+}
+.header-away .svcs__nav {
+  top: 0;
+}
+.svcs__nav::-webkit-scrollbar {
+  display: none;
+}
+.svcs__nav ol {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  white-space: nowrap;
+}
+.svcs__nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0 1rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--c-line);
+  font-weight: 600;
+  color: var(--c-muted);
+  transition:
+    background-color 0.35s var(--ease-out),
+    color 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out);
+}
+.svcs__nav a[aria-current="true"] {
+  color: var(--c-paper);
+  background: var(--c-navy);
+  box-shadow: none;
+}
+.svcs__n {
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  font-weight: 400;
+}
+.svc {
+  display: grid;
+  gap: calc(var(--u) * 3);
+  padding-block: calc(var(--sec) * 0.75);
+  scroll-margin-top: calc(var(--hdr-h) + 4.5rem);
+}
+.svc + .svc {
+  border-top: 1px solid var(--c-line);
+}
+.svc__head {
   display: grid;
   gap: 1rem;
 }
-.svc__text > p {
-  max-width: 38em;
-  color: var(--c-muted);
-}
-.svc__text > .svc__intro {
-  margin-top: 0.5rem;
+.svc__intro {
+  max-width: 34em;
   font-size: var(--t-m);
   line-height: 1.45;
-  color: var(--c-ink);
+}
+.svc__body {
+  display: grid;
+  gap: calc(var(--u) * 3) var(--gutter);
+}
+.svc__text {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  color: var(--c-muted);
+}
+.svc__side {
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
 }
 .svc__list-h {
-  margin-top: 0.75rem;
   font-weight: 700;
 }
-.svc__list {
+.svc__list,
+.duo__list {
   display: grid;
-  gap: 0.45rem;
+  gap: 0.5rem;
   padding: 0;
   list-style: none;
 }
-.svc__list li {
+.svc__list li,
+.duo__list li {
   padding-left: 1rem;
   background: linear-gradient(var(--c-gold), var(--c-gold)) 0 0.7em / 0.45rem 2px no-repeat;
 }
@@ -1377,39 +1473,89 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem 1.5rem;
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
 }
 
-/* Páginas institucionais (sobre). */
-.prose-sec {
-  padding-block: calc(var(--sec) * 0.6);
+@media (hover: hover) {
+  .svcs__nav a:not([aria-current]):hover {
+    color: var(--c-navy);
+  }
+  .faq__item summary:hover {
+    color: var(--c-navy);
+  }
+}
+
+/* Sobre: frase, equipe e frota lado a lado, PQO em linhas numeradas. */
+.statement {
   border-top: 1px solid var(--c-line);
 }
-.prose-sec__grid {
-  display: grid;
-  gap: calc(var(--u) * 2.5) var(--gutter);
+.duo {
+  padding-top: 0;
 }
-.prose-sec .sec__title {
-  font-size: var(--t-l);
-}
-.prose {
+.duo__grid {
   display: grid;
+  gap: calc(var(--u) * 5) var(--gutter);
+}
+.duo__col {
+  display: grid;
+  align-content: start;
   gap: 1rem;
-  max-width: 40em;
+  padding-top: calc(var(--u) * 3);
+  border-top: 2px solid var(--c-navy);
+  color: var(--c-muted);
 }
-.prose ul {
-  display: grid;
-  gap: 0.6rem;
+.duo__h {
+  font-size: var(--t-l);
+  font-weight: 700;
+  color: var(--c-navy);
+}
+.duo__note {
+  font-size: var(--t-s);
+}
+.rows {
+  background: var(--c-card);
+}
+.rows__list {
+  margin: 0;
   padding: 0;
   list-style: none;
 }
-.prose li {
-  padding-left: 1rem;
-  background: linear-gradient(var(--c-gold), var(--c-gold)) 0 0.7em / 0.45rem 2px no-repeat;
+.rows__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: var(--gutter);
+  padding-block: calc(var(--u) * 2.5);
 }
-.prose__note {
+.rows__rule {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: var(--c-line);
+  transform-origin: left center;
+}
+.rows__n {
+  font-family: var(--f-mono);
   font-size: var(--t-s);
-  color: var(--c-muted);
+  color: var(--c-navy);
+  padding-top: 0.2em;
+}
+.rows__text {
+  max-width: 44em;
+  font-size: var(--t-m);
+  line-height: 1.45;
+}
+
+/* Depois de enviar: o que aconteceu e como copiar a mensagem. */
+.form__sent {
+  display: grid;
+  gap: 0.9rem;
+  justify-items: start;
+  padding: calc(var(--u) * 2.5);
+  border-radius: var(--r);
+  background: var(--c-surface);
+  box-shadow: inset 3px 0 0 var(--c-gold);
+  animation: fade-up 0.5s var(--ease-out) both;
 }
 
 /* Contato. */
@@ -1510,11 +1656,27 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 
 /* 404 */
 .nf {
-  min-height: 80svh;
+  position: relative;
+  overflow: hidden;
+  min-height: 86svh;
   display: grid;
   align-items: center;
   padding-top: calc(var(--hdr-h) + 3rem);
-  padding-bottom: 4rem;
+  padding-bottom: clamp(9rem, 22vw, 20rem);
+}
+.nf__inner {
+  position: relative;
+  z-index: 1;
+}
+/* A cidade em traço ao pé da página perdida: o mesmo desenho do topo da home, em azul. */
+.tex--nf {
+  inset-inline: -4%;
+  --tex-c: rgb(3 68 135 / 0.16);
+}
+.motion .tex--nf {
+  animation:
+    draw-up 1.8s var(--ease-out) 0.2s both,
+    drift-a 38s ease-in-out 2s infinite alternate;
 }
 .nf__inner {
   display: grid;
@@ -1761,14 +1923,40 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   .phero__grid {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   }
-  .svc__grid {
-    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+  .svc__body,
+  .duo__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .svc--flip .svc__media {
-    order: 2;
+  .svcs__grid {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    column-gap: var(--gutter);
   }
-  .prose-sec__grid {
-    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  .svcs__nav {
+    top: calc(var(--hdr-h) + var(--u) * 2);
+    align-self: start;
+    margin: 0;
+    padding: calc(var(--sec) * 0.75) 0 0;
+    overflow: visible;
+    background: none;
+    border: 0;
+  }
+  .header-away .svcs__nav {
+    top: calc(var(--u) * 2);
+  }
+  .svcs__nav ol {
+    flex-direction: column;
+    gap: 0;
+    white-space: normal;
+  }
+  .svcs__nav a {
+    padding: 0.35rem 0 0.35rem 1rem;
+    border-radius: 0;
+    box-shadow: inset 2px 0 0 var(--c-line);
+  }
+  .svcs__nav a[aria-current="true"] {
+    color: var(--c-navy);
+    background: none;
+    box-shadow: inset 2px 0 0 var(--c-gold);
   }
   .contact__grid {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);

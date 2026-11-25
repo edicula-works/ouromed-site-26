@@ -24,6 +24,8 @@ export function setupMotion() {
   videos();
   acts();
   scenes();
+  spy();
+  rows();
 }
 
 /** Cenas da home (rodada 7, aprovadas pela pessoa): um gesto por seção, nenhum repetido; uma coisa
@@ -132,6 +134,57 @@ function acts() {
       onLeave: () => hero.classList.add('is-off'),
       onEnterBack: () => hero.classList.remove('is-off'),
     });
+    return undefined;
+  });
+}
+
+/** Índice das páginas de público: marca o serviço que está sendo lido e, no celular, rola a
+ *  faixa de atalhos até ele. É orientação, não enfeite: roda também com menos movimento. */
+function spy() {
+  onPage(() => {
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-spy]')];
+    if (!links.length) return undefined;
+    const nav = links[0].closest<HTMLElement>('.svcs__nav');
+    const mark = (slug: string) => {
+      for (const a of links) {
+        const on = a.dataset.spy === slug;
+        if (on) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+        if (on && nav && nav.scrollWidth > nav.clientWidth)
+          nav.scrollTo({ left: (a.parentElement?.offsetLeft ?? 0) - 16, behavior: 'smooth' });
+      }
+    };
+    for (const a of links) {
+      const el = document.getElementById(a.dataset.spy ?? '');
+      if (!el) continue;
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 45%',
+        end: 'bottom 45%',
+        onToggle: (self) => self.isActive && mark(a.dataset.spy ?? ''),
+      });
+    }
+    mark(links[0].dataset.spy ?? '');
+    return undefined;
+  });
+}
+
+/** Sobre → PQO: a linha de cada item se traça da esquerda ao entrar na tela (só transform). */
+function rows() {
+  onPage(() => {
+    if (prefersReducedMotion()) return undefined;
+    for (const rule of document.querySelectorAll<HTMLElement>('.rows__rule')) {
+      gsap.fromTo(
+        rule,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          duration: 1.2,
+          ease: ease.out,
+          scrollTrigger: { trigger: rule.parentElement, start: 'top 88%', once: true },
+        },
+      );
+    }
     return undefined;
   });
 }

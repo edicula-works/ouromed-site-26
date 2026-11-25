@@ -43,11 +43,15 @@ function compose(v: Values) {
   return {
     mailto: `mailto:${destinos[v.servico] ?? site.emails.diretoria}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(texto)}`,
     destino: destinos[v.servico] ?? site.emails.diretoria,
+    assunto,
+    texto,
   };
 }
 
 export function ContactForm() {
   const [v, setV] = useState<Values>(empty);
+  const [sent, setSent] = useState(false);
+  const [copied, setCopied] = useState(false);
   const form = useRef<HTMLFormElement>(null);
   const links = compose(v);
   const ref =
@@ -55,8 +59,23 @@ export function ContactForm() {
       setV((s) => ({ ...s, [k]: e.target.value }));
 
   // O botão é um link real (mailto:); o clique só passa depois da validação nativa.
+  // Depois do clique, o site diz o que aconteceu e oferece copiar a mensagem: no computador sem
+  // aplicativo de e-mail configurado, o mailto: não abre nada.
   const valid = (e: MouseEvent<HTMLAnchorElement>) => {
-    if (!form.current?.reportValidity()) e.preventDefault();
+    if (!form.current?.reportValidity()) {
+      e.preventDefault();
+      return;
+    }
+    setSent(true);
+    setCopied(false);
+  };
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(`${links.assunto}\n\n${links.texto}`);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
   };
 
   return (
@@ -138,6 +157,17 @@ export function ContactForm() {
           <Roll>Enviar por e-mail</Roll>
         </a>
       </div>
+      {sent && (
+        <div className="form__sent form__field--full" role="status">
+          <p>
+            <strong>O seu aplicativo de e-mail deve ter aberto com a mensagem pronta.</strong> Não
+            abriu? Copie a mensagem e envie para {links.destino}.
+          </p>
+          <button type="button" className="btn btn--ghost" onClick={copy}>
+            {copied ? 'Mensagem copiada' : 'Copiar mensagem'}
+          </button>
+        </div>
+      )}
       <p className="form__note form__field--full">
         {contact.form.note} Vai para {links.destino}. Para urgências, ligue {site.phones.display}: o
         formulário não é monitorado em tempo real.

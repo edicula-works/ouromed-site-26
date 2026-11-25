@@ -46,14 +46,6 @@ export type IconKey =
   | 'shield'
   | 'hardhat';
 
-/** Bloco de texto das páginas institucionais (sobre). */
-export type Block = {
-  heading: string;
-  paragraphs?: string[];
-  list?: string[];
-  note?: string;
-};
-
 export type Faq = { q: string; a: string };
 
 export type Service = {
@@ -525,36 +517,6 @@ export const honesty = {
 };
 
 // Cada item é uma regra publicada pela própria Ouromed em 2011 (checável no texto do site atual).
-export const conduct = {
-  heading: 'Segurança começa antes do atendimento',
-  lede: 'O que a Ouromed faz de verdade, e não o que ela promete. Cada item é uma regra da casa, checável.',
-  items: [
-    {
-      reading: 'COVE',
-      text: 'Todo motorista tem a capacitação COVE, Condutor de Veículo de Emergência exigida pelo CONTRAN, além de treinamento de socorrista.',
-    },
-    {
-      reading: 'Equipe',
-      text: 'Médicos, enfermagem e socorristas treinados, próprios da Ouromed, com equipes de geriatria e gerontologia, pediatria e neonatologia.',
-    },
-    {
-      reading: '24 h',
-      text: 'Remoções de pacientes adulto, pediátrico, neonatal e psiquiátrico 24 horas por dia, com equipes treinadas.',
-    },
-    {
-      reading: 'Calibração',
-      text: 'Equipamentos submetidos a padrões de calibração periódicos, com aferição para ganho de tempo e pontualidade.',
-    },
-    {
-      reading: 'Norma',
-      text: 'Viaturas dentro das especificações da ABNT e da norma federal norte-americana para veículos de emergência (Star of Life).',
-    },
-    {
-      reading: 'Material',
-      text: 'Materiais com tratamento antibacteriano e resistentes a fungos e umidade.',
-    },
-  ],
-};
 
 /** Depoimentos: espaços reservados (decisão da pessoa, 24/11). Os de 2011–2014 do site antigo
  *  não puderam ser confirmados; entram depoimentos atuais quando o cliente enviar (nome e cargo). */
@@ -616,14 +578,18 @@ export const about = {
     ],
     note: 'A composição atual da frota é confirmada na contratação.',
   },
+  // PQO juntou a antiga lista "Segurança começa antes do atendimento", que repetia metade dos
+  // itens (24/11): uma lista só, sem repetir a equipe, que tem bloco próprio.
   pqo: {
     heading: 'PQO, Padrão de Qualidade Ouromed',
-    lede: 'Segurança, modernidade e conforto.',
+    lede: 'Segurança, modernidade e conforto. As regras que a Ouromed publica para cada atendimento.',
     items: [
+      'Todo motorista tem a capacitação COVE, Condutor de Veículo de Emergência exigida pelo CONTRAN, além de treinamento de socorrista.',
+      'Remoções de pacientes adulto, pediátrico, neonatal e psiquiátrico 24 horas por dia, com equipes treinadas.',
+      'Equipamentos com calibração e aferição periódicas, para ganho de tempo e pontualidade.',
       'Viaturas dentro das especificações da ABNT e da norma federal norte-americana para veículos de emergência (Star of Life).',
-      'Veículos robustos e funcionais, com dispositivos de segurança exigidos por empresas dos setores hospitalar, de mineração, siderúrgico, industrial, petroquímico e desportivo.',
+      'Dispositivos de segurança exigidos por empresas dos setores hospitalar, de mineração, siderúrgico, industrial, petroquímico e desportivo.',
       'Materiais com tratamento antibacteriano, resistentes a fungos e umidade.',
-      'Equipamentos com aferições periódicas, para ganho de tempo e pontualidade.',
     ],
   },
 };

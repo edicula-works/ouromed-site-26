@@ -1,12 +1,5 @@
 import type { Metadata } from 'next';
-import {
-  CallButtons,
-  Faq,
-  faqJsonLd,
-  JsonLd,
-  PageHero,
-  ServiceSection,
-} from '@/components/Sections';
+import { CallButtons, Faq, faqJsonLd, JsonLd, PageHero, ServiceIndex } from '@/components/Sections';
 import { audiencePages, servicesFor } from '@/data/site';
 
 const p = audiencePages.voce;
@@ -20,12 +13,10 @@ export const metadata: Metadata = {
 export default function ParaVoce() {
   return (
     <>
-      <PageHero title={p.h1} intro={p.intro} media="uti">
+      <PageHero title={p.h1} intro={p.intro} media="destino">
         <CallButtons />
       </PageHero>
-      {servicesFor('voce').map((s, i) => (
-        <ServiceSection key={s.slug} s={s} flip={i % 2 === 1} />
-      ))}
+      <ServiceIndex list={servicesFor('voce')} />
       <Faq items={p.faq} />
       <JsonLd data={faqJsonLd(p.faq)} />
     </>

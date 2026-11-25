@@ -4,7 +4,6 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import {
   ambulanceTypes,
-  type Block,
   type Faq as FaqItem,
   homeFaq,
   honesty,
@@ -384,24 +383,56 @@ export function PageHero({
   );
 }
 
-/** Um serviço na página do público: foto, texto curto, lista e ações. A âncora é o slug antigo. */
-export function ServiceSection({ s, flip = false }: { s: Service; flip?: boolean }) {
+/** Os serviços de uma página de público: índice que acompanha a leitura (fixo ao lado no
+ *  computador, faixa de atalhos no celular) e um serviço por bloco, sem zigue-zague. O item
+ *  atual do índice é marcado por src/motion/setup.ts → spy(); sem JS, os links levam à âncora. */
+export function ServiceIndex({ list }: { list: Service[] }) {
   return (
-    <section
-      className={`sec svc${flip ? ' svc--flip' : ''}`}
-      id={s.slug}
-      aria-labelledby={`${s.slug}-h`}
-    >
-      <div className="wrap svc__grid">
-        <Media k={s.media} ratio="4 / 3" className="svc__media" />
+    <div className="svcs">
+      <div className="wrap svcs__grid">
+        <nav className="svcs__nav" aria-label="Serviços desta página">
+          <ol>
+            {list.map((s, i) => (
+              <li key={s.slug}>
+                <a href={`#${s.slug}`} data-spy={s.slug}>
+                  <span className="svcs__n" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  {s.nav}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+        <div className="svcs__list">
+          {list.map((s) => (
+            <ServiceSection key={s.slug} s={s} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Um serviço: foto larga, título e abertura; embaixo, o texto ao lado da lista. A âncora é o
+ *  slug antigo (redirects do site de 2011). */
+function ServiceSection({ s }: { s: Service }) {
+  return (
+    <section className="svc" id={s.slug} aria-labelledby={`${s.slug}-h`}>
+      <Media k={s.media} ratio="16 / 9" sizes="(min-width: 1024px) 66vw, 100vw" />
+      <div className="svc__head">
+        <h2 id={`${s.slug}-h`} className="sec__title" data-split="lines">
+          {s.title}
+        </h2>
+        <p className="svc__intro">{s.intro}</p>
+      </div>
+      <div className="svc__body">
         <div className="svc__text">
-          <h2 id={`${s.slug}-h`} className="sec__title" data-split="lines">
-            {s.title}
-          </h2>
-          <p className="svc__intro">{s.intro}</p>
           {s.paragraphs.map((p) => (
             <p key={p.slice(0, 40)}>{p}</p>
           ))}
+        </div>
+        <div className="svc__side">
           <h3 className="svc__list-h">{s.list.heading}</h3>
           <ul className="svc__list">
             {s.list.items.map((li) => (
@@ -425,27 +456,52 @@ export function ServiceSection({ s, flip = false }: { s: Service; flip?: boolean
   );
 }
 
-/** Bloco de texto das páginas institucionais. */
-export function Prose({ block, id }: { block: Block; id: string }) {
+/** Lista numerada em linhas que se traçam ao entrar na tela (Sobre → PQO). */
+export function Rows({
+  id,
+  heading,
+  lede,
+  items,
+}: {
+  id: string;
+  heading: string;
+  lede?: string;
+  items: string[];
+}) {
   return (
-    <section className="sec prose-sec" aria-labelledby={id}>
-      <div className="wrap prose-sec__grid">
-        <h2 id={id} className="sec__title" data-split="lines">
-          {block.heading}
-        </h2>
-        <div className="prose">
-          {block.paragraphs?.map((p) => (
-            <p key={p.slice(0, 40)}>{p}</p>
+    <section className="sec rows" aria-labelledby={id}>
+      <div className="wrap">
+        <header className="sec__head">
+          <h2 id={id} className="sec__title" data-split="lines">
+            {heading}
+          </h2>
+          {lede && <p className="sec__lede">{lede}</p>}
+        </header>
+        <ol className="rows__list">
+          {items.map((it, i) => (
+            <li key={it} className="rows__item">
+              <span className="rows__rule" aria-hidden="true" />
+              <span className="rows__n" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="rows__text">{it}</span>
+            </li>
           ))}
-          {block.list && (
-            <ul>
-              {block.list.map((li) => (
-                <li key={li}>{li}</li>
-              ))}
-            </ul>
-          )}
-          {block.note && <p className="prose__note">{block.note}</p>}
-        </div>
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+/** Frase de apresentação grande, sem animação (Sobre). */
+export function Statement({ label, text }: { label: string; text: string }) {
+  return (
+    <section className="sec about statement" aria-labelledby="st-h">
+      <div className="wrap about__grid">
+        <h2 id="st-h" className="about__label">
+          {label}
+        </h2>
+        <p className="about__text">{text}</p>
       </div>
     </section>
   );
