@@ -69,6 +69,9 @@ html {
   scroll-padding-bottom: var(--ctabar-h);
 }
 body {
+  /* As cenas deslocam elementos na horizontal: clip corta o transbordo sem virar contêiner de
+     rolagem (o sticky dos atos continua funcionando). */
+  overflow-x: clip;
   min-height: 100dvh;
   font-size: var(--t-body);
   font-variant-numeric: tabular-nums;

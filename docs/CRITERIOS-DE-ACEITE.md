@@ -71,6 +71,7 @@ escrito.
 | 7.3 | axe sem nenhuma violação *serious* ou *critical* | AGENTS §5 | Auto |
 | 7.4 | Alvos de toque ≥ 44 px; foco visível; `lang="pt-BR"`; um `<h1>` por página | AGENTS §4 e §5 | Auto |
 | 7.5 | No celular (390 px), nenhum título passa da largura da tela | bug da rodada 6 | Auto |
+| 7.6 | No celular, a página não rola para o lado (nada mais largo que a tela) | bug das cenas, 24/11 | Auto |
 
 ## 8. Júri
 

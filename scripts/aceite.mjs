@@ -94,6 +94,12 @@ for (const path of pages) {
         over.length === 0,
         over.length ? `passa da tela: ${over.join(' | ')}` : 'títulos cabem na largura',
       );
+      const wide = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+      add(
+        `7.6 ${path} celular`,
+        wide <= 1,
+        wide > 1 ? `página ${wide} px mais larga que a tela` : 'sem rolagem lateral',
+      );
     } else if (path === '/') {
       add('1.3 / desktop', f.btns <= 3, `${f.btns} ações na 1ª tela`);
     }
