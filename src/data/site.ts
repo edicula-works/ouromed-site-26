@@ -514,7 +514,7 @@ export const presentation = {
   ],
 };
 
-/** Suporte básico × UTI móvel (texto publicado pela Ouromed) e o que leva a UTI. */
+/** Suporte básico × UTI móvel (texto publicado pela Ouromed). */
 export const ambulanceTypes = {
   heading: 'Suporte básico ou UTI móvel',
   lede: 'O que muda de uma para a outra é o que o paciente precisa durante o caminho. A triagem médica da Central decide.',
@@ -530,19 +530,6 @@ export const ambulanceTypes = {
       team: 'Médicos, enfermagem e socorristas da Ouromed.',
     },
   ],
-  kit: {
-    heading: 'O que leva numa UTI móvel',
-    items: [
-      'Ventilador pulmonar',
-      'Bombas de infusão',
-      'Cardioversor com ECG digital',
-      'Oxigênio fixo e portátil',
-      'Oxímetro digital',
-      'Incubadora de transporte',
-      'Maca retrátil',
-      'Pranchas para ressonância',
-    ],
-  },
 };
 
 /** Um cartão de "Quando chamar": abre com uma foto 16:9 de um slot exclusivo (`cartao-*`), para

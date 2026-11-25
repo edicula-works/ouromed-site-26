@@ -229,7 +229,7 @@ export function ServiceCards({
   );
 }
 
-/** Suporte básico × UTI móvel, com a foto do interior e o que leva a UTI. */
+/** Suporte básico × UTI móvel, com a foto do interior. */
 export function AmbulanceTypes() {
   const t = ambulanceTypes;
   return (
@@ -251,14 +251,6 @@ export function AmbulanceTypes() {
                 <p className="type__team">{x.team}</p>
               </div>
             ))}
-            <div className="kit">
-              <h3 className="kit__h">{t.kit.heading}</h3>
-              <ul className="kit__list">
-                {t.kit.items.map((k) => (
-                  <li key={k}>{k}</li>
-                ))}
-              </ul>
-            </div>
           </div>
         </div>
       </div>

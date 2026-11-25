@@ -1232,24 +1232,6 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   color: var(--c-ink);
   font-weight: 500;
 }
-.kit__h {
-  margin-bottom: 0.75rem;
-  font-weight: 700;
-}
-.kit__list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.6rem var(--gutter);
-  padding: 0;
-  list-style: none;
-  font-family: var(--f-mono);
-  font-size: var(--t-xs);
-  line-height: 1.5;
-}
-.kit__list li {
-  padding-left: 1rem;
-  background: linear-gradient(var(--c-gold), var(--c-gold)) 0 0.6em / 0.45rem 2px no-repeat;
-}
 
 /* Quando chamar a Ouromed. */
 .when__grid {
@@ -2096,9 +2078,6 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: var(--gutter);
   }
-  .kit {
-    grid-column: 1 / -1;
-  }
   .when__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -2195,9 +2174,6 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   .hero__cta,
   .phero__cta {
     display: none;
-  }
-  .kit__list {
-    grid-template-columns: minmax(0, 1fr);
   }
   #curtain {
     bottom: var(--ctabar-h);
