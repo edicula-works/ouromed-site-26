@@ -158,6 +158,7 @@ export function ContactForm() {
         </a>
       </div>
       {sent && (
+        // biome-ignore lint/a11y/useSemanticElements: <output> só aceita conteúdo fraseológico, e o aviso tem um <p> e um botão
         <div className="form__sent form__field--full" role="status">
           <p>
             <strong>O seu aplicativo de e-mail deve ter aberto com a mensagem pronta.</strong> Não

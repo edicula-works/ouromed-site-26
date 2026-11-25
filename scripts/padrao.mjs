@@ -258,4 +258,5 @@ await Promise.all(
   }),
 );
 await browser.close();
-fs.writeFileSync(`${out}/padrao.json`, JSON.stringify(results, null, 1));
+// Identação de 2 espaços: é a que o Biome (bun run lint) exige do JSON versionado em docs/brief/padrao/.
+fs.writeFileSync(`${out}/padrao.json`, JSON.stringify(results, null, 2));
