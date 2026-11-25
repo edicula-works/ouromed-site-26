@@ -146,11 +146,11 @@ export function Presentation() {
   );
 }
 
-function ServiceCard({ s }: { s: Service }) {
+function ServiceCard({ s, sizes }: { s: Service; sizes?: string }) {
   return (
     <li className="card">
       <Link href={serviceHref(s)} className="card__link">
-        <Media k={s.media} ratio="4 / 3" reveal={false} className="card__media" />
+        <Media k={s.media} ratio="4 / 3" reveal={false} sizes={sizes} className="card__media" />
         <span className="card__body">
           <span className="card__name">
             <ServiceIcon k={s.icon} className="card__icon" />
@@ -216,7 +216,17 @@ export function ServiceCards({
           data-track={track ? '' : undefined}
         >
           {grid.map((s) => (
-            <ServiceCard key={s.slug} s={s} />
+            <ServiceCard
+              key={s.slug}
+              s={s}
+              // Na faixa, o cartão tem a largura da regra .is-track (33vw, de 340 a 500 px) e, no
+              // celular, 78% da tela: o padrão (40vw / 100vw) baixava arquivo maior que o preciso.
+              sizes={
+                track
+                  ? '(min-width: 1024px) min(33vw, 500px), (min-width: 640px) 50vw, 78vw'
+                  : undefined
+              }
+            />
           ))}
         </ul>
         {track && (

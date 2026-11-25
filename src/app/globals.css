@@ -1127,6 +1127,13 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 .cards__grid.is-track .card__media {
   aspect-ratio: 4 / 3;
 }
+/* Cada foto da faixa vira a sua própria camada: o filtro de cor e a granulação (overlay) são
+   pintados uma vez e a rolagem só desloca a camada. Sem isso, o navegador recompunha filtro e
+   mistura de cada foto a cada quadro do pin (queda de fps medida em 25/11: 45 → 59 fps a 4× CPU). */
+.cards__grid.is-track .media {
+  will-change: transform;
+  isolation: isolate;
+}
 .track__rail {
   display: none;
 }
