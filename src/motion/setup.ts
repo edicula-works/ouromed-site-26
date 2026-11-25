@@ -46,7 +46,8 @@ function scenes() {
     const splits: SplitText[] = [];
     const words = (el: Element | null) => {
       if (!el) return [];
-      const sp = SplitText.create(el, { type: 'words' });
+      // aria: 'none': o leitor de tela lê o parágrafo inteiro, sem aria-label em <p>.
+      const sp = SplitText.create(el, { type: 'words', aria: 'none' });
       splits.push(sp);
       return sp.words;
     };
@@ -54,11 +55,12 @@ function scenes() {
     // Apresentação: leitura que acende (scrub) e fatos da direita.
     const about = root.querySelector('.about');
     const aboutText = root.querySelector('.about__text');
+    // A leitura acende por cor: o cinza de partida já tem contraste AA (6,9:1).
     gsap.fromTo(
       words(aboutText),
-      { opacity: 0.18 },
+      { color: '#4f5b66' },
       {
-        opacity: 1,
+        color: '#14202e',
         stagger: 0.04,
         ease: 'none',
         scrollTrigger: { trigger: aboutText, start: 'top 85%', end: 'bottom 45%', scrub: true },
@@ -198,9 +200,9 @@ function scenes() {
     const main = root.querySelector('.quote:first-child blockquote p');
     gsap.fromTo(
       words(main),
-      { opacity: 0.15 },
+      { color: '#a9b4c0' },
       {
-        opacity: 1,
+        color: '#f7f8f9',
         stagger: 0.05,
         ease: 'none',
         scrollTrigger: { trigger: main, start: 'top 80%', end: 'bottom 40%', scrub: true },
