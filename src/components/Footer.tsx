@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import { audiencePages, type Publico, serviceHref, servicesFor, site } from '@/data/site';
-import { Phone, Whats } from './Icons';
+import { Phone } from './Icons';
 import { Texture } from './Sections';
-import { WaLink } from './WaLink';
 
 const groups: Publico[] = ['voce', 'empresa'];
 
@@ -72,9 +71,6 @@ export function Footer() {
                   <a href={`tel:${site.phones.allTel[i + 1]}`}>{p}</a>
                 </li>
               ))}
-              <li>
-                <WaLink>WhatsApp {site.whatsapp.display}</WaLink>
-              </li>
             </ul>
           </div>
         </div>
@@ -104,10 +100,9 @@ export function CtaBar() {
         <Phone className="ico" />
         Ligar {site.phones.display}
       </a>
-      <WaLink className="btn btn--ghost">
-        <Whats className="ico" />
-        WhatsApp
-      </WaLink>
+      <Link href="/contato" className="btn btn--ghost">
+        Orçamento
+      </Link>
     </nav>
   );
 }

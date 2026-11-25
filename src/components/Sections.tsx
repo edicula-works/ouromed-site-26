@@ -15,10 +15,8 @@ import {
   serviceHref,
   servicesFor,
   site,
-  testimonials,
-  waHref,
 } from '@/data/site';
-import { Arrow, Phone, Plus, Whats } from './Icons';
+import { Arrow, Phone, Plus } from './Icons';
 import { Media } from './Media';
 import { ServiceIcon } from './ServiceIcon';
 
@@ -45,23 +43,17 @@ export function Texture({
   );
 }
 
-/** Ligar (ouro) e WhatsApp (contorno). */
-export function CallButtons({ wa, onDark = false }: { wa?: string; onDark?: boolean }) {
+/** Ligar (ouro) e pedir orçamento (contorno). Sem WhatsApp até o cliente informar o número. */
+export function CallButtons({ onDark = false }: { onDark?: boolean }) {
   return (
     <>
       <a href={`tel:${site.phones.tel}`} className="btn btn--gold btn--lg">
         <Phone className="ico" />
         Ligar {site.phones.display}
       </a>
-      <a
-        href={waHref(wa)}
-        className={`btn btn--ghost btn--lg${onDark ? ' btn--onink' : ''}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Whats className="ico" />
-        WhatsApp
-      </a>
+      <Link href="/contato" className={`btn btn--ghost btn--lg${onDark ? ' btn--onink' : ''}`}>
+        Pedir orçamento
+      </Link>
     </>
   );
 }
@@ -102,7 +94,7 @@ export function Hero() {
           atendimento em todo o Brasil.
         </p>
         <div className="hero__cta">
-          <CallButtons wa="uma ambulância" onDark />
+          <CallButtons onDark />
         </div>
       </div>
     </section>
@@ -157,13 +149,18 @@ export function ServiceCards({
   heading,
   lede,
   id,
+  feature = false,
 }: {
   publico: Publico;
   heading: string;
   lede: string;
   id: string;
+  /** O primeiro serviço vira destaque: a foto cresce até a largura toda ao rolar. */
+  feature?: boolean;
 }) {
   const list = servicesFor(publico);
+  const [first, ...rest] = list;
+  const grid = feature ? rest : list;
   return (
     <section className="sec cards" id={id} aria-labelledby={`${id}-h`}>
       <div className="wrap">
@@ -173,8 +170,30 @@ export function ServiceCards({
           </h2>
           <p className="sec__lede">{lede}</p>
         </header>
-        <ul className={`cards__grid cards__grid--${list.length}`}>
-          {list.map((s) => (
+      </div>
+      {feature && first && (
+        <div className="feature" data-feature>
+          <Link href={serviceHref(first)} className="feature__link">
+            <Media
+              k={first.media}
+              ratio="auto"
+              reveal={false}
+              sizes="100vw"
+              className="feature__media"
+            />
+            <span className="wrap feature__body">
+              <span className="card__name">
+                <ServiceIcon k={first.icon} className="card__icon" />
+                {first.nav}
+              </span>
+              <span className="card__lede">{first.lede}</span>
+            </span>
+          </Link>
+        </div>
+      )}
+      <div className="wrap">
+        <ul className={`cards__grid cards__grid--${grid.length}`} data-row>
+          {grid.map((s) => (
             <ServiceCard key={s.slug} s={s} />
           ))}
         </ul>
@@ -259,36 +278,8 @@ export function WhenToCall() {
   );
 }
 
-/** Depoimentos publicados, com nome e cargo, sobre o azul-noite. */
-export function Testimonials() {
-  return (
-    <section className="quotes" aria-labelledby="q-h">
-      <div className="wrap">
-        <h2 id="q-h" className="sec__title quotes__h">
-          Quem já contou com a Ouromed
-        </h2>
-        <ul className="quotes__grid">
-          {testimonials.map((t) => (
-            <li key={t.name} className="quote">
-              <figure>
-                <blockquote>
-                  <p>{t.quote}</p>
-                </blockquote>
-                <figcaption>
-                  <strong>{t.name}</strong>
-                  <span>{t.role}</span>
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
 /** Última ação antes do rodapé. */
-export function CtaBlock({ wa = 'um orçamento' }: { wa?: string }) {
+export function CtaBlock() {
   return (
     <div className="cta-block">
       <h2 className="cta-block__h">Precisa falar com a Ouromed?</h2>
@@ -300,7 +291,7 @@ export function CtaBlock({ wa = 'um orçamento' }: { wa?: string }) {
         .
       </p>
       <div className="cta-block__btns">
-        <CallButtons wa={wa} />
+        <CallButtons />
       </div>
     </div>
   );
@@ -309,11 +300,9 @@ export function CtaBlock({ wa = 'um orçamento' }: { wa?: string }) {
 export function Faq({
   items = homeFaq,
   heading = 'Perguntas frequentes',
-  wa,
 }: {
   items?: FaqItem[];
   heading?: string;
-  wa?: string;
 }) {
   return (
     <section className="sec faq" aria-labelledby="faq-h">
@@ -322,7 +311,7 @@ export function Faq({
           <h2 id="faq-h" className="sec__title" data-split="lines">
             {heading}
           </h2>
-          <CtaBlock wa={wa} />
+          <CtaBlock />
         </div>
         <div className="faq__list">
           {items.map((f, i) => (
@@ -413,14 +402,9 @@ export function ServiceSection({ s, flip = false }: { s: Service; flip?: boolean
             ))}
           </ul>
           <div className="svc__cta">
-            <a
-              href={waHref(s.wa)}
-              className="btn btn--ghost"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Whats className="ico" />
-              WhatsApp
+            <a href={`tel:${site.phones.tel}`} className="btn btn--ghost">
+              <Phone className="ico" />
+              Ligar {site.phones.display}
             </a>
             {s.cta && (
               <a href={s.cta.href} className="link-arrow">

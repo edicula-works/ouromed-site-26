@@ -21,12 +21,12 @@ export default function ParaVoce() {
   return (
     <>
       <PageHero title={p.h1} intro={p.intro} media="uti">
-        <CallButtons wa={p.wa} />
+        <CallButtons />
       </PageHero>
       {servicesFor('voce').map((s, i) => (
         <ServiceSection key={s.slug} s={s} flip={i % 2 === 1} />
       ))}
-      <Faq items={p.faq} wa={p.wa} />
+      <Faq items={p.faq} />
       <JsonLd data={faqJsonLd(p.faq)} />
     </>
   );

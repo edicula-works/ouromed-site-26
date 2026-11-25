@@ -26,186 +26,62 @@ export function setupMotion() {
   scenes();
 }
 
-/** Cenas da home: cada ato é pensado como unidade, com uma entrada própria.
- *  apresentação: a frase acende palavra por palavra conforme a leitura; os fatos chegam da direita.
- *  Fotos (cartões, interior da UTI) aparecem por transparência, sem movimento.
- *  Tipos de ambulância: as colunas sobem; o kit cai item a item.
- *  Quando chamar: os três cartões chegam de lados diferentes, girando de leve até assentar.
- *  Depoimentos: o depoimento principal acende palavra por palavra; os outros vêm de lados opostos.
- *  Perguntas: as perguntas chegam da direita, uma a uma. */
+/** Cenas da home (rodada 7, aprovadas pela pessoa): um gesto por seção, nenhum repetido; uma coisa
+ *  se move por vez; várias seções descansam. Só transform, opacity e clip-path (fps).
+ *  - A Ouromed: a frase acende com a leitura (cor por palavra); os fatos ficam parados.
+ *  - Para você: a foto em destaque cresce de um quadro no centro até a largura toda.
+ *  - Para empresas: a fileira de serviços anda na horizontal com a rolagem.
+ *  - Suporte básico × UTI: tela dividida (a foto fica parada por CSS sticky); sem animação.
+ *  - Quando chamar, depoimentos, perguntas: sem animação de rolagem (descanso). */
 function scenes() {
   onPage(() => {
     const root = document.querySelector<HTMLElement>('.acts');
     if (!root || prefersReducedMotion()) return undefined;
-    const q = <T extends Element = HTMLElement>(sel: string) =>
-      gsap.utils.toArray<T>(sel, root) as T[];
-    const at = (el: Element | null, start = 'top 78%') =>
-      el ? { trigger: el, start, once: true } : undefined;
     const splits: SplitText[] = [];
-    const words = (el: Element | null) => {
-      if (!el) return [];
-      // aria: 'none': o leitor de tela lê o parágrafo inteiro, sem aria-label em <p>.
-      const sp = SplitText.create(el, { type: 'words', aria: 'none' });
-      splits.push(sp);
-      return sp.words;
-    };
 
-    // Apresentação: leitura que acende (scrub) e fatos da direita.
-    const about = root.querySelector('.about');
     const aboutText = root.querySelector('.about__text');
-    // A leitura acende por cor: o cinza de partida já tem contraste AA (6,9:1).
-    gsap.fromTo(
-      words(aboutText),
-      { color: '#4f5b66' },
-      {
-        color: '#14202e',
-        stagger: 0.04,
-        ease: 'none',
-        scrollTrigger: { trigger: aboutText, start: 'top 85%', end: 'bottom 45%', scrub: true },
-      },
-    );
-    gsap.from(q('.about .fact'), {
-      x: 140,
-      opacity: 0,
-      duration: 1.1,
-      stagger: 0.14,
-      ease: ease.out,
-      scrollTrigger: at(root.querySelector('.about .facts'), 'top 85%'),
-    });
-    gsap.from(q('.about .fact dd'), {
-      fontStretch: '75%',
-      duration: 1.4,
-      stagger: 0.14,
-      ease: ease.out,
-      scrollTrigger: at(root.querySelector('.about .facts'), 'top 85%'),
-    });
-    void about;
-
-    // Para você: grande da esquerda, pequenos da direita, título desliza em sentido oposto.
-    const voce = root.querySelector('#para-voce');
-    if (voce) {
-      gsap.from(voce.querySelector('.sec__title'), {
-        x: -120,
-        opacity: 0,
-        duration: 1.1,
-        ease: ease.out,
-        scrollTrigger: at(voce),
-      });
-      gsap.from(voce.querySelector('.sec__lede'), {
-        x: 80,
-        opacity: 0,
-        duration: 1.1,
-        ease: ease.out,
-        scrollTrigger: at(voce),
-      });
-      const cards = gsap.utils.toArray<HTMLElement>('.card', voce);
-      gsap.from(cards[0], {
-        opacity: 0,
-        duration: 1.3,
-        ease: ease.out,
-        scrollTrigger: at(cards[0], 'top 85%'),
-      });
-      gsap.from(cards.slice(1), {
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.16,
-        ease: ease.out,
-        scrollTrigger: at(cards[0], 'top 80%'),
-      });
+    if (aboutText) {
+      // aria: 'none': o leitor de tela lê o parágrafo inteiro, sem aria-label em <p>.
+      const sp = SplitText.create(aboutText, { type: 'words', aria: 'none' });
+      splits.push(sp);
+      // A leitura acende por cor: o cinza de partida já tem contraste AA (6,9:1).
+      gsap.fromTo(
+        sp.words,
+        { color: '#4f5b66' },
+        {
+          color: '#14202e',
+          stagger: 0.04,
+          ease: 'none',
+          scrollTrigger: { trigger: aboutText, start: 'top 85%', end: 'bottom 45%', scrub: true },
+        },
+      );
     }
 
-    // Para empresas: a fileira desliza da direita para o lugar conforme a rolagem; os cartões
-    // chegam em alturas diferentes.
-    const emp = root.querySelector('#para-empresas');
-    if (emp) {
-      gsap.from(gsap.utils.toArray<HTMLElement>('.card', emp), {
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.18,
-        ease: ease.soft,
-        scrollTrigger: at(emp.querySelector('.cards__grid'), 'top 82%'),
-      });
-      gsap.from(emp.querySelector('.sec__title'), {
-        x: 120,
-        opacity: 0,
-        duration: 1.1,
-        ease: ease.out,
-        scrollTrigger: at(emp),
-      });
+    const feature = root.querySelector<HTMLElement>('[data-feature] .feature__media');
+    if (feature) {
+      gsap.fromTo(
+        feature,
+        { clipPath: 'inset(16% 24% 16% 24% round 20px)' },
+        {
+          clipPath: 'inset(0% 0% 0% 0% round 0px)',
+          ease: 'none',
+          scrollTrigger: { trigger: feature, start: 'top 90%', end: 'center 55%', scrub: 0.5 },
+        },
+      );
     }
 
-    // Tipos de ambulância: a foto abre de cima para baixo; colunas sobem; o kit cai item a item.
-    const types = root.querySelector('.types');
-    if (types) {
-      const media = types.querySelector('.types__media');
-      gsap.from(media, { opacity: 0, duration: 1.4, ease: ease.soft, scrollTrigger: at(media) });
-      gsap.from(q('.types .type'), {
-        y: 70,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.18,
-        ease: ease.out,
-        scrollTrigger: at(types.querySelector('.types__info')),
-      });
-      gsap.from(q('.types .kit__list li'), {
-        y: -14,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.06,
-        ease: ease.soft,
-        scrollTrigger: at(types.querySelector('.kit'), 'top 85%'),
-      });
+    const row = root.querySelector<HTMLElement>('#para-empresas [data-row]');
+    if (row) {
+      gsap.fromTo(
+        row,
+        { xPercent: 18 },
+        {
+          xPercent: -6,
+          ease: 'none',
+          scrollTrigger: { trigger: row, start: 'top bottom', end: 'bottom top', scrub: 0.5 },
+        },
+      );
     }
-
-    // Quando chamar: cada cartão de um lado, girando de leve até assentar.
-    const when = q('.when__item');
-    const from = [
-      { x: -90, rotate: -4 },
-      { y: 110, rotate: 0 },
-      { x: 90, rotate: 4 },
-    ];
-    when.forEach((card, i) => {
-      gsap.from(card, {
-        ...from[i % 3],
-        opacity: 0,
-        duration: 1.2,
-        delay: i * 0.1,
-        ease: ease.out,
-        scrollTrigger: at(root.querySelector('.when__grid')),
-      });
-    });
-
-    // Depoimentos: o principal acende palavra por palavra; os outros vêm de lados opostos.
-    const main = root.querySelector('.quote:first-child blockquote p');
-    gsap.fromTo(
-      words(main),
-      { color: '#a9b4c0' },
-      {
-        color: '#f7f8f9',
-        stagger: 0.05,
-        ease: 'none',
-        scrollTrigger: { trigger: main, start: 'top 80%', end: 'bottom 40%', scrub: true },
-      },
-    );
-    q('.quote:not(:first-child)').forEach((el, i) => {
-      gsap.from(el, {
-        x: i % 2 ? 120 : -120,
-        opacity: 0,
-        duration: 1.2,
-        ease: ease.out,
-        scrollTrigger: at(el, 'top 88%'),
-      });
-    });
-
-    // Perguntas: chegam da direita, uma a uma.
-    gsap.from(q('.faq__item'), {
-      x: 60,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.08,
-      ease: ease.out,
-      scrollTrigger: at(root.querySelector('.faq__list')),
-    });
 
     return () => {
       for (const sp of splits) sp.revert();
@@ -213,9 +89,8 @@ function scenes() {
   });
 }
 
-/** Saída do topo: enquanto o topo sai da tela, o título sobe e some antes e a cidade em traço
- *  sobe mais devagar que a página (assincronia). Só com movimento permitido. Os "atos" que se
- *  cobriam (sticky com cantos arredondados) saíram: repetitivos e caros em fps (pessoa, 24/11). */
+/** Saída do topo: o topo gruda (CSS) e a seção seguinte passa por cima; enquanto isso o título
+ *  sobe e some antes e a cidade em traço desce devagar (assincronia). Uma vez só na página. */
 function acts() {
   onPage(() => {
     const hero = document.querySelector<HTMLElement>('[data-hero]');

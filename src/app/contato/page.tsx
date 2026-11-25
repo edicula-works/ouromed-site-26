@@ -18,7 +18,7 @@ export default function Contato() {
   return (
     <>
       <PageHero title={contact.h1} intro={contact.intro} media="central">
-        <CallButtons wa="um orçamento" />
+        <CallButtons />
       </PageHero>
       <section className="sec contact" aria-labelledby="onde-h">
         <div className="wrap contact__grid">

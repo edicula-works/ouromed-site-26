@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Quotes } from '@/components/Quotes';
 import {
   AmbulanceTypes,
   Faq,
@@ -7,7 +8,6 @@ import {
   JsonLd,
   Presentation,
   ServiceCards,
-  Testimonials,
   WhenToCall,
 } from '@/components/Sections';
 import { homeFaq, site } from '@/data/site';
@@ -28,6 +28,7 @@ export default function Home() {
       <ServiceCards
         id="para-voce"
         publico="voce"
+        feature
         heading="Para você"
         lede="Para a sua família: da UTI móvel ao médico em casa."
       />
@@ -39,7 +40,7 @@ export default function Home() {
       />
       <AmbulanceTypes />
       <WhenToCall />
-      <Testimonials />
+      <Quotes />
       <Faq />
       <JsonLd data={faqJsonLd(homeFaq)} />
     </div>

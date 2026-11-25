@@ -851,6 +851,24 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
     drift-a 38s ease-in-out 2s infinite alternate;
 }
 
+/* Home: o topo gruda e a seção seguinte passa por cima, uma vez só (olympic, Namaha); o resto
+   da página rola normalmente. */
+.acts > .hero {
+  position: sticky;
+  top: 0;
+}
+.acts > section:not(.hero) {
+  position: relative;
+  z-index: 1;
+  background-color: var(--c-bg);
+}
+.acts > .types {
+  background-color: var(--c-card);
+}
+.acts > .quotes {
+  background-color: var(--c-night);
+}
+
 /* ────────────────────────────── Seções ────────────────────────────── */
 
 .sec {
@@ -932,6 +950,30 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   color: var(--c-muted);
 }
 
+/* Destaque de "Para você": a foto cresce de um quadro no centro até a largura toda ao rolar
+   (clip-path com scrub, src/motion/setup.ts → scenes). Sem JS, já aparece inteira. */
+.feature {
+  margin-bottom: calc(var(--u) * 5);
+}
+.feature__link {
+  display: grid;
+  gap: 1.25rem;
+}
+.feature__media {
+  height: min(82vh, 58vw);
+  border-radius: 0;
+}
+.feature__body {
+  display: grid;
+  gap: 0.35rem;
+}
+.feature .card__name {
+  font-size: var(--t-l);
+}
+.cards__grid--2 {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 /* Cartões de serviço com foto (padrões 3 e 4). */
 .cards__grid {
   display: grid;
@@ -987,6 +1029,11 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 /* Suporte básico × UTI móvel, com o interior. */
 .types {
   background: var(--c-card);
+}
+.types__media {
+  /* Tela dividida: a foto do interior fica parada enquanto o texto passa ao lado. */
+  position: sticky;
+  top: calc(var(--hdr-h) + var(--u) * 2);
 }
 .types__grid {
   display: grid;
@@ -1075,57 +1122,62 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   color: var(--c-muted);
 }
 
-/* Depoimentos sobre o azul-noite. */
+/* Depoimentos: um por vez, sobre o azul-noite, troca por transparência. */
 .quotes {
+  position: relative;
   padding-block: var(--sec);
   background: var(--c-night);
   color: var(--c-paper);
 }
+.quotes__inner {
+  display: grid;
+  gap: calc(var(--u) * 4);
+}
 .quotes__h {
   max-width: 14em;
-  margin-bottom: calc(var(--u) * 5);
   color: var(--c-paper);
 }
-.quotes__grid {
+.quotes__stage {
   display: grid;
-  gap: calc(var(--u) * 4) var(--gutter);
-  padding: 0;
-  list-style: none;
 }
-.quote figure {
+.quote {
+  grid-area: 1 / 1;
   display: grid;
+  align-content: start;
   gap: 1.5rem;
   margin: 0;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--c-line-ink);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.7s var(--ease-out),
+    visibility 0s linear 0.7s;
 }
-.quote blockquote {
-  position: relative;
+.quote[data-active] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.7s var(--ease-out);
 }
 .quote blockquote::before {
   content: "\201C";
   display: block;
   height: 0.55em;
-  font-size: 4.5rem;
+  font-size: 5rem;
   font-weight: 700;
   line-height: 1;
   color: var(--c-gold);
 }
 .quote blockquote p {
-  font-size: var(--t-m);
-  line-height: 1.5;
-  color: rgb(247 248 249 / 0.92);
-}
-.quote:first-child blockquote p {
-  max-width: 34em;
+  max-width: 30em;
   font-size: var(--t-l);
   line-height: 1.35;
   letter-spacing: -0.01em;
-  color: var(--c-paper);
+}
+.quote__ph {
+  color: var(--c-dust);
 }
 .quote figcaption {
   display: grid;
-  gap: 0.2rem;
+  gap: 0.25rem;
 }
 .quote figcaption strong {
   font-weight: 700;
@@ -1135,6 +1187,35 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   font-size: var(--t-xs);
   line-height: 1.6;
   color: var(--c-dust);
+}
+.quotes__nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.quotes__btn {
+  display: grid;
+  place-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px rgb(247 248 249 / 0.4);
+  color: var(--c-paper);
+  transition: background-color 0.25s;
+}
+@media (hover: hover) {
+  .quotes__btn:hover {
+    background: rgb(247 248 249 / 0.1);
+  }
+}
+.quotes__prev {
+  rotate: 180deg;
+}
+.quotes__count {
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  color: var(--c-dust);
+  font-variant-numeric: tabular-nums;
 }
 
 /* Perguntas frequentes, com o contato na coluna do título. */
@@ -1647,24 +1728,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
     grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
     column-gap: var(--gutter);
   }
-  .cards__grid--3 {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  }
-  .cards__grid--3 .card:first-child {
-    grid-row: span 2;
-  }
-  .cards__grid--3 .card:first-child .card__link {
-    height: 100%;
-    grid-template-rows: 1fr auto;
-  }
-  .cards__grid--3 .card:first-child .card__media {
-    aspect-ratio: auto;
-    min-height: 100%;
-  }
-  .cards__grid--3 .card:first-child .card__name {
-    font-size: var(--t-l);
-  }
-  .cards__grid--3 .card:not(:first-child) .card__media {
+  .cards__grid--2 .card__media {
     aspect-ratio: 16 / 9;
   }
   .cards__grid--4 {
@@ -1672,12 +1736,6 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   }
   .cards__grid--4 .card__media {
     aspect-ratio: 3 / 4;
-  }
-  .quotes__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .quote:first-child {
-    grid-column: 1 / -1;
   }
   .types__grid {
     grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);

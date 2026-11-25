@@ -4,7 +4,7 @@
 // WhatsApp conforme a pessoa digita. Nada fica guardado no site; a validação é nativa.
 import { type ChangeEvent, type FormEvent, type MouseEvent, useRef, useState } from 'react';
 import { contact, site } from '@/data/site';
-import { Roll, Whats } from './Icons';
+import { Roll } from './Icons';
 
 const destinos: Record<string, string> = {
   'Cobertura de eventos': site.emails.eventos,
@@ -31,7 +31,7 @@ const empty: Values = {
 function compose(v: Values) {
   const linhas = [
     `Nome: ${v.nome}`,
-    `Telefone/WhatsApp: ${v.telefone}`,
+    `Telefone: ${v.telefone}`,
     `E-mail: ${v.email}`,
     ...(v.empresa ? [`Empresa: ${v.empresa}`] : []),
     `Serviço: ${v.servico}`,
@@ -42,7 +42,6 @@ function compose(v: Values) {
   const assunto = `Orçamento: ${v.servico}`;
   return {
     mailto: `mailto:${destinos[v.servico] ?? site.emails.diretoria}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(texto)}`,
-    wa: `${site.whatsapp.href}?text=${encodeURIComponent(`${assunto}\n\n${texto}`)}`,
     destino: destinos[v.servico] ?? site.emails.diretoria,
   };
 }
@@ -55,7 +54,7 @@ export function ContactForm() {
     (k: Field) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
       setV((s) => ({ ...s, [k]: e.target.value }));
 
-  // Os botões são links reais (mailto: / wa.me); o clique só passa depois da validação nativa.
+  // O botão é um link real (mailto:); o clique só passa depois da validação nativa.
   const valid = (e: MouseEvent<HTMLAnchorElement>) => {
     if (!form.current?.reportValidity()) e.preventDefault();
   };
@@ -137,16 +136,6 @@ export function ContactForm() {
       <div className="form__actions form__field--full">
         <a className="btn btn--gold btn--lg" href={links.mailto} onClick={valid}>
           <Roll>Enviar por e-mail</Roll>
-        </a>
-        <a
-          className="btn btn--ghost btn--lg"
-          href={links.wa}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={valid}
-        >
-          <Whats className="ico" />
-          <Roll>Enviar pelo WhatsApp</Roll>
         </a>
       </div>
       <p className="form__note form__field--full">

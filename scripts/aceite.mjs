@@ -58,7 +58,8 @@ const foldContact = () => {
     );
   };
   const tel = [...document.querySelectorAll('a[href^="tel:"]')].some(vis);
-  const wa = [...document.querySelectorAll('a[href*="wa.me"]')].some(vis);
+  // Sem WhatsApp até o cliente informar o número (24/11): a segunda via é o orçamento.
+  const wa = [...document.querySelectorAll('a[href="/contato"], a[href^="/contato"]')].some(vis);
   const btns = [...document.querySelectorAll('.btn')].filter(vis).length;
   return { tel, wa, btns };
 };
@@ -74,7 +75,7 @@ for (const path of pages) {
     add(
       `1.1 ${path} ${name}`,
       f.tel && f.wa,
-      `tel ${f.tel ? 'sim' : 'não'} · WhatsApp ${f.wa ? 'sim' : 'não'}`,
+      `tel ${f.tel ? 'sim' : 'não'} · orçamento ${f.wa ? 'sim' : 'não'}`,
     );
     if (name === 'celular') {
       const bar = await p.evaluate(() => {

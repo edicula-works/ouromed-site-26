@@ -16,7 +16,7 @@ export function Media({
   k: MediaKey;
   ratio?: string;
   priority?: boolean;
-  /** Revelação por máscara ao entrar na tela (desligue no hero, que entra por CSS). */
+  /** Aparece por transparência ao entrar na tela (fotos não deslizam; pedido da pessoa, 24/11). */
   reveal?: boolean;
   sizes?: string;
   className?: string;
@@ -27,7 +27,7 @@ export function Media({
     <figure
       className={`media${m.src || m.video ? '' : ' media--empty'} ${className}`}
       style={style}
-      data-reveal={reveal ? 'clip' : undefined}
+      data-reveal={reveal ? 'fade' : undefined}
     >
       {m.video ? (
         <video

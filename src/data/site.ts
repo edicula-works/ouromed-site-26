@@ -9,8 +9,9 @@
 // nome e cargo). Rodada 6: 5 páginas por público; fotos de eventos (2010–2014) e logos de
 // clientes (2011) fora do site até o cliente confirmar quais podem aparecer.
 // O que é provisório ou ausente está em docs/PENDENCIAS.md. Resumo:
-//   1. WhatsApp: (31) 7818-7838 é público na página de APH como telefone da central; usar como
-//      WhatsApp é PROVISÓRIO, a confirmar (wa.me/553178187838).
+//   1. WhatsApp: fora do site (decisão da pessoa, 24/11): o (31) 7818-7838 do site antigo tem 8
+//      dígitos e não é celular atual. Volta quando o cliente informar o número real.
+//      Telefones: os 3 do site antigo; a Receita mostra (31) 2128-2020 (perguntar ao cliente).
 //   2. CNPJ: null. Não renderizar enquanto for null.
 //   3. Fotos: viaturas, equipe e interior são slots de foto (`media`), preenchidos com fotos
 //      reais ou imagens do Google Flow. Fotos atuais: pendência.
@@ -69,9 +70,7 @@ export type Service = {
   intro: string;
   paragraphs: string[];
   list: { heading: string; items: string[] };
-  /** Assunto da mensagem pré-preenchida do WhatsApp ("preciso de …"). */
-  wa: string;
-  /** Ação própria do serviço, além de Ligar e WhatsApp. */
+  /** Ação própria do serviço, além de Ligar. */
   cta?: { label: string; href: string };
 };
 
@@ -88,9 +87,6 @@ export const site = {
     all: ['(31) 3786-1506', '(31) 4103-5452', '(31) 3786-7112'],
     allTel: ['+553137861506', '+553141035452', '+553137867112'],
   },
-  // ⚠️ Provisório, a confirmar: (31) 7818-7838 é público na página de APH como telefone da central
-  // para triagem; o site novo usa o número como WhatsApp até o cliente confirmar o oficial.
-  whatsapp: { display: '(31) 7818-7838', href: 'https://wa.me/553178187838', provisional: true },
   // Enviado pela pessoa em 24/11/2026 e conferido no cadastro público (BrasilAPI/Receita): ATIVA
   // desde 20/10/2009, razão social OUROMED SERVICO MOVEL DE SAUDE LTDA, mesmo endereço.
   cnpj: '11.263.858/0001-65' as string | null,
@@ -118,11 +114,7 @@ export const site = {
     tel: 'tel:192',
   },
   ads: { id: 'AW-955189289' },
-  trust: [
-    'Central 24 h com triagem médica',
-    'Motoristas com COVE',
-    'Fundada por médicos de urgência',
-  ],
+  trust: ['Central 24 h com triagem médica', 'Motoristas com COVE', 'Em atividade desde 2009'],
   // O que a hero diz em 3 s: o que é, para quem, onde. O telefone está no botão.
   lede: 'Ambulância UTI móvel, médico em casa e remoção de pacientes. Para famílias, hospitais, home cares e eventos, em Belo Horizonte e todo o Brasil.',
   // Único fato de história publicado: o evento mais antigo do portfólio.
@@ -204,16 +196,13 @@ export const services: Service[] = [
       'As pranchas de imobilização são de polietileno, adequadas para exames de ressonância magnética, e a UTI leva incubadora de transporte para recém-nascidos.',
     ],
     list: {
-      heading: 'Viaturas publicadas pela Ouromed',
+      heading: 'Viaturas',
       items: [
-        'Mercedes-Benz Sprinter 313 CDI',
-        'Ford Transit',
-        'Renault Master',
-        'Fiat Ducato',
-        'Land Rover Defender 4×4',
+        'Furgões grandes e pequenos, de diversas marcas',
+        'Veículos 4×4 para obras, mineração e acesso difícil',
+        'Montagem para suporte básico ou UTI móvel',
       ],
     },
-    wa: 'uma ambulância UTI móvel ou de suporte básico',
   },
   {
     slug: 'atendimento-domiciliar',
@@ -236,7 +225,6 @@ export const services: Service[] = [
         'Empresas de home care que querem uma parceira de urgência',
       ],
     },
-    wa: 'atendimento médico em casa',
   },
   {
     slug: 'remocao',
@@ -261,7 +249,6 @@ export const services: Service[] = [
         'Psiquiátrica, com equipe treinada',
       ],
     },
-    wa: 'uma remoção de pacientes',
     cta: { label: 'Agendar por e-mail', href: 'mailto:agendamento@ouromedbh.com.br' },
   },
   {
@@ -286,7 +273,6 @@ export const services: Service[] = [
         'Empresas, clínicas de exames e laboratórios',
       ],
     },
-    wa: 'informações sobre área protegida',
     cta: {
       label: 'Falar com a diretoria',
       href: 'mailto:diretoria@ouromedbh.com.br?subject=%C3%81rea%20protegida',
@@ -314,7 +300,6 @@ export const services: Service[] = [
         'Qualquer estado, mediante agendamento',
       ],
     },
-    wa: 'cobertura médica para um evento',
     cta: {
       label: 'Pedir orçamento',
       href: 'mailto:luciano@ouromedbh.com.br?subject=Or%C3%A7amento%20de%20cobertura%20m%C3%A9dica%20para%20evento',
@@ -343,7 +328,6 @@ export const services: Service[] = [
         'Equipamentos médicos conforme a operação',
       ],
     },
-    wa: 'locar uma ambulância',
     cta: {
       label: 'Falar sobre locação',
       href: 'mailto:luciano@ouromedbh.com.br?subject=Loca%C3%A7%C3%A3o%20de%20ambul%C3%A2ncia',
@@ -370,7 +354,6 @@ export const services: Service[] = [
         'Armários de medicamentos',
       ],
     },
-    wa: 'informações sobre ambulatórios',
     cta: {
       label: 'Falar com a diretoria',
       href: 'mailto:diretoria@ouromedbh.com.br?subject=Ambulat%C3%B3rios',
@@ -390,7 +373,6 @@ export const audiencePages: Record<
     description: string;
     h1: string;
     intro: string;
-    wa: string;
     faq: Faq[];
   }
 > = {
@@ -403,7 +385,6 @@ export const audiencePages: Record<
     h1: 'Para você e sua família',
     intro:
       'Ambulância, UTI móvel, médico em casa e remoção de pacientes. Uma ligação para a Central 24 h e a triagem médica decide o que o caso pede.',
-    wa: 'uma ambulância',
     faq: [
       {
         q: 'A UTI móvel tem médico?',
@@ -440,7 +421,6 @@ export const audiencePages: Record<
     h1: 'Para empresas e eventos',
     intro:
       'Área protegida, cobertura de eventos, locação de ambulâncias e ambulatórios em obras: a Ouromed entra no planejamento de segurança da sua operação, com orçamento por escrito.',
-    wa: 'um orçamento para empresa',
     faq: [
       {
         q: 'Como funciona o acionamento da área protegida?',
@@ -473,11 +453,11 @@ export const audiencePages: Record<
 /** Apresentação da home: quem é a Ouromed em duas frases e três fatos publicados. */
 export const presentation = {
   label: 'A Ouromed',
-  text: 'Fundada e administrada por médicos de urgência e emergência, em Belo Horizonte. Uma Central que atende 24 horas e faz a triagem médica de cada chamado, e uma equipe própria que vai até o paciente.',
+  text: 'Saúde móvel em Belo Horizonte desde 2009. Uma Central que atende 24 horas e faz a triagem médica de cada chamado, e uma equipe própria que vai até o paciente.',
   facts: [
     { value: '24 h', label: 'Central com triagem médica, todos os dias' },
     { value: 'COVE', label: 'Capacitação de todos os motoristas, exigida pelo CONTRAN' },
-    { value: 'Todo o Brasil', label: 'Remoções e eventos em qualquer estado, com agendamento' },
+    { value: '2009', label: 'Em atividade desde outubro de 2009, com CNPJ ativo' },
   ],
 };
 
@@ -576,25 +556,12 @@ export const conduct = {
   ],
 };
 
-export const testimonials = [
-  {
-    quote:
-      'Nossa parceria com a Ouromed fortalece a cada ano. A equipe de profissionais são excepcionais e nos passa muita tranquilidade, pois prestam serviço de alta qualidade, responsabilidade e total respeito com o público do nosso evento.',
-    name: 'Tiago de Brito',
-    role: 'Rope Eventos, Pedro Leopoldo Rodeio Show',
-  },
-  {
-    quote:
-      'A Ouromed é parceira do Shopping Del Rey desde agosto de 2011. Pelo que temos de experiência, acreditamos ter acertado na escolha pela Ouromed, pois, em todos os momentos emergenciais vividos em nosso shopping desde a sua chegada, o atendimento tem sido ágil e perfeito, trazendo também comodidade e conforto aos nossos clientes.',
-    name: 'Henrique Freitas',
-    role: 'Coordenador de Segurança do Shopping Del Rey',
-  },
-  {
-    quote:
-      'A Ouromed oferece uma super estrutura de atendimento de urgência e emergência em eventos e nos atenderam muito bem em Diamantina, MG, durante as gravações da minissérie Rei Davi. Ficamos tranquilos quando sabemos que as UTIs e equipes Ouromed estão presentes em nossas gravações.',
-    name: 'Tatiana Duarte',
-    role: 'Coordenadora de Produção, Rede Record de Televisão',
-  },
+/** Depoimentos: espaços reservados (decisão da pessoa, 24/11). Os de 2011–2014 do site antigo
+ *  não puderam ser confirmados; entram depoimentos atuais quando o cliente enviar (nome e cargo). */
+export const testimonialSlots = [
+  { who: 'Família', context: 'Remoção ou atendimento em casa' },
+  { who: 'Empresa', context: 'Área protegida ou ambulatório' },
+  { who: 'Evento', context: 'Cobertura médica' },
 ];
 
 export const homeFaq: Faq[] = [
@@ -612,26 +579,26 @@ export const homeFaq: Faq[] = [
   },
   {
     q: 'Quanto custa?',
-    a: 'Depende do tipo de viatura, da equipe e da distância. Ligue para a Central 24 h ou peça orçamento pelo WhatsApp.',
+    a: 'Depende do tipo de viatura, da equipe e da distância. Ligue para a Central 24 h ou peça um orçamento pela página de contato.',
   },
   {
     q: 'Como a empresa pede um orçamento?',
-    a: 'Pelo formulário da página de contato, pelo WhatsApp ou pelos e-mails de cada setor: eventos e locação, área protegida e ambulatórios.',
+    a: 'Pelo formulário da página de contato ou pelos e-mails de cada setor: eventos e locação, área protegida e ambulatórios.',
   },
 ];
 
 export const about = {
   seoTitle: 'Sobre a Ouromed: padrão ouro em saúde móvel',
   description:
-    'A Ouromed é fundada e administrada por médicos de urgência e emergência. Conheça a equipe, a frota, o PQO e a conduta que a Central 24 h segue.',
-  h1: 'Feita por médicos de urgência, do começo ao fim',
+    'A Ouromed atende Belo Horizonte desde 2009. Conheça a equipe, a frota, o PQO e a conduta que a Central 24 h segue.',
+  h1: 'Saúde móvel em Belo Horizonte desde 2009',
   intro:
-    'Ouro de Minas, padrão ouro. A Ouromed nasceu da analogia entre o ouro das Minas Gerais e o gold standard dos nossos serviços, e é administrada por quem vive urgência e emergência.',
+    'Ouro de Minas, padrão ouro. A Ouromed nasceu da analogia entre o ouro das Minas Gerais e o gold standard dos serviços de saúde, e está em atividade desde outubro de 2009.',
   read: 'Belo Horizonte · eventos desde 2010',
   what: {
     heading: 'O que a Ouromed é',
     paragraphs: [
-      'Fundada e administrada por médicos experientes no atendimento de urgência e emergência. Remoção de pacientes em condições especiais, cobertura de eventos, gerenciamento de ambulatórios, atendimento domiciliar, locação de ambulância para construção civil, mineradoras, shoppings e empresas.',
+      'Serviço móvel de saúde: remoção de pacientes em condições especiais, UTI móvel, atendimento domiciliar, cobertura de eventos, gerenciamento de ambulatórios e locação de ambulância para construção civil, mineradoras, shoppings e empresas.',
     ],
   },
   team: {
@@ -645,9 +612,9 @@ export const about = {
   fleet: {
     heading: 'Frota',
     paragraphs: [
-      'Mercedes-Benz Sprinter 313 CDI, Ford Transit, Renault Master, Fiat Ducato e Land Rover Defender 4×4: veículos robustos e funcionais, montados para UTI móvel, com ventilador pulmonar, bombas de infusão, cardioversor com eletrocardiografia digital, oxigênio fixo e portátil, incubadora de transporte de recém-nascidos e maca retrátil.',
+      'Veículos 4×4 e furgões pequenos e grandes, de diversas marcas, montados para suporte básico ou UTI móvel, com ventilador pulmonar, bombas de infusão, cardioversor com eletrocardiografia digital, oxigênio fixo e portátil, incubadora de transporte de recém-nascidos e maca retrátil.',
     ],
-    note: 'Frota publicada pela Ouromed; a lista atual é confirmada na contratação.',
+    note: 'A composição atual da frota é confirmada na contratação.',
   },
   pqo: {
     heading: 'PQO, Padrão de Qualidade Ouromed',
@@ -664,10 +631,10 @@ export const about = {
 export const contact = {
   seoTitle: 'Contato Ouromed: Central 24 h em Belo Horizonte',
   description:
-    'Fale com a Ouromed: Central 24 h (31) 3786-1506, WhatsApp, e-mails por setor e endereço na Rua Senador Lúcio Bittencourt, 53, Carlos Prates, Belo Horizonte.',
+    'Fale com a Ouromed: Central 24 h (31) 3786-1506, e-mails por setor e endereço na Rua Senador Lúcio Bittencourt, 53, Carlos Prates, Belo Horizonte.',
   h1: 'Estamos a uma ligação de distância',
   intro:
-    'Para urgência, ligue. Para orçamento e eventos, WhatsApp ou e-mail. Para conhecer, venha até o escritório na Carlos Prates.',
+    'Para urgência, ligue. Para orçamento e eventos, o formulário ou o e-mail do setor. Para conhecer, venha até o escritório na Carlos Prates.',
   read: 'Carlos Prates, Belo Horizonte',
   channels: {
     heading: 'Por onde falar',
@@ -692,14 +659,13 @@ export const contact = {
         value: 'diretoria@ouromedbh.com.br',
         href: 'mailto:diretoria@ouromedbh.com.br',
       },
-      { label: 'WhatsApp', value: '(31) 7818-7838', href: site.whatsapp.href },
     ],
   },
   form: {
     heading: 'Peça um orçamento',
     intro:
       'Para eventos, locação, área protegida e ambulatórios. Para urgências, ligue: o formulário não é monitorado em tempo real.',
-    note: 'Ao enviar, o seu aplicativo de e-mail ou o WhatsApp abre com a mensagem pronta. Nada fica guardado neste site.',
+    note: 'Ao enviar, o seu aplicativo de e-mail abre com a mensagem pronta. Nada fica guardado neste site.',
     services: [
       'Cobertura de eventos',
       'Locação de ambulâncias',
@@ -709,22 +675,6 @@ export const contact = {
       'Outro',
     ],
   },
-};
-
-/** Mensagem pré-preenchida do WhatsApp: todo CTA diz de onde a pessoa vem e do que precisa. */
-export const waMessage = (topic?: string) =>
-  topic
-    ? `Olá, vim pelo site da Ouromed e preciso de ${topic}. Podem me ajudar?`
-    : 'Olá, vim pelo site da Ouromed e preciso de falar com a Central.';
-export const waHref = (topic?: string) =>
-  `${site.whatsapp.href}?text=${encodeURIComponent(waMessage(topic))}`;
-
-/** Tópicos por rota (para header, barra fixa e rodapé, que não sabem a página). */
-export const waTopicByPath = (path: string): string | undefined => {
-  if (path.startsWith('/para-voce')) return audiencePages.voce.wa;
-  if (path.startsWith('/para-empresas')) return audiencePages.empresa.wa;
-  if (path.startsWith('/contato')) return 'um orçamento';
-  return undefined;
 };
 
 /** Endereço da seção de um serviço na página do público. */

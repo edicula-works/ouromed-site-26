@@ -12,7 +12,7 @@ escrito.
 
 | # | Critério | Fonte | Como checar |
 |---|---|---|---|
-| 1.1 | Telefone e WhatsApp visíveis na 1ª tela de **todas** as páginas, no desktop e no celular | ambulâncias (4 de 6); AGENTS §3 | Auto |
+| 1.1 | Telefone e "Pedir orçamento" visíveis na 1ª tela de **todas** as páginas, no desktop e no celular (WhatsApp volta quando o cliente informar o número) | ambulâncias (4 de 6); AGENTS §3 | Auto |
 | 1.2 | No celular, ligar com 1 toque a partir de qualquer ponto da página (barra fixa) | AGENTS §3 | Auto |
 | 1.3 | No máximo **3** ações na 1ª tela do desktop | medianas: 1,5 Awwwards e 3 ambulâncias | Auto |
 

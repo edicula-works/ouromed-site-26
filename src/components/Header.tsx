@@ -8,9 +8,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type CSSProperties, useEffect, useRef, useState } from 'react';
 import { audiencePages, type Publico, serviceHref, servicesFor, site } from '@/data/site';
-import { Phone, Whats } from './Icons';
+import { Phone } from './Icons';
 import { ServiceIcon } from './ServiceIcon';
-import { useWaHref } from './WaLink';
 import { Wordmark } from './Wordmark';
 
 const groups: Publico[] = ['voce', 'empresa'];
@@ -153,7 +152,6 @@ function Menu({
   onClose: () => void;
   current: (h: string) => 'page' | undefined;
 }) {
-  const waHref = useWaHref();
   const ref = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
@@ -242,15 +240,9 @@ function Menu({
           <Phone className="ico" />
           Ligar {site.phones.display}
         </a>
-        <a
-          href={waHref}
-          className="btn btn--ghost btn--onink btn--lg"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <Whats className="ico" />
-          WhatsApp
-        </a>
+        <Link href="/contato" onClick={onClose} className="btn btn--ghost btn--onink btn--lg">
+          Pedir orçamento
+        </Link>
       </div>
     </div>
   );
