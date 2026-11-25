@@ -91,8 +91,9 @@ export const site = {
   // ⚠️ Provisório, a confirmar: (31) 7818-7838 é público na página de APH como telefone da central
   // para triagem; o site novo usa o número como WhatsApp até o cliente confirmar o oficial.
   whatsapp: { display: '(31) 7818-7838', href: 'https://wa.me/553178187838', provisional: true },
-  // Ausente no site atual: null até o cliente enviar. Não renderizar enquanto for null.
-  cnpj: null as string | null,
+  // Enviado pela pessoa em 24/11/2026 e conferido no cadastro público (BrasilAPI/Receita): ATIVA
+  // desde 20/10/2009, razão social OUROMED SERVICO MOVEL DE SAUDE LTDA, mesmo endereço.
+  cnpj: '11.263.858/0001-65' as string | null,
   emails: {
     agendamento: 'agendamento@ouromedbh.com.br',
     eventos: 'luciano@ouromedbh.com.br',
