@@ -1,10 +1,12 @@
 // Fotos dos slots do site (rodada 8): recorta cada foto pela proporção do seu slot e grava AVIF e
 // WebP em 2–3 larguras em public/midia/, prontas para um <picture> no Media.tsx.
-//   node scripts/fotos.mjs <pasta-das-fotos> <mapa.json> [--saida public/midia] [--dry] [--manifest saida.json]
+//   node scripts/fotos.mjs <pasta-das-fotos> <mapa.json> [--saida public/midia] [--dry] [--manifest src/data/midia.json]
 //   node scripts/fotos.mjs --ajuda
-// O mapa é { "<slot>": { "arquivo": "nome.jpg", "alt": "o que se vê", "foco"?: "…", "proporcao"?: "16/9" } }.
-// `alt` é obrigatório (AGENTS.md §4: alt em imagem de conteúdo). Os slots e as proporções vêm do
-// código: tabela SLOTS abaixo, com o lugar de cada um, conferida contra o código a cada execução.
+// O mapa é { "<slot>": { "arquivo": "nome.jpg", "alt": "o que se vê", "foco"?: "…", "posicao"?: "50% 30%", "proporcao"?: "16/9" } }.
+// `alt` é obrigatório (AGENTS.md §4: alt em imagem de conteúdo) e o script o imprime para colar em
+// src/data/site.ts, onde ele vive. Os slots e as proporções vêm do código: tabela SLOTS abaixo, com o
+// lugar de cada um, conferida contra o código a cada execução. Com --manifest, escreve o índice dos
+// arquivos gerados (src/data/midia.json), que o site importa para montar os srcsets.
 // As fotos de origem não são alteradas. A saída não leva EXIF (o sharp não copia): localização e
 // dados da câmera ficam fora dos arquivos publicados. Usa o `sharp` de devDependencies (mesma faixa
 // ^0.35.5 que o next traz como dependência opcional).
@@ -13,7 +15,7 @@ import path from 'node:path';
 
 const AJUDA = `Fotos dos slots do site.
 
-  node scripts/fotos.mjs <pasta-das-fotos> <mapa.json> [--saida public/midia] [--dry] [--manifest saida.json]
+  node scripts/fotos.mjs <pasta-das-fotos> <mapa.json> [--saida public/midia] [--dry] [--manifest src/data/midia.json]
 
 mapa.json (alt é obrigatório; foco e proporcao são opcionais):
   {
@@ -24,7 +26,10 @@ mapa.json (alt é obrigatório; foco e proporcao são opcionais):
       "foco": "esquerda"
     }
   }
-foco: centro (padrão), topo, baixo, esquerda, direita ou atencao (o sharp acha o ponto de interesse).
+foco: centro (padrão), topo, baixo, esquerda, direita ou atencao (o sharp acha o ponto de interesse) — onde o
+  recorte do slot ancora quando a foto tem outra proporção.
+posicao: object-position de CSS (ex.: "50% 30%") para as caixas em que o slot aparece com outra
+  proporção (o navegador corta pelo centro por padrão); vai para o manifesto.
 proporcao: só para anular a do slot (ex.: "1/1"). Larguras maiores que a foto não são geradas (nunca
 amplia); se a foto for menor que todas, sai uma só na largura original.
 
@@ -225,6 +230,8 @@ for (const [slot, v] of Object.entries(mapa)) {
   if (typeof v.alt !== 'string' || !v.alt.trim()) erros.push(`${onde}: falta "alt" (obrigatório)`);
   if (v.foco && !(v.foco in FOCO))
     erros.push(`${onde}: foco "${v.foco}" desconhecido (${Object.keys(FOCO).join(', ')})`);
+  if (v.posicao && !/^\d{1,3}% \d{1,3}%$/.test(v.posicao))
+    erros.push(`${onde}: posicao "${v.posicao}" tem de ser duas porcentagens, ex.: "50% 30%"`);
   const proporcao = v.proporcao ?? SLOTS[slot].proporcao;
   if (!/^\d+\s*\/\s*\d+$/.test(proporcao))
     erros.push(`${onde}: proporção "${proporcao}" tem de ser "largura/altura"`);
@@ -247,6 +254,7 @@ for (const [slot, v] of Object.entries(mapa)) {
     slot,
     arquivo,
     foco: v.foco ?? 'centro',
+    posicao: v.posicao,
     proporcao,
     alt: typeof v.alt === 'string' ? v.alt.trim() : '',
     fonte: { w: girada ? meta.height : meta.width, h: girada ? meta.width : meta.height },
@@ -275,12 +283,16 @@ const plano = [];
 for (const e of entradas) {
   const s = SLOTS[e.slot];
   const [pw, ph] = e.proporcao.split('/').map((x) => Number(x.trim()));
-  let larguras = s.larguras.filter((w) => w <= e.fonte.w);
-  if (!larguras.length) larguras = [e.fonte.w];
+  // Largura útil: a do recorte na proporção do slot (uma fonte 3:2 num slot 4:3 só dá 1365 de
+  // largura, mesmo que a foto tenha 1536) — ampliar nunca.
+  const util = Math.min(e.fonte.w, Math.round((e.fonte.h * pw) / ph));
+  let larguras = s.larguras.filter((w) => w <= util);
+  if (!larguras.length) larguras = [util];
   const item = {
     slot: e.slot,
     alt: e.alt,
     proporcao: e.proporcao,
+    posicao: e.posicao,
     sizes: s.sizes,
     onde: s.onde,
     fonte: e.fonte,
@@ -306,9 +318,9 @@ for (const e of entradas) {
     }
     item.arquivos.push({ w, h, ...arquivos });
   }
-  const puladas = s.larguras.filter((w) => w > e.fonte.w);
+  const puladas = s.larguras.filter((w) => w > util);
   if (puladas.length)
-    item.nota = `a foto tem ${e.fonte.w} px de largura; ${puladas.join(', ')} não ${puladas.length > 1 ? 'foram geradas' : 'foi gerada'} (nunca amplia)`;
+    item.nota = `o recorte em ${e.proporcao} tem ${util} px de largura; ${puladas.join(', ')} não ${puladas.length > 1 ? 'foram geradas' : 'foi gerada'} (nunca amplia)`;
   plano.push(item);
 }
 
@@ -328,6 +340,8 @@ for (const item of plano) {
     );
   if (item.nota) console.log(`  (${item.nota})`);
   if (dry) continue;
+  if (item.posicao)
+    console.log(`  posicao: '${item.posicao}'   (object-position nas caixas de outra proporção)`);
   console.log(`  em src/data/site.ts → media.${item.slot}:`);
   console.log(`    alt: ${JSON.stringify(item.alt)}`);
   console.log(
@@ -342,29 +356,26 @@ for (const item of plano) {
   );
 }
 if (opcoes.manifest && !dry) {
-  fs.writeFileSync(
-    opcoes.manifest,
-    JSON.stringify(
-      Object.fromEntries(
-        plano.map((item) => [
-          item.slot,
-          {
-            alt: item.alt,
-            proporcao: item.proporcao,
-            sizes: item.sizes,
-            larguras: item.arquivos.map((a) => ({
-              w: a.w,
-              h: a.h,
-              avif: `${raiz}/${item.slot}-${a.w}.avif`,
-              webp: `${raiz}/${item.slot}-${a.w}.webp`,
-            })),
-          },
-        ]),
-      ),
-      null,
-      2,
+  // Só os arquivos: o texto alternativo é conteúdo e fica em src/data/site.ts.
+  const manifesto = JSON.stringify(
+    Object.fromEntries(
+      plano.map((item) => [
+        item.slot,
+        {
+          ...(item.posicao ? { posicao: item.posicao } : {}),
+          larguras: item.arquivos.map((a) => ({
+            w: a.w,
+            h: a.h,
+            avif: `${raiz}/${item.slot}-${a.w}.avif`,
+            webp: `${raiz}/${item.slot}-${a.w}.webp`,
+          })),
+        },
+      ]),
     ),
+    null,
+    2,
   );
+  fs.writeFileSync(opcoes.manifest, `${manifesto}\n`);
   console.log(`\nManifesto: ${opcoes.manifest}`);
 }
 if (!dry) {
