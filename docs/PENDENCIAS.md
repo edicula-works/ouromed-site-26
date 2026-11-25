@@ -98,8 +98,6 @@ os prompts do Google Flow (`docs/brief/PROMPTS-FLOW.md`) ficam como plano B. Com
   do carregamento da página; o tradutor só carrega ao clicar. O botão fica no canto de baixo à
   direita, acima da barra do celular, com a cor própria do widget (não dá para trocar).
 - **Fontes**: Archivo e Martian Mono, do Google Fonts, baixadas no build pelo `next/font`.
-- **`sharp`**: usado por `scripts/fotos.mjs`. Está instalado como dependência opcional do Next, mas
-  não está declarado no `package.json`; declarar em `devDependencies` é decisão da pessoa.
 - **Campos sem uso em `site.ts`**: `since`, `lede`, `trust`, `address.embed`, `about.read` e
   `contact.read` não são renderizados por nenhuma página; limpar quando for conveniente.
 - **`og.png` e `apple-icon.png`**: gerados antes da paleta nova (`a36ef38`); refazer com o logo final.

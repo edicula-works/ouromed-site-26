@@ -6,8 +6,8 @@
 // `alt` é obrigatório (AGENTS.md §4: alt em imagem de conteúdo). Os slots e as proporções vêm do
 // código: tabela SLOTS abaixo, com o lugar de cada um, conferida contra o código a cada execução.
 // As fotos de origem não são alteradas. A saída não leva EXIF (o sharp não copia): localização e
-// dados da câmera ficam fora dos arquivos publicados. Usa o sharp que já está instalado (hoje vem
-// como dependência opcional do next); se sumir, declare `sharp` em devDependencies.
+// dados da câmera ficam fora dos arquivos publicados. Usa o `sharp` de devDependencies (mesma faixa
+// ^0.35.5 que o next traz como dependência opcional).
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -59,7 +59,7 @@ try {
   sharp = (await import('sharp')).default;
 } catch {
   console.error(
-    'sharp não está instalado nesta cópia. Ele vem como dependência opcional do next; se tiver sumido, declare em devDependencies (bun add -d sharp) e rode de novo.',
+    'sharp não está instalado nesta cópia: rode bun install (ele está em devDependencies) e tente de novo.',
   );
   process.exit(1);
 }
