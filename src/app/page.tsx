@@ -38,6 +38,7 @@ export default function Home() {
       <ServiceCards
         id="para-empresas"
         publico="empresa"
+        track
         heading="Para empresas"
         lede="Para quem tem gente sob a sua responsabilidade: clientes, funcionários, público."
       />

@@ -1004,6 +1004,35 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   }
 }
 
+/* Para empresas no computador: faixa que anda para o lado enquanto a seção segura (classe posta
+   pelo JS; sem JS, continua a grade de 4 colunas). A faixa passa da margem direita da página. */
+.cards__grid.is-track {
+  display: flex;
+  gap: var(--gutter);
+  width: max-content;
+}
+.cards__grid.is-track > .card {
+  width: clamp(340px, 33vw, 500px);
+}
+.cards__grid.is-track .card__media {
+  aspect-ratio: 4 / 3;
+}
+.track__rail {
+  display: none;
+}
+.is-track + .track__rail {
+  display: block;
+  height: 2px;
+  margin-top: calc(var(--u) * 4);
+  background: var(--c-line);
+}
+.track__bar {
+  display: block;
+  height: 100%;
+  background: var(--c-gold);
+  transform-origin: left center;
+}
+
 /* Cartões de serviço com foto (padrões 3 e 4). */
 .cards__grid {
   display: grid;
@@ -1920,6 +1949,20 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   }
   .phero__grid {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+  .rows > .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    column-gap: var(--gutter);
+    align-items: start;
+  }
+  .rows .sec__head {
+    position: sticky;
+    top: calc(var(--hdr-h) + var(--u) * 3);
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 1rem;
+    margin-bottom: 0;
   }
   .svc__body,
   .duo__grid {

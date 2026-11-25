@@ -156,6 +156,7 @@ export function ServiceCards({
   lede,
   id,
   feature = false,
+  track = false,
 }: {
   publico: Publico;
   heading: string;
@@ -163,6 +164,8 @@ export function ServiceCards({
   id: string;
   /** O primeiro serviço vira destaque: a foto cresce até a largura toda ao rolar. */
   feature?: boolean;
+  /** No computador, a seção fica parada e a rolagem leva os cartões para o lado. */
+  track?: boolean;
 }) {
   const list = servicesFor(publico);
   const [first, ...rest] = list;
@@ -198,11 +201,20 @@ export function ServiceCards({
         </div>
       )}
       <div className="wrap">
-        <ul className={`cards__grid cards__grid--${grid.length}`} data-row>
+        <ul
+          className={`cards__grid cards__grid--${grid.length}`}
+          data-row
+          data-track={track ? '' : undefined}
+        >
           {grid.map((s) => (
             <ServiceCard key={s.slug} s={s} />
           ))}
         </ul>
+        {track && (
+          <div className="track__rail" aria-hidden="true">
+            <span className="track__bar" />
+          </div>
+        )}
       </div>
     </section>
   );

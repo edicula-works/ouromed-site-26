@@ -32,9 +32,10 @@ export function setupMotion() {
  *  se move por vez; várias seções descansam. Só transform, opacity e clip-path (fps).
  *  - A Ouromed: a frase acende com a leitura (cor por palavra); os fatos ficam parados.
  *  - Para você: a foto em destaque cresce de um quadro no centro até a largura toda.
- *  - Para empresas: a fileira de serviços anda na horizontal com a rolagem.
+ *  - Para empresas: a seção segura e a rolagem leva os cartões para o lado (pin).
+ *  - Quando chamar: a seção segura enquanto os cartões chegam de lados diferentes (pin).
  *  - Suporte básico × UTI: tela dividida (a foto fica parada por CSS sticky); sem animação.
- *  - Quando chamar, depoimentos, perguntas: sem animação de rolagem (descanso). */
+ *  - Depoimentos, perguntas: sem animação de rolagem (descanso). */
 function scenes() {
   onPage(() => {
     const root = document.querySelector<HTMLElement>('.acts');
@@ -73,36 +74,59 @@ function scenes() {
       );
     }
 
-    // Para empresas: os cartões abrem do centro. Começam juntos perto do meio da fileira e se
-    // espalham até as suas colunas, assentados antes de a seção chegar ao alto da tela. Só onde
-    // a fileira é fileira (4 colunas, ≥ 1024px); no celular os cartões empilham parados.
-    const row = root.querySelector<HTMLElement>('#para-empresas [data-row]');
-    if (row && matchMedia('(min-width: 1024px)').matches) {
-      const cards = [...row.children] as HTMLElement[];
-      const mid = row.getBoundingClientRect();
-      const cx = mid.left + mid.width / 2;
-      gsap.fromTo(
-        cards,
-        {
-          x: (_i: number, el: HTMLElement) => {
-            const r = el.getBoundingClientRect();
-            return (cx - (r.left + r.width / 2)) * 0.45;
+    // Momentos em que a página segura (só no computador; no celular a faixa já desliza com o dedo):
+    // - Para empresas: a seção fica parada e a rolagem leva os cartões para o lado, com a barra de
+    //   progresso; termina com o último cartão alinhado à direita.
+    // - Quando chamar: a seção fica parada enquanto os cartões chegam (esquerda, baixo, direita) e
+    //   se encaixam no centro.
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 1024px)', () => {
+      const sec = root.querySelector<HTMLElement>('#para-empresas');
+      const row = sec?.querySelector<HTMLElement>('[data-track]');
+      if (sec && row) {
+        row.classList.add('is-track');
+        const dist = () => Math.max(0, row.scrollWidth - (row.parentElement?.clientWidth ?? 0));
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sec,
+            start: 'center center',
+            end: () => `+=${dist() * 1.3}`,
+            pin: true,
+            scrub: 0.6,
+            invalidateOnRefresh: true,
           },
-          scale: 0.94,
-          opacity: 0,
-        },
-        {
-          x: 0,
-          scale: 1,
-          opacity: 1,
-          ease: 'power2.out',
-          stagger: { each: 0.06, from: 'center' },
-          scrollTrigger: { trigger: row, start: 'top 92%', end: 'top 45%', scrub: 0.6 },
-        },
-      );
-    }
+        });
+        tl.to(row, { x: () => -dist(), ease: 'none' }, 0);
+        const bar = sec.querySelector('.track__bar');
+        if (bar) tl.fromTo(bar, { scaleX: 0.25 }, { scaleX: 1, ease: 'none' }, 0);
+      }
+
+      const when = root.querySelector<HTMLElement>('.when');
+      const items = when ? [...when.querySelectorAll<HTMLElement>('.when__item')] : [];
+      if (when && items.length === 3) {
+        const from = [
+          { xPercent: -110, rotate: -3 },
+          { yPercent: 70, rotate: 0 },
+          { xPercent: 110, rotate: 3 },
+        ];
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: when,
+            start: 'center center',
+            end: '+=70%',
+            pin: true,
+            scrub: 0.6,
+          },
+        });
+        items.forEach((el, i) => {
+          tl.from(el, { ...from[i], opacity: 0, ease: 'power2.out', duration: 1 }, i * 0.35);
+        });
+      }
+      return () => row?.classList.remove('is-track');
+    });
 
     return () => {
+      mm.revert();
       for (const sp of splits) sp.revert();
     };
   });
