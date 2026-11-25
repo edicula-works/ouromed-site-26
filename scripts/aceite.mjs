@@ -214,8 +214,8 @@ for (const path of pages) {
     return {
       heroShare: hr ? Math.round((Math.min(hr.bottom, vh) / vh) * 100) : 0,
       heroFull: hr ? hr.width >= vw * 0.95 : false,
-      // Topo sem vídeo (decisão de 24/11): vale o desenho de BH no lugar da mídia.
-      heroEmpty: hm ? hm.classList.contains('media--empty') : !hero?.querySelector('.tex--cidade'),
+      // Topo sem vídeo (decisão de 24/11): vale o slideshow de desenhos de BH (o antigo e os sete novos).
+      heroEmpty: hm ? hm.classList.contains('media--empty') : !hero?.querySelector('.tex--bh'),
       title: h1 ? h1.innerText.replace(/\s+/g, ' ').trim() : '',
       titlePx: h1 ? Math.round(parseFloat(getComputedStyle(h1).fontSize)) : 0,
       screens: Math.round(screens * 10) / 10,
@@ -240,7 +240,9 @@ for (const path of pages) {
     '2.1 topo de ponta a ponta',
     m.heroEmpty ? null : shareOk,
     `${m.heroShare} % da tela · ponta a ponta ${m.heroFull ? 'sim' : 'não'}`,
-    m.heroEmpty ? `layout ${shareOk ? 'pronto' : 'fora'}; falta o vídeo do topo` : '',
+    m.heroEmpty
+      ? `sem slideshow de desenhos de BH no topo (layout ${shareOk ? 'pronto' : 'fora'})`
+      : '',
   );
   const words = m.title.split(' ').length;
   add(

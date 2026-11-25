@@ -20,7 +20,7 @@ escrito.
 
 | # | Critério | Fonte | Como checar |
 |---|---|---|---|
-| 2.1 | Topo **de ponta a ponta** (largura ≥ 95 % da tela, ≥ 85 % da altura), com o título centrado e, na base, um **slideshow lento de sete desenhos de BH em traço** (10 s cada, crossfade de 1,75 s; sem movimento, só o primeiro). **Sem vídeo** (decisão da pessoa, 24/11) | medianas: 100 % e 88 % | Auto |
+| 2.1 | Topo **de ponta a ponta** (largura ≥ 95 % da tela, ≥ 85 % da altura), com o título centrado e, na base, um **slideshow lento** que **começa com o desenho antigo do contorno de BH** (`bh-cidade.png`, como era, 20vw de altura) e segue para os **sete desenhos novos em traço** (10 s cada, crossfade de 1,75 s, ciclo de 80 s; pausa fora da tela; sem movimento, só o desenho antigo). **Sem vídeo** (decisão da pessoa, 24/11; primeiro quadro a pedido da pessoa, 25/11) | medianas: 100 % e 88 % | Auto: o topo é o slideshow, nunca BLOQUEADO |
 | 2.2 | Título com **≤ 8 palavras** e **48–80 px** no desktop | mediana ~56 px; 2 a 8 palavras | Auto |
 | 2.3 | Texto sobre a imagem com contraste AA (com véu escuro se precisar) | WCAG | Auto (axe) |
 
@@ -92,5 +92,5 @@ escrito.
   - 3.4 (4 pesos);
   - 5.1 (espinha, leituras, cortinas, palco, preenchimento de botão);
   - 5.2 (a intro desliza).
-- **BLOQUEADO:** 2.1, 3.2 e 4.1, por falta de imagens.
+- **BLOQUEADO:** 3.2 e 4.1, por falta de imagens (o 2.1 não: o topo é o slideshow).
 - **PASSA:** 1.1, 1.2, 3.3, 4.4, 4.5 e 7.2.

@@ -24,7 +24,7 @@ resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
 - **Desenhos de BH em traço** no lugar de foto de banco: sete pontos da cidade (Praça da
   Liberdade, Mineirão, Pampulha, Serra do Curral, Praça do Papa, Praça Sete e Raul Soares) gerados
   por IA a partir de referências livres e vetorizados em SVG de traço único por `scripts/desenhos.mjs`,
-  num slideshow lento no topo da home (sem movimento, só o primeiro); a vista da cidade (foto de
+  num slideshow lento no topo da home (começa pelo desenho antigo da cidade; sem movimento, só ele); a vista da cidade (foto de
   origem CC0) ficou na 404 e a Serra do Curral (foto de origem CC BY 2.0, crédito no rodapé) no
   rodapé. As curvas de nível da serra, geradas de dados de relevo (`scripts/curvas.py`), ficam só
   atrás dos três fatos da Ouromed. Origem e licenças: `docs/brief/desenhos/CREDITOS.md`.

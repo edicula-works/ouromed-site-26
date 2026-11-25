@@ -376,9 +376,9 @@ a {
   mask-position: center top;
 }
 /* Desenhos de BH em traço do topo (sete SVGs de scripts/desenhos.mjs, um <path> por desenho): cada
-   um cabe na faixa, ancorado no chão, e é pintado de ouro pela cor do lugar. Só o primeiro aparece
-   sem movimento; com a classe motion (script de flags, depois da intro) os outros seis entram no
-   slideshow — e só então o navegador baixa os arquivos. */
+   um cabe na faixa, ancorado no chão, e é pintado de ouro pela cor do lugar. Só o desenho antigo
+   aparece sem movimento; com a classe motion (script de flags, depois da intro) os sete novos entram
+   no slideshow — e só então o navegador baixa os arquivos. */
 .tex--bh {
   --tex-c: rgb(212 173 42 / 0.15);
   inset: 0;
@@ -390,10 +390,16 @@ a {
   -webkit-mask-position: center bottom;
   mask-position: center bottom;
 }
-.tex--bh:first-child {
+/* O primeiro quadro é o desenho antigo da cidade (bh-cidade.png, como era antes do slideshow: 20vw
+   de altura, preenchendo a largura, ancorado no chão). Sem movimento é o único que aparece. */
+.tex--bh-cidade {
+  inset: auto 0 0 0;
+  height: clamp(7rem, 20vw, 19rem);
   opacity: 1;
-  -webkit-mask-image: var(--d);
-  mask-image: var(--d);
+  -webkit-mask-image: url("/textura/bh-cidade.png");
+  mask-image: url("/textura/bh-cidade.png");
+  -webkit-mask-size: cover;
+  mask-size: cover;
 }
 /* Curvas de nível da faixa de fatos: além da deriva com a rolagem (motor, no transform), uma deriva
    contínua e lenta em translação, 90 s por sentido, só com CSS — a propriedade translate é individual,
@@ -919,17 +925,17 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
     draw-up 1.8s var(--ease-out) 0.25s both,
     drift-a 38s ease-in-out 2s infinite alternate;
 }
-/* Slideshow: 7 desenhos × 10 s = 70 s por ciclo; cada um sai nos últimos 1,75 s do seu tempo
-   enquanto o próximo entra (crossfade em opacidade, só no compositor). O atraso negativo põe cada
-   camada na sua fase: a i-ésima começa 10·i s depois da primeira, e a primeira (atraso −70 s, o
-   mesmo que 0) já está inteira quando a página abre. */
+/* Slideshow: o desenho antigo e os sete novos, 8 × 10 s = 80 s por ciclo; cada um sai nos últimos
+   1,75 s do seu tempo enquanto o próximo entra (crossfade em opacidade, só no compositor). O atraso
+   negativo põe cada camada na sua fase: a i-ésima começa 10·i s depois da primeira, e a primeira
+   (atraso −80 s, o mesmo que 0) já está inteira quando a página abre. */
 @keyframes bh-fade {
   0%,
-  11.79% {
+  10.31% {
     opacity: 1;
   }
-  14.29%,
-  97.5% {
+  12.5%,
+  97.81% {
     opacity: 0;
   }
   100% {
@@ -937,9 +943,11 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   }
 }
 .motion .tex--bh {
+  animation: bh-fade 80s ease-in-out calc(var(--i) * 10s - 80s) infinite;
+}
+.motion .tex--bh:not(.tex--bh-cidade) {
   -webkit-mask-image: var(--d);
   mask-image: var(--d);
-  animation: bh-fade 70s ease-in-out calc(var(--i) * 10s - 70s) infinite;
 }
 
 /* Home: o topo gruda e a apresentação passa por cima, uma vez só (olympic, Namaha). O sticky

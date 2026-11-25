@@ -5,7 +5,7 @@
 Sete desenhos em traço gerados pela ferramenta de imagem do Codex (missão `.fotos-ia/FASE3-IMAGENS.md`),
 preto sobre branco puro, e vetorizados por `scripts/desenhos.mjs` em `public/textura/bh-*.svg` (um
 `<path>` por desenho, traço de 1,5 px que não escala, pintado de ouro pela máscara). Entram no topo da
-home num slideshow lento (10 s por desenho, crossfade de 1,75 s); sem movimento, só o primeiro.
+home num slideshow lento (10 s por desenho, crossfade de 1,75 s), começando pelo desenho antigo da cidade (`bh-cidade.png`); sem movimento, só ele.
 
 As referências serviram só para conferir silhuetas e arquitetura — o pedido a cada geração foi "leia a
 forma na referência e crie um desenho novo" —, e são fotos livres ou páginas oficiais. Por isso nenhum
@@ -13,7 +13,7 @@ desenho leva crédito obrigatório na tela.
 
 | Desenho (`public/textura/`) | Ponto | Referência visual |
 |---|---|---|
-| `bh-liberdade.svg` (primeiro do slideshow; o que fica sem movimento) | Praça da Liberdade: coreto, alameda de palmeiras imperiais, prédios | [Portal oficial de BH](https://portalbelohorizonte.com.br/node/4826) |
+| `bh-liberdade.svg` (primeiro dos sete novos) | Praça da Liberdade: coreto, alameda de palmeiras imperiais, prédios | [Portal oficial de BH](https://portalbelohorizonte.com.br/node/4826) |
 | `bh-mineirao.svg` | Mineirão: fachada oval e pilares inclinados | [Portal oficial de BH](https://portalbelohorizonte.com.br/filmcommission/catalogo-de-locacoes/estadio-mineirao) |
 | `bh-pampulha.svg` | Lagoa da Pampulha e Igrejinha de São Francisco | [Portal oficial de BH](https://portalbelohorizonte.com.br/pampulha/conjunto-moderno/igreja-sao-francisco-assis) |
 | `bh-serra-do-curral.svg` | Perfil da Serra do Curral com as antenas | [Foto de Eduardo Gabão](https://commons.wikimedia.org/wiki/File:Serra_do_Curral.jpg), CC BY-SA 3.0 (só o relevo; o desenho é novo) |

@@ -60,9 +60,9 @@ export function JsonLd({ data }: { data: object }) {
 
 /* ────────────────────────────── Home ────────────────────────────── */
 
-/** Os sete desenhos de BH em traço do topo (public/textura/bh-*.svg, vetorizados por
- *  scripts/desenhos.mjs), na ordem do slideshow. O primeiro é o que fica parado sem movimento: a
- *  Praça da Liberdade, que sustenta a tela sozinha; a serra é só um horizonte e entra no ciclo. */
+/** Os sete desenhos novos de BH em traço do topo (public/textura/bh-*.svg, vetorizados por
+ *  scripts/desenhos.mjs), na ordem do slideshow, depois do primeiro quadro: o desenho antigo da
+ *  cidade (bh-cidade.png), o único que fica parado sem movimento. */
 const DESENHOS_BH = [
   'liberdade',
   'mineirao',
@@ -74,17 +74,18 @@ const DESENHOS_BH = [
 ];
 
 /** Topo: o título centrado sobre o azul-noite e, na base, um slideshow lento dos desenhos de BH
- *  (cada um passa 10 s, crossfade de 1,75 s), que deriva devagar e sobe em ritmo próprio ao rolar.
+ *  (o desenho antigo e depois os sete novos, 10 s cada, crossfade de 1,75 s), que deriva devagar e sobe em ritmo próprio ao rolar.
  *  Sem vídeo e sem curvas de nível. */
 export function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-h" data-hero>
       <div className="hero__bh" data-layer="bh" aria-hidden="true">
+        <span className="tex tex--bh tex--bh-cidade" style={{ '--i': 0 } as CSSProperties} />
         {DESENHOS_BH.map((id, i) => (
           <span
             key={id}
             className="tex tex--bh"
-            style={{ '--i': i, '--d': `url("/textura/bh-${id}.svg")` } as CSSProperties}
+            style={{ '--i': i + 1, '--d': `url("/textura/bh-${id}.svg")` } as CSSProperties}
           />
         ))}
       </div>
