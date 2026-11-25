@@ -14,8 +14,9 @@ resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
   de 2011 (`empresa.php`, `clientes.php`, …) têm redirecionamento permanente para as âncoras
   correspondentes (`vercel.json`).
 - **Doze espaços com foto, um reservado** (`media` em `src/data/site.ts`): onze são **cenas
-  ilustrativas geradas por IA** — sem texto, sem logo de terceiros, sem rosto em close — e uma é a
-  única foto real, `locacao`, recortada de um post do Instagram da própria Ouromed. Os arquivos
+  ilustrativas geradas por IA** — sem texto, sem logo de terceiros, sem rosto em close, com a legenda
+  "Imagem ilustrativa" na tela, como pede o AGENTS.md §1 — e uma é a única foto real, `locacao`,
+  recortada de um post do Instagram da própria Ouromed, sem legenda. Os arquivos
   (AVIF e WebP em duas ou três larguras) estão em `public/midia/`, gerados por `scripts/fotos.mjs`;
   `hero` segue sem foto. Trocar as ilustrações pelas fotos reais da frota, da equipe, do interior e
   da Central é pendência com a Ouromed (§3).
@@ -35,7 +36,7 @@ resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
 
 | Item | O que está no site | Onde | O que falta |
 |---|---|---|---|
-| Fotos | Doze espaços com arquivo: 11 cenas ilustrativas geradas por IA e o recorte real de `locacao`; sem texto, logo de terceiros ou rosto em close | home e as quatro páginas | As fotos reais da Ouromed, com autorização de imagem; até lá, as ilustrativas ficam no lugar |
+| Fotos | Doze espaços com arquivo: 11 cenas ilustrativas geradas por IA (com a legenda "Imagem ilustrativa") e o recorte real de `locacao` (sem legenda); sem texto, logo de terceiros ou rosto em close | home e as quatro páginas | As fotos reais da Ouromed, com autorização de imagem; até lá, as ilustrativas ficam no lugar |
 | Telefones da Central 24 h | (31) 3786-1506 no botão "Ligar"; (31) 4103-5452 e (31) 3786-7112 ao lado — os três fixos do site de 2011 | barra fixa do celular, cabeçalho, botões, rodapé, contato | Confirmar os três e qual é o principal. O cadastro público mostra outro número, (31) 2128-2020 (consulta de 24/11): perguntar |
 | E-mails por setor | `agendamento@`, `luciano@` (eventos e locação) e `diretoria@ouromedbh.com.br` | contato, botões dos serviços, formulário | Confirmar que continuam válidos e quem responde a cada um |
 | Marca | Marca tipográfica provisória em SVG ("Ouro" em ouro + "med" em azul-marinho, círculo com a cruz). O favicon, o cartão de compartilhamento (`og.png`) e o ícone da Apple seguem essa marca e a paleta atuais, gerados por `bun scripts/marca.tsx` | cabeçalho, menu, intro da marca, favicon, preview de link | O logo vetorial original; quando chegar, rodar `scripts/marca.tsx` de novo |

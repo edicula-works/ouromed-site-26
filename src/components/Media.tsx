@@ -1,5 +1,6 @@
 // Foto ou vídeo com o tratamento único do site (mesma cor e granulação para foto real e imagem
-// gerada). Proporção fixa: sem deslocamento de layout. A foto entra pelos arquivos que
+// gerada). Proporção fixa: sem deslocamento de layout. As cenas geradas por IA levam a legenda
+// "Imagem ilustrativa" (AGENTS.md §1). A foto entra pelos arquivos que
 // scripts/fotos.mjs gerou em public/midia/ (AVIF e WebP em larguras, registrados em
 // src/data/midia.json), num <picture>: o navegador escolhe o formato e a largura pelo `sizes`.
 // Sem arquivo, o slot mostra em mono o que vai ali, sobre o azul-noite com a linha ouro.
@@ -69,6 +70,10 @@ export function Media({
         <div className="media__ph" role="img" aria-label={m.alt}>
           <span className="media__ph-label">{m.label}</span>
         </div>
+      )}
+      {/* Cenário fictício gerado por IA: declarado na tela (AGENTS.md §1). A foto real não leva. */}
+      {g && m.origem === 'ia' && (
+        <figcaption className="media__nota">Imagem ilustrativa</figcaption>
       )}
     </figure>
   );

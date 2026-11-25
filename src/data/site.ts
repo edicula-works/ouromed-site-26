@@ -125,62 +125,79 @@ export const site = {
  *  pendência (docs/PENDENCIAS.md). Sem arquivo no manifesto, o slot mostra em mono o `label` do que
  *  vai ali. `alt` descreve o que se vê. `video` (com `src` como pôster) é o caso do topo, se um dia
  *  houver vídeo. */
-export const media: Record<MediaKey, { label: string; alt: string; src?: string; video?: string }> =
-  {
-    // Reservado: o topo da home é o desenho de BH, sem vídeo nem foto (decisão de 24/11).
-    hero: {
-      label: 'Vídeo: viatura UTI em avenida de BH ao entardecer',
-      alt: 'Ambulância UTI branca em movimento numa avenida de Belo Horizonte ao entardecer',
-    },
-    uti: {
-      label: 'Foto: viatura UTI de perfil',
-      alt: 'Ambulância branca de perfil, estacionada ao entardecer, com prédios e morros ao fundo.',
-    },
-    'uti-interior': {
-      label: 'Foto: interior da UTI móvel',
-      alt: 'Interior de uma UTI móvel: maca, monitor, ventilador pulmonar e cilindros de oxigênio',
-    },
-    domiciliar: {
-      label: 'Foto: atendimento em casa',
-      alt: 'Enfermeira, vista de costas, mede a pressão de uma idosa sentada numa poltrona ao lado da janela.',
-    },
-    remocao: {
-      label: 'Foto: maca entrando na viatura',
-      alt: 'Dois socorristas de uniforme azul-marinho, vistos de costas, colocam uma maca vazia na ambulância diante de um hospital.',
-    },
-    eventos: {
-      label: 'Foto: equipe em evento',
-      alt: 'Socorrista, de costas, junto à porta lateral aberta de uma ambulância, com o público e as luzes de um festival ao fundo.',
-    },
-    locacao: {
-      label: 'Foto: ambulância 4×4 em mineração',
-      alt: 'Fileira de ambulâncias 4×4 brancas da Ouromed, com faixas amarelas, estacionadas lado a lado.',
-    },
-    protegida: {
-      label: 'Foto: área protegida em empresa',
-      alt: 'Ambulância branca estacionada diante da entrada envidraçada de um prédio comercial.',
-    },
-    ambulatorios: {
-      label: 'Foto: ambulatório em obra',
-      alt: 'Ambulatório montado num contêiner de obra, com maca, desfibrilador na parede e capacete de obra sobre a mesa.',
-    },
-    central: {
-      label: 'Foto: a Central 24 h',
-      alt: 'Operadora, de costas, com fone e microfone, diante de dois monitores com mapas, na central de atendimento.',
-    },
-    triagem: {
-      label: 'Foto: triagem médica',
-      alt: 'Profissional de saúde de uniforme azul-marinho, com estetoscópio, fone e microfone, faz anotações num caderno à luz de uma luminária.',
-    },
-    equipe: {
-      label: 'Foto: equipe saindo com a viatura',
-      alt: 'Dois socorristas de uniforme azul-marinho, vistos de costas, fecham as portas traseiras de uma ambulância à noite.',
-    },
-    destino: {
-      label: 'Foto: chegada ao hospital',
-      alt: 'Ambulância branca chega à entrada coberta de um hospital à noite, com uma maca visível no interior do prédio.',
-    },
-  };
+/** De onde vem a foto de um slot: cena gerada por IA (leva a legenda "Imagem ilustrativa" na tela, como
+ *  pede o AGENTS.md §1) ou foto real (sem legenda). */
+export type OrigemFoto = 'ia' | 'real';
+export const media: Record<
+  MediaKey,
+  { label: string; alt: string; src?: string; video?: string; origem?: OrigemFoto }
+> = {
+  // Reservado: o topo da home é o desenho de BH, sem vídeo nem foto (decisão de 24/11).
+  hero: {
+    label: 'Vídeo: viatura UTI em avenida de BH ao entardecer',
+    alt: 'Ambulância UTI branca em movimento numa avenida de Belo Horizonte ao entardecer',
+  },
+  uti: {
+    label: 'Foto: viatura UTI de perfil',
+    alt: 'Ambulância branca de perfil, estacionada ao entardecer, com prédios e morros ao fundo.',
+    origem: 'ia',
+  },
+  'uti-interior': {
+    label: 'Foto: interior da UTI móvel',
+    alt: 'Interior de uma UTI móvel: maca, monitor, ventilador pulmonar e cilindros de oxigênio',
+    origem: 'ia',
+  },
+  domiciliar: {
+    label: 'Foto: atendimento em casa',
+    alt: 'Enfermeira, vista de costas, mede a pressão de uma idosa sentada numa poltrona ao lado da janela.',
+    origem: 'ia',
+  },
+  remocao: {
+    label: 'Foto: maca entrando na viatura',
+    alt: 'Dois socorristas de uniforme azul-marinho, vistos de costas, colocam uma maca vazia na ambulância diante de um hospital.',
+    origem: 'ia',
+  },
+  eventos: {
+    label: 'Foto: equipe em evento',
+    alt: 'Socorrista, de costas, junto à porta lateral aberta de uma ambulância, com o público e as luzes de um festival ao fundo.',
+    origem: 'ia',
+  },
+  locacao: {
+    label: 'Foto: ambulância 4×4 em mineração',
+    alt: 'Fileira de ambulâncias 4×4 brancas da Ouromed, com faixas amarelas, estacionadas lado a lado.',
+    origem: 'real',
+  },
+  protegida: {
+    label: 'Foto: área protegida em empresa',
+    alt: 'Ambulância branca estacionada diante da entrada envidraçada de um prédio comercial.',
+    origem: 'ia',
+  },
+  ambulatorios: {
+    label: 'Foto: ambulatório em obra',
+    alt: 'Ambulatório montado num contêiner de obra, com maca, desfibrilador na parede e capacete de obra sobre a mesa.',
+    origem: 'ia',
+  },
+  central: {
+    label: 'Foto: a Central 24 h',
+    alt: 'Operadora, de costas, com fone e microfone, diante de dois monitores com mapas, na central de atendimento.',
+    origem: 'ia',
+  },
+  triagem: {
+    label: 'Foto: triagem médica',
+    alt: 'Profissional de saúde de uniforme azul-marinho, com estetoscópio, fone e microfone, faz anotações num caderno à luz de uma luminária.',
+    origem: 'ia',
+  },
+  equipe: {
+    label: 'Foto: equipe saindo com a viatura',
+    alt: 'Dois socorristas de uniforme azul-marinho, vistos de costas, fecham as portas traseiras de uma ambulância à noite.',
+    origem: 'ia',
+  },
+  destino: {
+    label: 'Foto: chegada ao hospital',
+    alt: 'Ambulância branca chega à entrada coberta de um hospital à noite, com uma maca visível no interior do prédio.',
+    origem: 'ia',
+  },
+};
 
 /** Arquivos de um slot: as larguras em AVIF e WebP e, quando o mapa pede, a posição do recorte nas
  *  caixas em que o slot aparece com outra proporção (object-position de CSS). */
