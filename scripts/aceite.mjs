@@ -175,9 +175,10 @@ for (const path of pages) {
         if (el.closest('h1, h2, h3, nav, .btn')) monoWrong = true;
       }
     }
-    const tex = [...document.querySelectorAll('.tex')].map(
-      (t) => getComputedStyle(t).backgroundColor,
-    );
+    const texEls = [...document.querySelectorAll('.tex')];
+    // Lugares = seções com textura (as duas camadas do topo são uma composição só).
+    const texPlaces = new Set(texEls.map((t) => t.closest('section, footer'))).size;
+    const tex = texEls.map((t) => getComputedStyle(t).backgroundColor);
     const js = performance
       .getEntriesByType('resource')
       .filter((r) => r.initiatorType === 'script')
@@ -202,6 +203,7 @@ for (const path of pages) {
         getComputedStyle(document.documentElement).backgroundColor,
       htmlBg: getComputedStyle(document.documentElement).backgroundColor,
       tex,
+      texPlaces,
       jsKB: Math.round(js / 1024),
     };
   });
@@ -241,8 +243,8 @@ for (const path of pages) {
   const alphas = m.tex.map((c) => Number((/rgba?\([^)]*,\s*([\d.]+)\)/.exec(c) || [])[1] ?? 1));
   add(
     '6.2 textura',
-    m.tex.length <= 3 && alphas.every((a) => a <= 0.15),
-    `${m.tex.length} lugares · opacidades ${alphas.join(', ')}`,
+    m.texPlaces <= 3 && alphas.every((a) => a <= 0.15),
+    `${m.texPlaces} lugares · opacidades ${alphas.join(', ')}`,
   );
   add('7.2 JS da home', m.jsKB <= 220, `${m.jsKB} KB`);
   const tex = await p.evaluate(async () =>
