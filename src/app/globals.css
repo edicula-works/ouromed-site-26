@@ -1870,16 +1870,23 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   }
 }
 
-/* VLibras (widget do governo). O botão vive num shadow DOM fixo no meio da tela à direita; o
-   transform no host cria um bloco de contenção, e o botão passa a se posicionar dentro desta
-   caixa no canto de baixo, acima da barra do celular. Some com o menu aberto. */
+/* VLibras (widget do governo, v7). O botão fica num shadow DOM aberto e se põe, sozinho, em
+   position: fixed; top: calc(50vh - 20px); right: 10px. A folha do site não alcança o que é da
+   shadow tree, mas o host (#vlibras-access-wrapper, criado pelo plugin no body) está no DOM da
+   página: com transform, ele vira o bloco de contenção desses elementos fixed e o botão passa a
+   ser medido a partir da caixa do host. Caixa de 50 × 40 px com o topo em 50vh - 20px - folga: o
+   botão (40 px) cai no canto de baixo, a 10 px da borda direita (o right: 10px do plugin), acima
+   da barra fixa do celular. Antes (b648354) a caixa era 56 × 56 ancorada por baixo: o botão caía
+   50vh abaixo dela, fora da tela. Conferência com o widget real: node .jury/r8/vlibras.mjs.
+   Se o plugin mudar o top ou o tamanho do botão, medir de novo. Some com o menu aberto. */
 #vlibras-access-wrapper {
+  --vlibras-gap: calc(var(--ctabar-h) + 1rem);
   position: fixed;
+  top: calc(50vh - 20px - var(--vlibras-gap));
   right: 0;
-  bottom: calc(var(--ctabar-h) + 1rem);
   z-index: calc(var(--z-ctabar) - 1);
-  width: 56px;
-  height: 56px;
+  width: 50px;
+  height: 40px;
   transform: translateZ(0);
 }
 .menu-open #vlibras-access-wrapper {

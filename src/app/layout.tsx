@@ -30,11 +30,10 @@ export const metadata: Metadata = {
 const flags = `(function(){var h=document.documentElement;h.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;h.classList.add('motion');try{if(!sessionStorage.getItem('om-intro')){sessionStorage.setItem('om-intro','1');h.classList.add('intro-on');setTimeout(function(){h.classList.remove('intro-on')},1300)}}catch(e){}})()`;
 
 // VLibras (tradução para Libras, do governo federal), carregado quando a página está ociosa.
+// O widget (v7) cria ele mesmo o host #vlibras-access-wrapper com o botão num shadow DOM; a
+// posição é dada em globals.css. A marcação antiga ([vw], [vw-access-button]) era do widget v2 e
+// não é mais procurada por ele (conferido no script entregue em 25/11: v7.12.3).
 const vlibras = `(function(){var s=document.createElement('script');s.src='https://vlibras.gov.br/app/vlibras-plugin.js';s.async=true;s.onload=function(){try{new window.VLibras.Widget('https://vlibras.gov.br/app')}catch(e){}};document.body.appendChild(s)})()`;
-// Atributos sem hífen que o widget procura no DOM.
-const vw = { vw: '' } as Record<string, string>;
-const vwButton = { 'vw-access-button': '' } as Record<string, string>;
-const vwWrapper = { 'vw-plugin-wrapper': '' } as Record<string, string>;
 
 // Tag do Google Ads (ID 955189289, só remarketing; não havia label de conversão no site de 2011).
 const gtag = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${site.ads.id}');`;
@@ -130,12 +129,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Script id="gtag-init" strategy="afterInteractive">
           {gtag}
         </Script>
-        <div {...vw} className="enabled">
-          <div {...vwButton} className="active" />
-          <div {...vwWrapper}>
-            <div className="vw-plugin-top-wrapper" />
-          </div>
-        </div>
         <Script id="vlibras" strategy="lazyOnload">
           {vlibras}
         </Script>
