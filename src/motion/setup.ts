@@ -1,13 +1,13 @@
-// Motion global do site (rodada 6). Inventário fechado em docs/CRITERIOS-DE-ACEITE.md §5:
+// Motion global do site (rodada 7). Inventário em docs/CRITERIOS-DE-ACEITE.md §5 e
+// docs/brief/PROPOSTA-R7.md:
 //   1. intro que surge e dissolve (CSS; aqui só pular e encerrar)
-//   2. título por máscara (data-split, motor)
-//   3. imagem que se revela e sai da escala 1,06 (data-reveal="clip", motor)
-//   4. zoom leve da foto do cartão no hover (CSS)
-//   5. textura de curvas de nível com deriva lenta (data-parallax, motor)
-//   6. menu e painéis abrindo por clip-path com itens em cascata (CSS)
-//   7. saída do topo: título e cidade em ritmos diferentes da página
-//   8. cenas: cada ato da home tem a própria coreografia (scenes()), nada de um efeito repetido
-// Fora disso: só a troca de página em opacidade e o cabeçalho (vidro, sair e voltar).
+//   2. título por máscara (data-split) e blocos que aparecem por transparência (data-reveal, motor)
+//   3. zoom leve da foto do cartão no hover (CSS)
+//   4. texturas com deriva lenta (data-parallax, motor; a cidade do topo por CSS)
+//   5. menu e painéis abrindo por clip-path com itens em cascata (CSS)
+//   6. topo que gruda e é coberto pela apresentação (acts) e um gesto por seção da home (scenes)
+// Regra de desempenho: só transform, opacity e clip-path de elementos pequenos; nada de
+// backdrop-filter, background-position ou cor animados. Prova: .jury/motion/perf.mjs.
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
@@ -39,31 +39,32 @@ function scenes() {
     if (!root || prefersReducedMotion()) return undefined;
     const splits: SplitText[] = [];
 
-    const aboutText = root.querySelector('.about__text');
-    if (aboutText) {
-      // aria: 'none': o leitor de tela lê o parágrafo inteiro, sem aria-label em <p>.
-      const sp = SplitText.create(aboutText, { type: 'words', aria: 'none' });
+    // A leitura acende: a camada escura (aria-hidden) aparece por palavra, só em opacidade, sobre
+    // o cinza AA de baixo. Animar a cor de cada palavra repintava o texto a cada quadro.
+    const lit = root.querySelector('.lit__top');
+    if (lit) {
+      const sp = SplitText.create(lit, { type: 'words', wordsClass: 'lit__w', aria: 'none' });
       splits.push(sp);
-      // A leitura acende por cor: o cinza de partida já tem contraste AA (6,9:1).
       gsap.fromTo(
         sp.words,
-        { color: '#4f5b66' },
+        { opacity: 0 },
         {
-          color: '#14202e',
+          opacity: 1,
           stagger: 0.04,
           ease: 'none',
-          scrollTrigger: { trigger: aboutText, start: 'top 85%', end: 'bottom 45%', scrub: true },
+          scrollTrigger: { trigger: lit, start: 'top 85%', end: 'bottom 45%', scrub: true },
         },
       );
     }
 
     const feature = root.querySelector<HTMLElement>('[data-feature] .feature__media');
     if (feature) {
+      // Escala (compositor) em vez de clip-path, que repintava a foto inteira a cada quadro.
       gsap.fromTo(
         feature,
-        { clipPath: 'inset(16% 24% 16% 24% round 20px)' },
+        { scale: 0.6 },
         {
-          clipPath: 'inset(0% 0% 0% 0% round 0px)',
+          scale: 1,
           ease: 'none',
           scrollTrigger: { trigger: feature, start: 'top 90%', end: 'center 55%', scrub: 0.5 },
         },
@@ -107,6 +108,14 @@ function acts() {
       yPercent: 18,
       ease: 'none',
       scrollTrigger: st,
+    });
+    // Fora da tela, a luz e a deriva da cidade param.
+    ScrollTrigger.create({
+      trigger: hero.closest('.stage') ?? hero,
+      start: 'top top',
+      end: 'bottom top',
+      onLeave: () => hero.classList.add('is-off'),
+      onEnterBack: () => hero.classList.remove('is-off'),
     });
     return undefined;
   });

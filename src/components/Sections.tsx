@@ -109,7 +109,14 @@ export function Presentation() {
         <h2 id="about-h" className="about__label">
           {presentation.label}
         </h2>
-        <p className="about__text">{presentation.text}</p>
+        {/* Duas camadas do mesmo texto: o cinza (AA) embaixo e o escuro por cima, que acende por
+            palavra com a rolagem só em opacidade (barato: não repinta o texto). */}
+        <div className="lit">
+          <p className="about__text">{presentation.text}</p>
+          <p className="about__text lit__top" aria-hidden="true">
+            {presentation.text}
+          </p>
+        </div>
       </div>
       <div className="about__facts">
         <Texture className="tex--facts" drift />

@@ -393,12 +393,6 @@ a {
   border-radius: var(--r);
   background: var(--c-night);
 }
-.media--fill {
-  position: absolute;
-  inset: 0;
-  aspect-ratio: auto;
-  border-radius: 0;
-}
 .media__el {
   position: absolute;
   inset: 0;
@@ -458,11 +452,10 @@ html:not(.is-scrolled) .hdr[data-home] {
 html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   fill: var(--c-paper);
 }
-/* Depois de rolar: vidro claro. O blur é estático; só a cor do fundo transiciona. */
+/* Depois de rolar: fundo claro quase opaco. Sem backdrop-filter: o desfoque era recalculado a
+   cada quadro da rolagem e derrubava o fps (medido em 24/11). */
 .is-scrolled .hdr {
-  background: rgb(247 248 249 / 0.88);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  backdrop-filter: blur(14px) saturate(1.2);
+  background: rgb(247 248 249 / 0.96);
   border-bottom-color: var(--c-line);
 }
 .header-away .hdr {
@@ -570,9 +563,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   padding: 0.75rem;
   border-radius: 14px;
   color: var(--c-paper);
-  background: rgb(11 37 69 / 0.94);
-  -webkit-backdrop-filter: blur(18px) saturate(1.3);
-  backdrop-filter: blur(18px) saturate(1.3);
+  background: rgb(11 37 69 / 0.98);
   box-shadow:
     0 0 0 1px var(--c-line-ink) inset,
     0 24px 60px rgb(11 37 69 / 0.35);
@@ -819,25 +810,29 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
     translate: 2.5% -1%;
   }
 }
+/* A luz passeia por translate (compositor); animar background-position repintava a tela toda. */
 @keyframes glow {
   0% {
-    background-position: 35% 30%;
+    translate: -14% -8%;
   }
   50% {
-    background-position: 65% 45%;
+    translate: 12% 6%;
   }
   100% {
-    background-position: 45% 25%;
+    translate: 2% -10%;
   }
 }
 .hero::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -20%;
   pointer-events: none;
-  background:
-    radial-gradient(40% 35% at center, rgb(212 173 42 / 0.09), transparent 70%) 0 0 / 160% 160%
-    no-repeat;
+  background: radial-gradient(28% 26% at 50% 50%, rgb(212 173 42 / 0.09), transparent 70%);
+  will-change: translate;
+}
+.hero.is-off::before,
+.hero.is-off .tex--hero {
+  animation-play-state: paused;
 }
 .motion .hero::before {
   animation: glow 26s ease-in-out infinite alternate;
@@ -851,22 +846,17 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
     drift-a 38s ease-in-out 2s infinite alternate;
 }
 
-/* Home: o topo gruda e a seção seguinte passa por cima, uma vez só (olympic, Namaha); o resto
-   da página rola normalmente. */
-.acts > .hero {
+/* Home: o topo gruda e a apresentação passa por cima, uma vez só (olympic, Namaha). O sticky
+   vive no .stage (topo + apresentação): antes, preso ao .acts, o topo ficava animando atrás da
+   página inteira. */
+.stage > .hero {
   position: sticky;
   top: 0;
 }
-.acts > section:not(.hero) {
+.stage > .about {
   position: relative;
   z-index: 1;
   background-color: var(--c-bg);
-}
-.acts > section.types {
-  background-color: var(--c-card);
-}
-.acts > section.quotes {
-  background-color: var(--c-night);
 }
 
 /* ────────────────────────────── Seções ────────────────────────────── */
@@ -913,6 +903,18 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   font-size: var(--t-l);
   line-height: 1.3;
   letter-spacing: -0.01em;
+}
+.lit {
+  display: grid;
+}
+.lit > * {
+  grid-area: 1 / 1;
+}
+.lit > :first-child {
+  color: #4f5b66;
+}
+.lit__w {
+  will-change: opacity;
 }
 .about__facts {
   position: relative;
@@ -962,6 +964,9 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 .feature__media {
   height: min(82vh, 58vw);
   border-radius: 0;
+}
+.motion .feature__media {
+  will-change: transform;
 }
 .feature__body {
   display: grid;
@@ -1809,7 +1814,7 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
   .ctabar .btn {
     min-height: 48px;
   }
-  /* Ligar e WhatsApp já estão na barra fixa: no topo do celular só a frase e o título. */
+  /* Ligar e orçamento já estão na barra fixa: no topo do celular só a frase e o título. */
   .hero__cta,
   .phero__cta {
     display: none;

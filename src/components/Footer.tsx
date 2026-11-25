@@ -92,7 +92,7 @@ export function Footer() {
   );
 }
 
-/** Barra fixa no celular: telefone e WhatsApp em toda página (a conversão é ligar). */
+/** Barra fixa no celular: ligar e orçamento em toda página (a conversão é ligar). */
 export function CtaBar() {
   return (
     <nav className="ctabar" aria-label="Contato rápido">

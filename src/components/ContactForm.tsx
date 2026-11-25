@@ -1,7 +1,7 @@
 'use client';
 
-// Formulário de orçamento sem backend: compõe o mailto: (destino por serviço) e o link do
-// WhatsApp conforme a pessoa digita. Nada fica guardado no site; a validação é nativa.
+// Formulário de orçamento sem backend: compõe o mailto: (destino por serviço) conforme a pessoa
+// digita. Nada fica guardado no site; a validação é nativa.
 import { type ChangeEvent, type FormEvent, type MouseEvent, useRef, useState } from 'react';
 import { contact, site } from '@/data/site';
 import { Roll } from './Icons';

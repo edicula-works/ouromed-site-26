@@ -9,7 +9,6 @@ export const metadata: Metadata = {
   alternates: { canonical: './' },
 };
 
-// Links externos (WhatsApp) abrem em outra aba, com noopener.
 const ext = (href: string) =>
   href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 

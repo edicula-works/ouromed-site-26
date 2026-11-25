@@ -23,8 +23,11 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <div className="acts">
-      <Hero />
-      <Presentation />
+      {/* O topo gruda só até a apresentação passar por cima; depois sai da página. */}
+      <div className="stage">
+        <Hero />
+        <Presentation />
+      </div>
       <ServiceCards
         id="para-voce"
         publico="voce"

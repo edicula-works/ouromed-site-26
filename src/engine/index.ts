@@ -14,8 +14,8 @@ import { playEnter, playLeave } from './transition';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export { ease, isMobile, isTouch, prefersReducedMotion } from './env';
-export { onScroll, scrollState, scrollToTarget } from './scroll';
+export { ease, prefersReducedMotion } from './env';
+export { onScroll } from './scroll';
 export { setTransition } from './transition';
 
 export type PageFn = (page: {
