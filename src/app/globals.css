@@ -1013,8 +1013,12 @@ html:not(.is-scrolled) .hdr[data-home] .wordmark__med {
 .lit > * {
   grid-area: 1 / 1;
 }
+/* A parte ainda não lida é só o rastro do texto: antes era o cinza AA (6,9:1) e dava para ler tudo
+   antes de a leitura acender; agora é a tinta a 22 % sobre o fundo (≈1,5:1), como pediu a pessoa
+   (25/11). A parte lida (`.lit__top`, por cima) fica na cor do texto (15,6:1). Sem movimento não há
+   divisão em palavras e a camada de cima aparece inteira. */
 .lit > :first-child {
-  color: #4f5b66;
+  color: rgb(20 32 46 / 0.22);
 }
 .lit__w {
   will-change: opacity;

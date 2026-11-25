@@ -120,8 +120,9 @@ export function Presentation() {
         <h2 id="about-h" className="about__label">
           {presentation.label}
         </h2>
-        {/* Duas camadas do mesmo texto: o cinza (AA) embaixo e o escuro por cima, que acende por
-            palavra com a rolagem só em opacidade (barato: não repinta o texto). */}
+        {/* Duas camadas do mesmo texto: embaixo o rastro apagado do que ainda não foi lido (tinta a
+            22 %) e por cima o escuro (AA), que acende por palavra com a rolagem só em opacidade
+            (barato: não repinta o texto). Sem movimento, a de cima aparece inteira. */}
         <div className="lit">
           <p className="about__text">{presentation.text}</p>
           <p className="about__text lit__top" aria-hidden="true">
