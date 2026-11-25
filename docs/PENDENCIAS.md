@@ -13,10 +13,11 @@ resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
   desenhada. As sete rotas da primeira versão (`/ambulancia`, `/remocao`, …) e os endereços do site
   de 2011 (`empresa.php`, `clientes.php`, …) têm redirecionamento permanente para as âncoras
   correspondentes (`vercel.json`).
-- **Doze espaços com foto, um reservado** (`media` em `src/data/site.ts`): onze são **cenas
+- **Quinze espaços com foto, um reservado** (`media` em `src/data/site.ts`): catorze são **cenas
   ilustrativas geradas por IA** — sem texto, sem logo de terceiros, sem rosto em close, com a legenda
   "Imagem ilustrativa" na tela, como pede o AGENTS.md §1 — e uma é a única foto real, `locacao`,
-  recortada de um post do Instagram da própria Ouromed, sem legenda. Os arquivos
+  recortada de um post do Instagram da própria Ouromed, sem legenda. Os três cartões de "Quando
+  chamar" têm cenas exclusivas (`cartao-*`): nenhuma imagem se repete numa página. Os arquivos
   (AVIF e WebP em duas ou três larguras) estão em `public/midia/`, gerados por `scripts/fotos.mjs`;
   `hero` segue sem foto. Trocar as ilustrações pelas fotos reais da frota, da equipe, do interior e
   da Central é pendência com a Ouromed (§3).
@@ -39,7 +40,7 @@ resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
 
 | Item | O que está no site | Onde | O que falta |
 |---|---|---|---|
-| Fotos | Doze espaços com arquivo: 11 cenas ilustrativas geradas por IA (com a legenda "Imagem ilustrativa") e o recorte real de `locacao` (sem legenda); sem texto, logo de terceiros ou rosto em close | home e as quatro páginas | As fotos reais da Ouromed, com autorização de imagem; até lá, as ilustrativas ficam no lugar |
+| Fotos | Quinze espaços com arquivo: 14 cenas ilustrativas geradas por IA (com a legenda "Imagem ilustrativa") e o recorte real de `locacao` (sem legenda); sem texto, logo de terceiros ou rosto em close; nenhuma imagem repetida numa página | home e as quatro páginas | As fotos reais da Ouromed, com autorização de imagem; até lá, as ilustrativas ficam no lugar. A de `locacao` é um recorte de 990 × 560 px de um post do Instagram: pedir o **arquivo original em alta resolução** (sem retoque por IA) |
 | Telefones da Central 24 h | (31) 3786-1506 no botão "Ligar"; (31) 4103-5452 e (31) 3786-7112 ao lado — os três fixos do site de 2011 | barra fixa do celular, cabeçalho, botões, rodapé, contato | Confirmar os três e qual é o principal. O cadastro público mostra outro número, (31) 2128-2020 (consulta de 24/11): perguntar |
 | E-mails por setor | `agendamento@`, `luciano@` (eventos e locação) e `diretoria@ouromedbh.com.br` | contato, botões dos serviços, formulário | Confirmar que continuam válidos e quem responde a cada um |
 | Marca | Marca tipográfica provisória em SVG ("Ouro" em ouro + "med" em azul-marinho, círculo com a cruz). O favicon, o cartão de compartilhamento (`og.png`) e o ícone da Apple seguem essa marca e a paleta atuais, gerados por `bun scripts/marca.tsx` | cabeçalho, menu, intro da marca, favicon, preview de link | O logo vetorial original; quando chegar, rodar `scripts/marca.tsx` de novo |
@@ -51,9 +52,11 @@ resposta ou dado de paciente. No lugar, frase verdadeira e genérica, ou nada.
 
 ## 3. Ausente (não renderiza até o cliente enviar)
 
-**Fotos reais da Ouromed.** Os doze espaços têm hoje cenas ilustrativas geradas por IA e um recorte
+**Fotos reais da Ouromed.** Os quinze espaços têm hoje cenas ilustrativas geradas por IA e um recorte
 de um post do Instagram (§1); as fotos atuais da frota, da equipe, do interior da UTI e da Central 24 h
-dependem do cliente, com autorização de imagem de quem aparecer. Proporção em que cada slot é
+dependem do cliente, com autorização de imagem de quem aparecer. **A foto real (`locacao`, a fileira
+de 4×4) fica como está até a Ouromed mandar o original em alta resolução** — o recorte do Instagram é
+o que existe, e a regra é não tentar melhorá-la com IA (pedido de 25/11). Proporção em que cada slot é
 recortado e onde aparece (a mesma tabela está em `scripts/fotos.mjs`, que confere estes slots contra o
 código a cada execução):
 
@@ -62,12 +65,13 @@ código a cada execução):
 | `hero` | reservado: o topo da home é o desenho de BH, sem vídeo (decisão da pessoa, 24/11) | — |
 | `uti` | home (destaque de "Para você", largura toda) · `/para-voce#ambulancia` | 16:9 |
 | `domiciliar` | home (cartão) · `/para-voce#atendimento-domiciliar` | 16:9 |
-| `remocao` | home (cartão e cartão de "Quando chamar") · `/para-voce#remocao` | 16:9 |
+| `remocao` | home (cartão de "Para você") · `/para-voce#remocao` | 16:9 |
 | `protegida`, `eventos`, `locacao` | home (faixa de "Para empresas") · `/para-empresas` | 4:3 |
-| `ambulatorios` | home (faixa de "Para empresas" e cartão de "Quando chamar") · `/para-empresas#ambulatorios` | 4:3 |
+| `ambulatorios` | home (faixa de "Para empresas") · `/para-empresas#ambulatorios` | 4:3 |
+| `cartao-emergencia`, `cartao-remocao`, `cartao-empresas` | home (cartões de "Quando chamar", cenas exclusivas) | 16:9 |
 | `uti-interior` | home ("Suporte básico × UTI") | 4:3 |
 | `destino`, `triagem`, `equipe` | topos de `/para-voce`, `/para-empresas`, `/sobre` | 4:3 |
-| `central` | home (cartão de "Quando chamar") · topo de `/contato` | 4:3 |
+| `central` | topo de `/contato` | 4:3 |
 
 Como entram: as fotos numa pasta, um mapa `slot → { arquivo, alt, foco?, posicao? }` (`alt` é
 obrigatório; `foco` ancora o recorte do slot; `posicao` é o `object-position` nas caixas de outra
@@ -120,5 +124,6 @@ prompts do Google Flow (`docs/brief/PROMPTS-FLOW.md`) seguem como plano B.
 - `src/data/site.ts`: o conteúdo do site inteiro, com o resumo destas pendências no cabeçalho.
 - `scripts/fotos.mjs --ajuda`: o formato do mapa de fotos; `src/data/midia.json`: os arquivos por
   slot; `scripts/aceite.mjs <preview>`: os critérios de `docs/CRITERIOS-DE-ACEITE.md` (com as fotos,
-  o 3.2 passa a ser medido: 11 imagens em 8,64 telas na home).
+  o 3.2 passa a ser medido: 11 imagens em 8,1 telas na home; o 4.6 confere que nenhuma imagem se
+  repete numa página).
 - `vercel.json`: os redirecionamentos das rotas antigas.

@@ -45,6 +45,7 @@ escrito.
 | 4.3 | Clientes, depoimentos com nome e cargo, endereço e telefones no rodapé; CNPJ quando o cliente enviar | ambulâncias; AGENTS §1 | Manual |
 | 4.4 | Nenhum número, credencial, cliente, depoimento ou tempo de resposta inventado | AGENTS §1 | Manual |
 | 4.5 | Emergência: "a Ouromed atende quando há viatura e equipe livres"; o 192 aparece só como nota de segurança | decisão da pessoa, 24/11 | Manual |
+| 4.6 | **Nenhuma imagem repetida na mesma página**: cada slot de foto aparece uma vez (os cartões de "Quando chamar" têm cenas próprias) | crítica da pessoa, 25/11 | Auto |
 
 ## 5. Motion
 

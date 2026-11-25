@@ -14,9 +14,10 @@
 //      Telefones: os 3 do site antigo; a Receita mostra (31) 2128-2020 (perguntar ao cliente).
 //   2. CNPJ: 11.263.858/0001-65, enviado pela pessoa em 24/11 e conferido no cadastro público
 //      (ativa desde 20/10/2009). Renderiza no rodapé e nos dados estruturados.
-//   3. Fotos: 12 slots com foto (11 cenas ilustrativas geradas por IA e uma real, `locacao`),
-//      processadas por scripts/fotos.mjs a partir de um mapa com alt obrigatório; a troca pelas fotos
-//      reais da Ouromed é pendência. `hero` é reservado (o topo é o desenho de BH).
+//   3. Fotos: 15 slots com foto (14 cenas ilustrativas geradas por IA e uma real, `locacao`),
+//      processadas por scripts/fotos.mjs a partir de um mapa com alt obrigatório; nenhuma imagem se
+//      repete numa página. A troca pelas fotos reais da Ouromed é pendência. `hero` é reservado (o
+//      topo é o desenho de BH).
 //   4. Frota: texto genérico (4×4 e furgões, de diversas marcas), sem modelo nem quantidade; a
 //      composição atual é confirmada na contratação. Frota atual: pendência.
 //   5. História: só "em atividade desde outubro de 2009" (abertura do CNPJ). Sem fundadores.
@@ -38,7 +39,10 @@ export type MediaKey =
   | 'central'
   | 'triagem'
   | 'equipe'
-  | 'destino';
+  | 'destino'
+  | 'cartao-emergencia'
+  | 'cartao-remocao'
+  | 'cartao-empresas';
 
 export type Publico = 'voce' | 'empresa';
 
@@ -120,8 +124,9 @@ export const site = {
 
 /** Fotos e vídeos do site. Os arquivos são os que scripts/fotos.mjs gerou em public/midia/ a partir de
  *  um mapa (alt obrigatório, foco e posição do recorte por slot) e registrou em src/data/midia.json,
- *  importado aqui: as 12 fotos de hoje são 11 cenas ilustrativas geradas por IA (sem texto, sem logo,
- *  sem rosto em close) e uma real, a frota em `locacao`. Trocar pelas fotos reais da Ouromed é
+ *  importado aqui: as 15 fotos de hoje são 14 cenas ilustrativas geradas por IA (sem texto, sem logo,
+ *  sem rosto em close) e uma real, a frota em `locacao`. Os três `cartao-*` são exclusivos dos cartões
+ *  de "Quando chamar": nenhuma imagem se repete numa página. Trocar pelas fotos reais da Ouromed é
  *  pendência (docs/PENDENCIAS.md). Sem arquivo no manifesto, o slot mostra em mono o `label` do que
  *  vai ali. `alt` descreve o que se vê. `video` (com `src` como pôster) é o caso do topo, se um dia
  *  houver vídeo. */
@@ -139,12 +144,12 @@ export const media: Record<
   },
   uti: {
     label: 'Foto: viatura UTI de perfil',
-    alt: 'Ambulância branca de perfil, estacionada ao entardecer, com prédios e morros ao fundo.',
+    alt: 'Ambulância de UTI móvel de perfil, com faixas amarelas e azuis, estacionada diante do horizonte de Belo Horizonte.',
     origem: 'ia',
   },
   'uti-interior': {
     label: 'Foto: interior da UTI móvel',
-    alt: 'Interior de uma UTI móvel: maca, monitor, ventilador pulmonar e cilindros de oxigênio',
+    alt: 'Interior de UTI móvel com a maca no trilho à esquerda, banco e armários à direita e equipamentos fixados à parede.',
     origem: 'ia',
   },
   domiciliar: {
@@ -154,12 +159,12 @@ export const media: Record<
   },
   remocao: {
     label: 'Foto: maca entrando na viatura',
-    alt: 'Dois socorristas de uniforme azul-marinho, vistos de costas, colocam uma maca vazia na ambulância diante de um hospital.',
+    alt: 'Dois socorristas de uniforme azul-marinho embarcam uma maca pelas portas traseiras de uma ambulância diante de um hospital.',
     origem: 'ia',
   },
   eventos: {
     label: 'Foto: equipe em evento',
-    alt: 'Socorrista, de costas, junto à porta lateral aberta de uma ambulância, com o público e as luzes de um festival ao fundo.',
+    alt: 'Dois socorristas conversam ao lado de uma ambulância durante um evento ao ar livre, com o público ao fundo.',
     origem: 'ia',
   },
   locacao: {
@@ -169,12 +174,12 @@ export const media: Record<
   },
   protegida: {
     label: 'Foto: área protegida em empresa',
-    alt: 'Ambulância branca estacionada diante da entrada envidraçada de um prédio comercial.',
+    alt: 'Ambulância com faixas amarelas e azuis estacionada junto à entrada envidraçada de uma empresa.',
     origem: 'ia',
   },
   ambulatorios: {
     label: 'Foto: ambulatório em obra',
-    alt: 'Ambulatório montado num contêiner de obra, com maca, desfibrilador na parede e capacete de obra sobre a mesa.',
+    alt: 'Posto médico em um contêiner de obra, com maca, capacete na bancada e desfibrilador externo automático amarelo na parede.',
     origem: 'ia',
   },
   central: {
@@ -189,12 +194,28 @@ export const media: Record<
   },
   equipe: {
     label: 'Foto: equipe saindo com a viatura',
-    alt: 'Dois socorristas de uniforme azul-marinho, vistos de costas, fecham as portas traseiras de uma ambulância à noite.',
+    alt: 'Dois socorristas de costas fecham as portas traseiras de uma ambulância numa rua à noite.',
     origem: 'ia',
   },
   destino: {
     label: 'Foto: chegada ao hospital',
-    alt: 'Ambulância branca chega à entrada coberta de um hospital à noite, com uma maca visível no interior do prédio.',
+    alt: 'Ambulância com faixas refletivas chega à entrada coberta de um hospital à noite.',
+    origem: 'ia',
+  },
+  // Exclusivos dos cartões de "Quando chamar" (25/11): cada cartão com a sua cena.
+  'cartao-emergencia': {
+    label: 'Foto: socorrista descendo da viatura',
+    alt: 'Socorrista de perfil desce pelo vão traseiro da ambulância com uma bolsa de emergência na mão.',
+    origem: 'ia',
+  },
+  'cartao-remocao': {
+    label: 'Foto: paciente sentado na maca',
+    alt: 'Técnica de enfermagem ajusta o cinto de uma pessoa sentada na maca, vista de costas dentro da ambulância.',
+    origem: 'ia',
+  },
+  'cartao-empresas': {
+    label: 'Foto: posto de atendimento em obra',
+    alt: 'Ambulância e tenda de atendimento montadas ao ar livre em um canteiro de obras de terra avermelhada.',
     origem: 'ia',
   },
 };
@@ -524,7 +545,8 @@ export const ambulanceTypes = {
   },
 };
 
-/** Um cartão de "Quando chamar": abre com uma foto 16:9 (slot de `media`, como nos serviços). */
+/** Um cartão de "Quando chamar": abre com uma foto 16:9 de um slot exclusivo (`cartao-*`), para
+ *  não repetir na home a foto de um serviço. */
 type WhenItem = {
   title: string;
   tag: string;
@@ -536,8 +558,9 @@ type WhenItem = {
 
 /** Quando chamar a Ouromed. A Ouromed atende emergência quando há viatura e equipe disponíveis
  *  (decisão da pessoa, 24/11/2026); o SAMU fica como nota de segurança, sem destaque. Sem preço,
- *  sem convênio nomeado e sem tempo de resposta em minutos. Cada cartão traz uma foto (decisão de
- *  25/11: com as três, a home passa de 8 para 11 imagens e o critério 3.2 fecha com as fotos). */
+ *  sem convênio nomeado e sem tempo de resposta em minutos. Cada cartão traz uma foto própria
+ *  (decisão de 25/11: com as três, a home passa de 8 para 11 imagens e o critério 3.2 fecha com as
+ *  fotos; desde a segunda rodada, são cenas exclusivas, sem repetir a de nenhum serviço). */
 export const honesty = {
   heading: 'Quando chamar a Ouromed',
   lede: 'Toda chamada passa pela triagem médica, que define a viatura e a equipe. A Central diz na hora o que pode fazer pelo seu caso.',
@@ -548,7 +571,7 @@ export const honesty = {
       text: 'A Ouromed atende emergência 24 h quando há viatura e equipe disponíveis. A Central confirma na própria ligação.',
       href: `tel:${site.phones.tel}`,
       cta: `Ligar ${site.phones.display}`,
-      media: 'central',
+      media: 'cartao-emergencia',
     },
     {
       title: 'Remoção e transferência',
@@ -556,7 +579,7 @@ export const honesty = {
       text: 'Alta hospitalar, exames, transferência entre hospitais ou entre estados, com UTI móvel ou suporte básico.',
       href: '/para-voce#remocao',
       cta: 'Solicitar remoção',
-      media: 'remocao',
+      media: 'cartao-remocao',
     },
     {
       title: 'Empresas e eventos',
@@ -564,7 +587,7 @@ export const honesty = {
       text: 'Área protegida, ambulatório em obra, cobertura de eventos e locação de ambulâncias, com orçamento por escrito.',
       href: '/contato',
       cta: 'Pedir orçamento',
-      media: 'ambulatorios',
+      media: 'cartao-empresas',
     },
   ] satisfies WhenItem[],
   note: 'Risco de vida e a Central sem viatura livre na hora? Ligue 192 (SAMU).',

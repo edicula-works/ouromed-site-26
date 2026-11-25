@@ -64,7 +64,7 @@
     ]
   },
   "eventos": {
-    "posicao": "50% 60%",
+    "posicao": "50% 65%",
     "larguras": [
       {
         "w": 800,
@@ -81,6 +81,7 @@
     ]
   },
   "protegida": {
+    "posicao": "50% 75%",
     "larguras": [
       {
         "w": 800,
@@ -97,7 +98,7 @@
     ]
   },
   "ambulatorios": {
-    "posicao": "50% 40%",
+    "posicao": "50% 100%",
     "larguras": [
       {
         "w": 800,
@@ -210,6 +211,54 @@
         "h": 560,
         "avif": "/midia/locacao-747.avif",
         "webp": "/midia/locacao-747.webp"
+      }
+    ]
+  },
+  "cartao-emergencia": {
+    "larguras": [
+      {
+        "w": 800,
+        "h": 450,
+        "avif": "/midia/cartao-emergencia-800.avif",
+        "webp": "/midia/cartao-emergencia-800.webp"
+      },
+      {
+        "w": 1280,
+        "h": 720,
+        "avif": "/midia/cartao-emergencia-1280.avif",
+        "webp": "/midia/cartao-emergencia-1280.webp"
+      }
+    ]
+  },
+  "cartao-remocao": {
+    "larguras": [
+      {
+        "w": 800,
+        "h": 450,
+        "avif": "/midia/cartao-remocao-800.avif",
+        "webp": "/midia/cartao-remocao-800.webp"
+      },
+      {
+        "w": 1280,
+        "h": 720,
+        "avif": "/midia/cartao-remocao-1280.avif",
+        "webp": "/midia/cartao-remocao-1280.webp"
+      }
+    ]
+  },
+  "cartao-empresas": {
+    "larguras": [
+      {
+        "w": 800,
+        "h": 450,
+        "avif": "/midia/cartao-empresas-800.avif",
+        "webp": "/midia/cartao-empresas-800.webp"
+      },
+      {
+        "w": 1280,
+        "h": 720,
+        "avif": "/midia/cartao-empresas-1280.avif",
+        "webp": "/midia/cartao-empresas-1280.webp"
       }
     ]
   }

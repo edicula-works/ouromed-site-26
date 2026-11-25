@@ -64,7 +64,7 @@ const foldContact = () => {
   return { tel, wa, btns };
 };
 
-// 1.1, 1.2, 1.3, 3.7 e 7.4 por página
+// 1.1, 1.2, 1.3, 3.7, 4.6 e 7.4 por página
 for (const path of pages) {
   for (const [name, opts] of [
     ['desktop', desk],
@@ -105,6 +105,21 @@ for (const path of pages) {
       add('1.3 / desktop', f.btns <= 3, `${f.btns} ações na 1ª tela`);
     }
     if (name === 'desktop') {
+      // 4.6: nenhuma imagem repetida na mesma página — cada slot de foto aparece uma vez (os
+      // cartões de "Quando chamar" têm cenas próprias desde 25/11).
+      const repetidas = await p.evaluate(() => {
+        const visto = new Map();
+        for (const img of document.querySelectorAll('.media img')) {
+          const slot = (img.currentSrc || img.src).match(/\/midia\/([\w-]+)-\d+\.\w+$/)?.[1];
+          if (slot) visto.set(slot, (visto.get(slot) ?? 0) + 1);
+        }
+        return [...visto].filter(([, n]) => n > 1).map(([s, n]) => `${s}×${n}`);
+      });
+      add(
+        `4.6 ${path}`,
+        repetidas.length === 0,
+        repetidas.length ? `repetidas: ${repetidas.join(', ')}` : 'nenhuma imagem repetida',
+      );
       const a11y = await p.evaluate(async (src) => {
         // biome-ignore lint/security/noGlobalEval: axe-core local, injetado só no navegador de teste
         eval(src);

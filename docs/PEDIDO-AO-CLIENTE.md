@@ -27,6 +27,8 @@ Precisamos de fotos **reais e recentes** — foto de banco de imagens com jaleco
 - Equipe uniformizada (com **autorização de imagem** assinada por quem aparecer);
 - A Central 24 h em funcionamento.
 Celular serve. Mínimo 8 fotos; o ideal é 15.
+A foto da fileira de ambulâncias 4×4 que está no site hoje é um recorte de um post do Instagram
+da própria Ouromed (990 × 560 px): precisamos do **arquivo original**, em alta resolução.
 
 ## 5. Frota
 - Modelos e **quantidades** em operação hoje (o site cita Sprinter 313 CDI, Ford Transit, Renault Master, Fiat Ducato, Defender 4×4 — ainda é isso?).

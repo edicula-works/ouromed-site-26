@@ -74,6 +74,12 @@ try {
  *  Media.tsx corta o que sobra pelo centro. Conferir ao mudar Sections.tsx ou globals.css. */
 const WIDE = [800, 1280, 1920];
 const TOPO_PAGINA = [640, 960, 1280];
+const CARTAO = {
+  proporcao: '16/9',
+  larguras: WIDE,
+  sizes: '(min-width: 1024px) 33vw, 100vw',
+  onde: 'home (cartão de Quando chamar)',
+};
 const SLOTS = {
   hero: {
     proporcao: null,
@@ -106,7 +112,7 @@ const SLOTS = {
     proporcao: '16/9',
     larguras: WIDE,
     sizes: '(min-width: 1024px) 66vw, 100vw',
-    onde: 'home (cartão e cartão de Quando chamar) · /para-voce#remocao',
+    onde: 'home (cartão de Para você) · /para-voce#remocao',
   },
   protegida: {
     // Home: faixa de Para empresas em 4 / 3 (cartão de até 500 px; sem JS, 3 / 4 em 4 colunas).
@@ -132,7 +138,7 @@ const SLOTS = {
     proporcao: '4/3',
     larguras: WIDE,
     sizes: '(min-width: 1024px) 66vw, 100vw',
-    onde: 'home (faixa de Para empresas e cartão de Quando chamar) · /para-empresas#ambulatorios',
+    onde: 'home (faixa de Para empresas) · /para-empresas#ambulatorios',
   },
   destino: {
     // Topos das páginas internas (PageHero): coluna de 5fr (~530 px); abaixo de 1024 px, largura toda.
@@ -154,13 +160,17 @@ const SLOTS = {
     onde: '/sobre (topo)',
   },
   central: {
-    // Topo de /contato (PageHero, coluna de 5fr; abaixo de 1024 px, largura toda) e cartão de
-    // "Quando chamar" na home (16 / 9, ~405 px).
+    // Topo de /contato (PageHero, coluna de 5fr; abaixo de 1024 px, largura toda).
     proporcao: '4/3',
     larguras: TOPO_PAGINA,
     sizes: '(min-width: 1024px) 40vw, 100vw',
-    onde: 'home (cartão de Quando chamar) · /contato (topo)',
+    onde: '/contato (topo)',
   },
+  // Os três cartões de "Quando chamar" (home) têm foto própria, em 16:9: nenhuma imagem se repete
+  // na mesma página (25/11). No computador cada cartão mede ~33vw; no celular, a largura toda.
+  'cartao-emergencia': CARTAO,
+  'cartao-remocao': CARTAO,
+  'cartao-empresas': CARTAO,
 };
 
 const FOCO = {
